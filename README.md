@@ -6,40 +6,19 @@ A .net graph library to build directed graphs and investigate their properties (
 ```c#
 public void CalculateShortestDistance()
 {
-	var graph = new DistanceGraph(true);
+  var graph = new DistanceGraph();
 
-	var startNode = new DistanceNode("Start", new GraphNodeKey("Start"));
+  graph.AddNode("Start");
+  graph.AddNode("Middle1");
+  graph.AddNode("Middle2");
+  graph.AddNode("End");
 
-	var endNode = new DistanceNode("End", new GraphNodeKey("End"));
+  graph.AddConnection("Start", "End", 5, true);
+  graph.AddConnection("Start", "Middle1", 1, true);
+  graph.AddConnection("Middle1", "Middle2", 1, true);
+  graph.AddConnection("Middle2", "End", 1, true);
 
-	var middleNode1 = new DistanceNode("Middle1", new GraphNodeKey("Middle1"));
-
-	var middleNode2 = new DistanceNode("Middle2", new GraphNodeKey("Middle2"));
-
-	graph.AddNode(startNode);
-	graph.AddNode(middleNode1);
-	graph.AddNode(middleNode2);
-	graph.AddNode(endNode);
-
-	graph.AddConnection(startNode, endNode, 5);
-
-	graph.AddConnection(startNode, middleNode1, 1);
-	graph.AddConnection(middleNode1, middleNode2, 1);
-	graph.AddConnection(middleNode2, endNode, 1);
-
-	var calculator = new DistanceCalculator(graph);
-
-	var distance = calculator.CalculateDistancesByDeepFirst(ref startNode, ref endNode);
-
-	Assert.AreEqual(3, distance);
-
-	var stepsList = calculator.GetShortestPath(endNode).ToList();
-
-	Assert.AreEqual(1, stepsList.Count);
-
-	var stepList = stepsList[0];
-
-	Assert.AreEqual(3, stepList.Degree);
+  var shortesGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 }
 ```
 
