@@ -7,8 +7,8 @@
     <ProjectGuid>{14363941-83C1-485E-9EF9-F20A29BA354D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>mitoSoft.Math.Graphs.Dijkstra</RootNamespace>
-    <AssemblyName>mitoSoft.Math.Graphs.Dijkstra</AssemblyName>
+    <RootNamespace>mitoSoft.Graphs.Dijkstra</RootNamespace>
+    <AssemblyName>mitoSoft.Graphs.Dijkstra</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -59,12 +59,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DistanceCalculator.cs" />
+    <Compile Include="DeepFirstAlgorithm.cs" />
+    <Compile Include="DijkstraAlgorithm.cs" />
+    <Compile Include="DistanceCalculatorBase.cs" />
     <Compile Include="DistanceNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DistanceGraph.cs" />
-    <Compile Include="Step.cs" />
-    <Compile Include="Steps.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\mitoSoft.Graphs\mitoSoft.Graphs.csproj">

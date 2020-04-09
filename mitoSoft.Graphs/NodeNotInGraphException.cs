@@ -6,16 +6,16 @@ namespace mitoSoft.Graphs
     {
         public GraphNode Node { get; }
 
-        public GraphNodeKeyBase Key { get; }
+        public string NodeName { get; }
 
         public NodeNotInGraphException(GraphNode node) : base($"Node '{node.Name}' is not in graph.")
         {
             this.Node = node;
         }
 
-        public NodeNotInGraphException(GraphNodeKeyBase key) : base($"Node '{key.GetKeyDisplayValue()}' is not in graph.")
+        public NodeNotInGraphException(string name) : base($"Node '{name}' is not in graph.")
         {
-            this.Key = key;
+            this.NodeName = name;
         }
     }
 }

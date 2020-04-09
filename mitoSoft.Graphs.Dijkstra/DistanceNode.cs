@@ -8,7 +8,7 @@ namespace mitoSoft.Graphs.Dijkstra
     [DebuggerDisplay(nameof(DistanceGraph) + " ({ToString()})")]
     public class DistanceNode : GraphNode
     {
-        public DistanceNode(string name, GraphNodeKeyBase key) : base(name, key)
+        public DistanceNode(string name) : base(name)
         {
             ResetDistanceFromStart();
         }
@@ -33,9 +33,6 @@ namespace mitoSoft.Graphs.Dijkstra
         /// <summary>
         /// The shortest path predecessors are all nodes which have the smallest sum of predecessorNode.DistanceFromStart + connectionToThisNode.Distance.
         /// </summary>
-        /// <remarks>
-        /// This method can only be properly used when the graph was initialized as "two way".
-        /// </remarks>
         public IEnumerable<DistanceNode> GetShortestPathPredecessors()
         {
             var predecessors = Predecessors.Cast<DistanceNode>().ToList();
@@ -54,10 +51,6 @@ namespace mitoSoft.Graphs.Dijkstra
             }
         }
 
-#pragma warning disable IDE0071 // Simplify interpolation
-        public override string ToString() => $"{base.ToString()} (Distance from start: {this.DistanceFromStart})";
-#pragma warning restore IDE0071 // Simplify interpolation
-
         private double GetStartDistanceToMe(DistanceNode predecessor)
         {
             var predecessorDistanceFromStart = predecessor.DistanceFromStart;
@@ -68,5 +61,10 @@ namespace mitoSoft.Graphs.Dijkstra
 
             return startDistanceToMe;
         }
+
+#pragma warning disable IDE0071 // Simplify interpolation
+        public override string ToString() => $"{base.ToString()} (Distance from start: {this.DistanceFromStart})";
+#pragma warning restore IDE0071 // Simplify interpolation
+
     }
 }

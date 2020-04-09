@@ -6,13 +6,13 @@ namespace mitoSoft.Graphs.Dijkstra
     [DebuggerDisplay(nameof(DistanceGraph) + " ({ToString()})")]
     public class DistanceGraph : Graph
     {
-        public DistanceGraph(bool twoWay) : base(twoWay)
+        public DistanceGraph() : base()
         {
         }
 
-        public bool TryGetNode(GraphNodeKeyBase nodeKey, out DistanceNode node)
+        public bool TryGetNode(string nodeName, out DistanceNode node)
         {
-            if (base.TryGetNode(nodeKey, out GraphNode graphNode))
+            if (base.TryGetNode(nodeName, out GraphNode graphNode))
             {
                 node = (DistanceNode)graphNode;
 
@@ -68,6 +68,15 @@ namespace mitoSoft.Graphs.Dijkstra
             return added;
         }
 
+        public override GraphNode AddNode(string nodeName)
+        {
+            var node = new DistanceNode(nodeName);
+
+            this.AddNode(node);
+
+            return node;
+        }
+
         public override void AddNode(GraphNode node)
         {
             if (node == null)
@@ -81,8 +90,8 @@ namespace mitoSoft.Graphs.Dijkstra
 
             base.AddNode(node);
         }
-
-        public override void AddConnection(GraphNode sourceNode, GraphNode targetNode, double distance)
+                
+        public override void AddConnection(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
         {
             if (sourceNode == null)
             {
@@ -101,7 +110,8 @@ namespace mitoSoft.Graphs.Dijkstra
                 throw new ArgumentException($"{nameof(targetNode)} is not a {nameof(DistanceNode)}.");
             }
 
-            base.AddConnection(sourceNode, targetNode, distance);
+            base.AddConnection(sourceNode, targetNode, distance, twoWay);
         }
+
     }
 }

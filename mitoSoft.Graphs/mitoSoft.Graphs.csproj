@@ -60,11 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Graph.cs" />
-    <Compile Include="GraphEdgeKey.cs" />
     <Compile Include="GraphNode.cs" />
     <Compile Include="GraphEdge.cs" />
-    <Compile Include="GraphNodeKey.cs" />
-    <Compile Include="GraphNodeKeyBase.cs" />
     <Compile Include="NodeNotInGraphException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

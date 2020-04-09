@@ -7,85 +7,77 @@ namespace mitoSoft.Graphs.Dijkstra
     public class UnitTest
     {
         [TestMethod]
-        public void ShortestDistanceMoreNodes()
+        public void ShortestDistance_Start_Middle1_Middle2_End()
         {
-            var graph = new DistanceGraph(true);
+            var graph = new DistanceGraph();
 
-            var startNode = new DistanceNode("Start", new GraphNodeKey("Start"));
+            graph.AddNode("Start");
+            graph.AddNode("Middle1");
+            graph.AddNode("Middle2");
+            graph.AddNode("End");
 
-            var endNode = new DistanceNode("End", new GraphNodeKey("End"));
+            graph.AddConnection("Start", "End", 5, true);
+            graph.AddConnection("Start", "Middle1", 1, true);
+            graph.AddConnection("Middle1", "Middle2", 1, true);
+            graph.AddConnection("Middle2", "End", 1, true);
 
-            var middleNode1 = new DistanceNode("Middle1", new GraphNodeKey("Middle1"));
+            var shortesGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 
-            var middleNode2 = new DistanceNode("Middle2", new GraphNodeKey("Middle2"));
+            shortesGraph.TryGetNode("End", out var endNode);
 
-            graph.AddNode(startNode);
-            graph.AddNode(middleNode1);
-            graph.AddNode(middleNode2);
-            graph.AddNode(endNode);
-
-            graph.AddConnection(startNode, endNode, 5);
-
-            graph.AddConnection(startNode, middleNode1, 1);
-            graph.AddConnection(middleNode1, middleNode2, 1);
-            graph.AddConnection(middleNode2, endNode, 1);
-
-            var calculator = new DistanceCalculator(graph);
-
-            var distance = calculator.CalculateDistancesByDeepFirst(ref startNode, ref endNode);
-
-            Assert.AreEqual(3, distance);
-
-            var stepsList = calculator.GetShortestPath(endNode).ToList();
-
-            Assert.AreEqual(1, stepsList.Count);
-
-            var stepList = stepsList[0];
-
-            Assert.AreEqual(3, stepList.Degree);
+            Assert.AreEqual(3, endNode.DistanceFromStart);
+            Assert.AreEqual(4, shortesGraph.Nodes.Count());
+            Assert.AreEqual(3, shortesGraph.Connections.Count());
         }
 
         [TestMethod]
-        public void SameDistanceDifferentNodes()
+        public void ShortestDistance_Start_End()
         {
-            var graph = new DistanceGraph(true);
+            var graph = new DistanceGraph();
 
-            var startNode = new DistanceNode("Start", new GraphNodeKey("Start"));
+            graph.AddNode("Start");
+            graph.AddNode("Middle1");
+            graph.AddNode("Middle2");
+            graph.AddNode("End");
 
-            var endNode = new DistanceNode("End", new GraphNodeKey("End"));
+            graph.AddConnection("Start", "End", 2, true);
+            graph.AddConnection("Start", "Middle1", 1, true);
+            graph.AddConnection("Middle1", "Middle2", 1, true);
+            graph.AddConnection("Middle2", "End", 1, true);
 
-            var middleNode1 = new DistanceNode("Middle1", new GraphNodeKey("Middle1"));
+            var shortesGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 
-            var middleNode2 = new DistanceNode("Middle2", new GraphNodeKey("Middle2"));
+            shortesGraph.TryGetNode("End", out var endNode);
 
-            graph.AddNode(startNode);
-            graph.AddNode(middleNode1);
-            graph.AddNode(middleNode2);
-            graph.AddNode(endNode);
+            Assert.AreEqual(2, endNode.DistanceFromStart);
+            Assert.AreEqual(2, shortesGraph.Nodes.Count());
+            Assert.AreEqual(1, shortesGraph.Connections.Count());
+        }
 
-            graph.AddConnection(startNode, endNode, 3);
+        [TestMethod]
+        public void ShortestDistance_Start_Middle2_End()
+        {
+            var graph = new DistanceGraph();
 
-            graph.AddConnection(startNode, middleNode1, 1);
-            graph.AddConnection(middleNode1, middleNode2, 1);
-            graph.AddConnection(middleNode2, endNode, 1);
+            graph.AddNode("Start");
+            graph.AddNode("Middle1");
+            graph.AddNode("Middle2");
+            graph.AddNode("End");
 
-            var calculator = new DistanceCalculator(graph);
+            graph.AddConnection("Start", "Middle1", 3, true);
+            graph.AddConnection("Start", "Middle2", 1, true);
+            graph.AddConnection("Middle1", "End", 1, true);
+            graph.AddConnection("Middle2", "End", 1, true);
 
-            var distance = calculator.CalculateDistancesByDeepFirst(ref startNode, ref endNode);
+            var shortesGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 
-            Assert.AreEqual(3, distance);
+            shortesGraph.TryGetNode("End", out var endNode);
 
-            var stepsList = calculator.GetShortestPath(endNode).ToList();
-
-            Assert.AreEqual(2, stepsList.Count);
-
-            var stepList0 = stepsList[0];
-
-            Assert.AreEqual(1, stepList0.Degree);
-
-            var stepList1 = stepsList[1];
-
-            Assert.AreEqual(3, stepList1.Degree);
+            Assert.AreEqual(2, endNode.DistanceFromStart);
+            Assert.AreEqual(3, shortesGraph.Nodes.Count());
+            Assert.AreEqual(2, shortesGraph.Connections.Count());
+            Assert.AreEqual("Start -> Middle2 (Distance: 1)", shortesGraph.TryGetConnector("Start", "Middle2").ToString());
+            Assert.AreEqual("Middle2 -> End (Distance: 1)", shortesGraph.TryGetConnector("Middle2", "End").ToString());
         }
     }
 }

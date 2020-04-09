@@ -21,9 +21,7 @@ namespace mitoSoft.Graphs
 
         public double Distance { get; }
 
-        public GraphEdgeKey Key => new GraphEdgeKey(SourceNode.Key, TargetNode.Key);
-
-        internal ulong ObjectNumber { get; set; }
+        public string Name => $"{this.SourceNode.Name} -> {this.TargetNode.Name}";
 
         public override string ToString() => $"{this.SourceNode.Name} -> {this.TargetNode.Name} (Distance: {this.Distance})";
     }

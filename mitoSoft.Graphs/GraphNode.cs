@@ -8,39 +8,22 @@ namespace mitoSoft.Graphs
     [DebuggerDisplay(nameof(GraphNode) + " ({ToString()})")]
     public class GraphNode
     {
-        private static ulong _edgeCounter = 0;
+        private readonly IList<GraphEdge> _connections;
 
-        private readonly Dictionary<GraphEdgeKey, GraphEdge> _connections;
-
-        public GraphNode(string name, GraphNodeKeyBase key)
+        public GraphNode(string name)
         {
-            this._connections = new Dictionary<GraphEdgeKey, GraphEdge>();
+            this._connections = new List<GraphEdge>();
 
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
-
-            this.Key = key;
         }
 
         public string Name { get; }
 
-        public GraphNodeKeyBase Key { get; }
+        public IEnumerable<GraphEdge> Connections => this._connections;
 
-        public IEnumerable<GraphEdge> Connections
-        {
-            get
-            {
-                foreach (var connection in this._connections.Values)
-                {
-                    yield return connection;
-                }
-            }
-        }
+        public IEnumerable<GraphNode> Predecessors => this._connections.Where(c => ReferenceEquals(c.TargetNode, this)).Select(c => c.SourceNode);
 
-        public IEnumerable<GraphNode> Predecessors => this._connections.Values.Where(c => ReferenceEquals(c.TargetNode, this)).Select(c => c.SourceNode);
-
-        public IEnumerable<GraphNode> Successors => this._connections.Values.Where(c => ReferenceEquals(c.SourceNode, this)).Select(c => c.TargetNode);
-
-        internal ulong ObjectNumber { get; set; }
+        public IEnumerable<GraphNode> Successors => this._connections.Where(c => ReferenceEquals(c.SourceNode, this)).Select(c => c.TargetNode);
 
         public override string ToString() => $"{this.Name} (Connections: {this._connections.Count})";
 
@@ -50,59 +33,46 @@ namespace mitoSoft.Graphs
             {
                 throw new ArgumentNullException(nameof(targetNode));
             }
-            else if (targetNode.Key.KeysAreEqual(this.Key))
-            {
-                throw new ArgumentException("Node must not connect to itself.");
-            }
             else if (distance <= 0)
             {
                 throw new ArgumentException("Distance must be positive.");
             }
 
-            var forwardKey = new GraphEdgeKey(this.Key, targetNode.Key);
+            var edge = new GraphEdge(this, targetNode, distance);
 
-            var backwardKey = new GraphEdgeKey(targetNode.Key, this.Key);
+            this._connections.Add(edge);
 
-            var forwardEdge = this.AddConnection(forwardKey, this, targetNode, distance);
-
-            var backwardEdge = targetNode.AddConnection(backwardKey, targetNode, this, distance);
+            targetNode.AddConnection(edge);
 
             if (twoWay)
             {
-                this.AddReverseConnection(backwardKey, backwardEdge, distance);
-
-                targetNode.AddReverseConnection(forwardKey, forwardEdge, distance);
+                targetNode.AddConnection(this, distance, false);
             }
         }
 
-        private GraphEdge AddConnection(GraphEdgeKey edgeKey, GraphNode sourceNode, GraphNode targetNode, double distance)
+        //private GraphEdge AddConnection(GraphNode sourceNode, GraphNode targetNode, double distance)
+        //{
+        //    if (!_connections.TryGetValue(edgeKey, out var existingEdge))
+        //    {
+        //        _connections.Add(edgeKey, existingEdge);
+        //    }
+        //    else if (existingEdge.Distance != distance)
+        //    {
+        //        throw new InvalidOperationException("Cannot change distance for existing connection.");
+        //    }
+
+        //    return existingEdge;
+        //}
+
+        internal void AddConnection(GraphEdge edge)
         {
-            if (!_connections.TryGetValue(edgeKey, out var existingEdge))
+            if (!_connections.Contains(edge))
             {
-                existingEdge = new GraphEdge(sourceNode, targetNode, distance)
-                {
-                    ObjectNumber = ++_edgeCounter,
-                };
-
-                _connections.Add(edgeKey, existingEdge);
+                _connections.Add(edge);
             }
-            else if (existingEdge.Distance != distance)
+            else
             {
-                throw new InvalidOperationException("Cannot change distance for existing connection.");
-            }
-
-            return existingEdge;
-        }
-
-        private void AddReverseConnection(GraphEdgeKey edgeKey, GraphEdge newEdge, double distance)
-        {
-            if (!_connections.TryGetValue(edgeKey, out var existingEdge))
-            {
-                _connections.Add(edgeKey, newEdge);
-            }
-            else if (existingEdge.Distance != distance)
-            {
-                throw new InvalidOperationException("Cannot change distance for existing connection.");
+                throw new InvalidOperationException("Edge is already in collection.");
             }
         }
     }
