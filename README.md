@@ -1,7 +1,7 @@
 # mitoSoft.Graphs
 A .net graph library to build directed graphs and investigate their properties (e.g. shortest path) 
 
-## Example for shortest path determination via Dijkstras Shortest Path algorithm
+## Example for shortest path determination via Dijkstra's Shortest Path algorithm
 
 ```c#
 public void CalculateShortestDistance()
