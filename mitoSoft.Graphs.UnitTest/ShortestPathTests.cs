@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using mitoSoft.Graphs.ShortestPathAlgorithms;
 
-namespace mitoSoft.Graphs.Dijkstra
+namespace mitoSoft.Graphs.UnitTests
 {
     [TestClass]
-    public class UnitTest
+    public class ShortestPathTests
     {
         [TestMethod]
         public void ShortestDistance_Start_Middle1_Middle2_End()
@@ -16,10 +17,10 @@ namespace mitoSoft.Graphs.Dijkstra
             graph.AddNode("Middle2");
             graph.AddNode("End");
 
-            graph.AddConnection("Start", "End", 5, true);
-            graph.AddConnection("Start", "Middle1", 1, true);
-            graph.AddConnection("Middle1", "Middle2", 1, true);
-            graph.AddConnection("Middle2", "End", 1, true);
+            graph.TryAddEdge("Start", "End", 5, true);
+            graph.TryAddEdge("Start", "Middle1", 1, true);
+            graph.TryAddEdge("Middle1", "Middle2", 1, true);
+            graph.TryAddEdge("Middle2", "End", 1, true);
 
             var shortesGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 
@@ -27,7 +28,7 @@ namespace mitoSoft.Graphs.Dijkstra
 
             Assert.AreEqual(3, endNode.DistanceFromStart);
             Assert.AreEqual(4, shortesGraph.Nodes.Count());
-            Assert.AreEqual(3, shortesGraph.Connections.Count());
+            Assert.AreEqual(3, shortesGraph.Edges.Count());
         }
 
         [TestMethod]
@@ -40,10 +41,10 @@ namespace mitoSoft.Graphs.Dijkstra
             graph.AddNode("Middle2");
             graph.AddNode("End");
 
-            graph.AddConnection("Start", "End", 2, true);
-            graph.AddConnection("Start", "Middle1", 1, true);
-            graph.AddConnection("Middle1", "Middle2", 1, true);
-            graph.AddConnection("Middle2", "End", 1, true);
+            graph.TryAddEdge("Start", "End", 2, true);
+            graph.TryAddEdge("Start", "Middle1", 1, true);
+            graph.TryAddEdge("Middle1", "Middle2", 1, true);
+            graph.TryAddEdge("Middle2", "End", 1, true);
 
             var shortesGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 
@@ -51,7 +52,7 @@ namespace mitoSoft.Graphs.Dijkstra
 
             Assert.AreEqual(2, endNode.DistanceFromStart);
             Assert.AreEqual(2, shortesGraph.Nodes.Count());
-            Assert.AreEqual(1, shortesGraph.Connections.Count());
+            Assert.AreEqual(1, shortesGraph.Edges.Count());
         }
 
         [TestMethod]
@@ -64,10 +65,10 @@ namespace mitoSoft.Graphs.Dijkstra
             graph.AddNode("Middle2");
             graph.AddNode("End");
 
-            graph.AddConnection("Start", "Middle1", 3, true);
-            graph.AddConnection("Start", "Middle2", 1, true);
-            graph.AddConnection("Middle1", "End", 1, true);
-            graph.AddConnection("Middle2", "End", 1, true);
+            graph.TryAddEdge("Start", "Middle1", 3, true);
+            graph.TryAddEdge("Start", "Middle2", 1, true);
+            graph.TryAddEdge("Middle1", "End", 1, true);
+            graph.TryAddEdge("Middle2", "End", 1, true);
 
             var shortesGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 
@@ -75,9 +76,9 @@ namespace mitoSoft.Graphs.Dijkstra
 
             Assert.AreEqual(2, endNode.DistanceFromStart);
             Assert.AreEqual(3, shortesGraph.Nodes.Count());
-            Assert.AreEqual(2, shortesGraph.Connections.Count());
-            Assert.AreEqual("Start -> Middle2 (Distance: 1)", shortesGraph.TryGetConnector("Start", "Middle2").ToString());
-            Assert.AreEqual("Middle2 -> End (Distance: 1)", shortesGraph.TryGetConnector("Middle2", "End").ToString());
+            Assert.AreEqual(2, shortesGraph.Edges.Count());
+            Assert.AreEqual("Start -> Middle2 (Distance: 1)", shortesGraph.GetEdge("Start", "Middle2").ToString());
+            Assert.AreEqual("Middle2 -> End (Distance: 1)", shortesGraph.GetEdge("Middle2", "End").ToString());
         }
     }
 }

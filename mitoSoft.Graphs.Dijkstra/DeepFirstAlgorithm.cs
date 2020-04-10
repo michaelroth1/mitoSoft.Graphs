@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace mitoSoft.Graphs.Dijkstra
+namespace mitoSoft.Graphs.ShortestPathAlgorithms
 {
     [DebuggerDisplay(nameof(DeepFirstAlgorithm) + " ({ToString()})")]
     public class DeepFirstAlgorithm : DistanceCalculatorBase
@@ -28,7 +28,7 @@ namespace mitoSoft.Graphs.Dijkstra
 
         private void CalculateDistancesByDeepFirst(DistanceNode sourceNode, bool finished, int maxDistance)
         {
-            foreach (var connection in sourceNode.Connections)
+            foreach (var connection in sourceNode.Edges)
             {
                 var targetNode = (DistanceNode)connection.TargetNode;
 

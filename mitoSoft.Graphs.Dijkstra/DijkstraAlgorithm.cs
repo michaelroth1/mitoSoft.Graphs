@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 
-namespace mitoSoft.Graphs.Dijkstra
+namespace mitoSoft.Graphs.ShortestPathAlgorithms
 {
     /// <summary>
     /// https://de.wikipedia.org/wiki/Dijkstra-Algorithmus
@@ -63,7 +63,7 @@ namespace mitoSoft.Graphs.Dijkstra
         
         private void UpdateDistance(DistanceNode sourceNode)
         {
-            foreach (var connection in sourceNode.Connections)
+            foreach (var connection in sourceNode.Edges)
             {
                 var node = (DistanceNode)connection.TargetNode;
 

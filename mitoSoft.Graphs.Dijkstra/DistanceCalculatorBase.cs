@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace mitoSoft.Graphs.Dijkstra
+namespace mitoSoft.Graphs.ShortestPathAlgorithms
 {
     public abstract class DistanceCalculatorBase
     {
@@ -10,7 +10,7 @@ namespace mitoSoft.Graphs.Dijkstra
         {
             this._graph = graph ?? throw new ArgumentNullException(nameof(graph));
         }
-               
+
         protected void InitializeGraph(DistanceNode sourceNode)
         {
             foreach (DistanceNode node in this._graph.Nodes)
@@ -25,8 +25,8 @@ namespace mitoSoft.Graphs.Dijkstra
         {
             var graph = new DistanceGraph();
 
-            var node = (DistanceNode)graph.AddNode(targetNode.Name);
-            node.SetDistanceFromStart(targetNode.DistanceFromStart);
+            graph.TryAddNode(targetNode.Name, out var node);
+            ((DistanceNode)node).SetDistanceFromStart(targetNode.DistanceFromStart);
 
             GetShortestGraph(sourceNode, targetNode, graph);
 
@@ -62,6 +62,7 @@ namespace mitoSoft.Graphs.Dijkstra
 
             return existingNode;
         }
+
         private void GetShortestGraph(DistanceNode sourceNode, DistanceNode targetNode, DistanceGraph graph)
         {
             if (sourceNode.Name == targetNode.Name)
@@ -73,12 +74,12 @@ namespace mitoSoft.Graphs.Dijkstra
 
             foreach (var predecessor in predecessorNodes)
             {
-                var node = (DistanceNode)graph.AddNode(predecessor.Name);
-                node.SetDistanceFromStart(predecessor.DistanceFromStart);
+                graph.TryAddNode(predecessor.Name, out var node);
+                ((DistanceNode)node).SetDistanceFromStart(predecessor.DistanceFromStart);
 
-                var con = _graph.TryGetConnector(predecessor, targetNode);
+                _graph.TryGetEdge(predecessor, targetNode, out var edge);
 
-                graph.AddConnection(predecessor.Name, targetNode.Name, con.Distance, false);
+                graph.TryAddEdge(predecessor.Name, targetNode.Name, edge.Distance, false);
 
                 GetShortestGraph(sourceNode, predecessor, graph);
             }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace mitoSoft.Graphs.Dijkstra
+namespace mitoSoft.Graphs.ShortestPathAlgorithms
 {
     [DebuggerDisplay(nameof(DistanceGraph) + " ({ToString()})")]
     public class DistanceGraph : Graph
@@ -24,6 +24,22 @@ namespace mitoSoft.Graphs.Dijkstra
 
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Tries to add the given node to the system. If the node already exists, nothing will be added.
+        /// </summary>
+        /// <param name="nodeName">Name of the node to be added</param>
+        /// <returns>True when the node was actually added or false when a node with an identical name already exists.</returns>
+        public override bool TryAddNode(string nodeName, out GraphNode node)
+        {
+            var newNode = new DistanceNode(nodeName);
+
+            var existing = this.TryAddNode(ref newNode);
+
+            node = newNode;
+
+            return existing;
         }
 
         /// <summary>
@@ -68,16 +84,16 @@ namespace mitoSoft.Graphs.Dijkstra
             return added;
         }
 
-        public override GraphNode AddNode(string nodeName)
+        public override Graph AddNode(string nodeName)
         {
             var node = new DistanceNode(nodeName);
 
             this.AddNode(node);
 
-            return node;
+            return this;
         }
 
-        public override void AddNode(GraphNode node)
+        public override Graph AddNode(GraphNode node)
         {
             if (node == null)
             {
@@ -88,10 +104,10 @@ namespace mitoSoft.Graphs.Dijkstra
                 throw new ArgumentException($"{nameof(node)} is not a {nameof(DistanceNode)}.");
             }
 
-            base.AddNode(node);
+            return base.AddNode(node);
         }
-                
-        public override void AddConnection(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
+
+        public override bool TryAddEdge(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
         {
             if (sourceNode == null)
             {
@@ -110,8 +126,7 @@ namespace mitoSoft.Graphs.Dijkstra
                 throw new ArgumentException($"{nameof(targetNode)} is not a {nameof(DistanceNode)}.");
             }
 
-            base.AddConnection(sourceNode, targetNode, distance, twoWay);
+            return base.TryAddEdge(sourceNode, targetNode, distance, twoWay);
         }
-
     }
 }

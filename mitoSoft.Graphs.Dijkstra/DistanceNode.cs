@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace mitoSoft.Graphs.Dijkstra
+namespace mitoSoft.Graphs.ShortestPathAlgorithms
 {
     [DebuggerDisplay(nameof(DistanceGraph) + " ({ToString()})")]
     public class DistanceNode : GraphNode
@@ -55,7 +55,7 @@ namespace mitoSoft.Graphs.Dijkstra
         {
             var predecessorDistanceFromStart = predecessor.DistanceFromStart;
 
-            var predecessorDistanceToMe = predecessor.Connections.First(c => ReferenceEquals(c.TargetNode, this)).Distance;
+            var predecessorDistanceToMe = predecessor.Edges.First(c => ReferenceEquals(c.TargetNode, this)).Distance;
 
             var startDistanceToMe = predecessorDistanceFromStart + predecessorDistanceToMe;
 

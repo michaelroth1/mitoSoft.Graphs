@@ -8,24 +8,24 @@ namespace mitoSoft.Graphs
     [DebuggerDisplay(nameof(GraphNode) + " ({ToString()})")]
     public class GraphNode
     {
-        private readonly IList<GraphEdge> _connections;
+        private readonly IList<GraphEdge> _edges;
 
         public GraphNode(string name)
         {
-            this._connections = new List<GraphEdge>();
+            this._edges = new List<GraphEdge>();
 
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         public string Name { get; }
 
-        public IEnumerable<GraphEdge> Connections => this._connections;
+        public IEnumerable<GraphEdge> Edges => this._edges;
 
-        public IEnumerable<GraphNode> Predecessors => this._connections.Where(c => ReferenceEquals(c.TargetNode, this)).Select(c => c.SourceNode);
+        public IEnumerable<GraphNode> Predecessors => this._edges.Where(c => ReferenceEquals(c.TargetNode, this)).Select(c => c.SourceNode);
 
-        public IEnumerable<GraphNode> Successors => this._connections.Where(c => ReferenceEquals(c.SourceNode, this)).Select(c => c.TargetNode);
+        public IEnumerable<GraphNode> Successors => this._edges.Where(c => ReferenceEquals(c.SourceNode, this)).Select(c => c.TargetNode);
 
-        public override string ToString() => $"{this.Name} (Connections: {this._connections.Count})";
+        public override string ToString() => $"{this.Name} (Connections: {this._edges.Count})";
 
         internal void AddConnection(GraphNode targetNode, double distance, bool twoWay)
         {
@@ -40,7 +40,7 @@ namespace mitoSoft.Graphs
 
             var edge = new GraphEdge(this, targetNode, distance);
 
-            this._connections.Add(edge);
+            this._edges.Add(edge);
 
             targetNode.AddConnection(edge);
 
@@ -50,25 +50,11 @@ namespace mitoSoft.Graphs
             }
         }
 
-        //private GraphEdge AddConnection(GraphNode sourceNode, GraphNode targetNode, double distance)
-        //{
-        //    if (!_connections.TryGetValue(edgeKey, out var existingEdge))
-        //    {
-        //        _connections.Add(edgeKey, existingEdge);
-        //    }
-        //    else if (existingEdge.Distance != distance)
-        //    {
-        //        throw new InvalidOperationException("Cannot change distance for existing connection.");
-        //    }
-
-        //    return existingEdge;
-        //}
-
         internal void AddConnection(GraphEdge edge)
         {
-            if (!_connections.Contains(edge))
+            if (!_edges.Contains(edge))
             {
-                _connections.Add(edge);
+                _edges.Add(edge);
             }
             else
             {

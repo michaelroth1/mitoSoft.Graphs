@@ -16,30 +16,21 @@ namespace mitoSoft.Graphs
         }
 
         public IEnumerable<GraphNode> Nodes => this._nodes.Values;
-        //{ TODO Warum???
-        //    get
-        //    {
-        //        foreach (var node in this._nodes.Values)
-        //        {
-        //            yield return node;
-        //        }
-        //    }
-        //}
 
-        public IEnumerable<GraphEdge> Connections => this.Nodes.SelectMany(n => n.Connections).Distinct();
+        public IEnumerable<GraphEdge> Edges => this.Nodes.SelectMany(n => n.Edges).Distinct();
 
         public bool TryGetNode(string nodeName, out GraphNode node) => this._nodes.TryGetValue(nodeName, out node);
 
-        public virtual GraphNode AddNode(string nodeName)
+        public virtual Graph AddNode(string nodeName)
         {
             var node = new GraphNode(nodeName);
 
             this.AddNode(node);
 
-            return node;
+            return this;
         }
-
-        public virtual void AddNode(GraphNode node)
+               
+        public virtual Graph AddNode(GraphNode node)
         {
             if (node == null)
             {
@@ -49,6 +40,24 @@ namespace mitoSoft.Graphs
             {
                 throw new InvalidOperationException($"Node with identical name {node.Name} already in graph.");
             }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Tries to add the given node to the system. If the node already exists, nothing will be added.
+        /// </summary>
+        /// <param name="nodeName">Name of the node to be added</param>
+        /// <returns>True when the node was actually added or false when a node with an identical name already exists.</returns>
+        public virtual bool TryAddNode(string nodeName, out GraphNode node)
+        {
+            var newNode = new GraphNode(nodeName);
+
+            var existing = this.TryAddNode(ref newNode);
+
+            node = newNode;
+
+            return existing;
         }
 
         /// <summary>
@@ -77,59 +86,90 @@ namespace mitoSoft.Graphs
             }
         }
 
-        public GraphEdge TryGetConnector(string startNodeName, string endNodeName)
+        public virtual bool TryGetEdge(string sourceNodeName, string targetNodeName, out GraphEdge edge)
         {
-            if (!this.TryGetNode(startNodeName, out var startNode))
+            edge = null;
+
+            if (!this.TryGetNode(sourceNodeName, out var startNode))
             {
-                throw new NodeNotInGraphException(startNodeName);
-            }
-            
-            if (!this._nodes.TryGetValue(endNodeName, out var endNode))
-            {
-                throw new NodeNotInGraphException(endNodeName);
+                return false;
             }
 
-            return TryGetConnector(startNode, endNode);
+            if (!this._nodes.TryGetValue(targetNodeName, out var endNode))
+            {
+                return false;
+            }
+
+            return TryGetEdge(startNode, endNode, out edge);
         }
 
-        public GraphEdge TryGetConnector(GraphNode startNode, GraphNode endNode)
+        public virtual GraphEdge GetEdge(string sourceNodeName, string targetNodeName)
         {
-            if (!this._nodes.TryGetValue(startNode.Name, out _))
+            if (this.TryGetEdge(sourceNodeName, targetNodeName, out var edge))
             {
-                throw new NodeNotInGraphException(startNode);
+                return edge;
             }
-            else if (!this._nodes.TryGetValue(endNode.Name, out _))
+            else
             {
-                throw new NodeNotInGraphException(endNode);
+                throw new InvalidOperationException($"Edge between {sourceNodeName} and {targetNodeName} not found.");
             }
-
-            foreach (var connector in startNode.Connections)
-            {
-                if (ReferenceEquals(connector.TargetNode, endNode))
-                {
-                    return connector;
-                }
-            }
-
-            throw new InvalidOperationException($"No dircect connection between {startNode.Name} and {endNode.Name}.");
         }
 
-        public virtual void AddConnection(string sourceNodeName, string targetNodeName, double distance, bool twoWay)
+        public virtual bool TryGetEdge(GraphNode sourceName, GraphNode targetNode, out GraphEdge edge)
+        {
+            edge = sourceName.Edges.Where(e => ReferenceEquals(e.TargetNode, targetNode)).SingleOrDefault();
+
+            return (edge != null);
+        }
+
+        public virtual GraphEdge GetEdge(GraphNode sourceNode, GraphNode targetNode)
+        {
+            if (this.TryGetEdge(sourceNode, targetNode, out var edge))
+            {
+                return edge;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Edge between {sourceNode.Name} and {targetNode.Name} not found.");
+            }
+        }
+
+        public virtual Graph AddEdge(string sourceNodeName, string targetNodeName, double distance, bool twoWay)
+        {
+            if (!this.TryAddEdge(sourceNodeName, targetNodeName, distance, twoWay))
+            {
+                throw new InvalidOperationException($"Could not add edge between {sourceNodeName} and {targetNodeName}.");
+            }
+
+            return this;
+        }
+
+        public virtual bool TryAddEdge(string sourceNodeName, string targetNodeName, double distance, bool twoWay)
         {
             if (!this.TryGetNode(sourceNodeName, out var sourceNode))
             {
-                throw new NodeNotInGraphException(sourceNodeName);
+                sourceNode = new GraphNode(sourceNodeName);
             }
 
             if (!this.TryGetNode(targetNodeName, out var targetNode))
             {
-                throw new NodeNotInGraphException(targetNodeName);
+                targetNode = new GraphNode(targetNodeName);
             }
 
-            AddConnection(sourceNode, targetNode, distance, twoWay);
+            return TryAddEdge(sourceNode, targetNode, distance, twoWay);
         }
 
-        public virtual void AddConnection(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
+        public virtual Graph AddEdge(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
+        {
+            if (!this.TryAddEdge(sourceNode, targetNode, distance, twoWay))
+            {
+                throw new InvalidOperationException($"Could not add edge between {sourceNode.Name} and {targetNode.Name}.");
+            }
+
+            return this;
+        }
+
+        public virtual bool TryAddEdge(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
         {
             if (sourceNode == null)
             {
@@ -139,16 +179,18 @@ namespace mitoSoft.Graphs
             {
                 throw new ArgumentNullException(nameof(targetNode));
             }
-            else if (!_nodes.ContainsKey(sourceNode.Name))
+            else if (this.TryGetEdge(sourceNode, targetNode, out _))
             {
-                throw new NodeNotInGraphException(sourceNode);
-            }
-            else if (!_nodes.ContainsKey(targetNode.Name))
-            {
-                throw new NodeNotInGraphException(targetNode);
+                return false;
             }
 
+            this.TryAddNode(ref sourceNode);
+
+            this.TryAddNode(ref targetNode);
+
             sourceNode.AddConnection(targetNode, distance, twoWay);
+
+            return true;
         }
 
         public override string ToString() => $"Nodes: {this._nodes.Count}";
