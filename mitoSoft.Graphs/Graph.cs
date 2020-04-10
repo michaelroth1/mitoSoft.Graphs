@@ -29,7 +29,7 @@ namespace mitoSoft.Graphs
 
             return this;
         }
-               
+
         public virtual Graph AddNode(GraphNode node)
         {
             if (node == null)
@@ -191,6 +191,11 @@ namespace mitoSoft.Graphs
             sourceNode.AddConnection(targetNode, distance, twoWay);
 
             return true;
+        }
+
+        public virtual void ClearAll()
+        {
+            this._nodes.Clear();
         }
 
         public override string ToString() => $"Nodes: {this._nodes.Count}";

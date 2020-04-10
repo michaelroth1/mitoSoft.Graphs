@@ -104,7 +104,7 @@ namespace mitoSoft.Graphs.UnitTests
                 "}",
             };
 
-            var graph = GraphGenerator.GetGraph(dotText);
+            var graph = GraphGenerator.FromDotText(dotText);
 
             Assert.AreEqual(4, graph.Nodes.Count());
             Assert.AreEqual(5, graph.Edges.Count());
@@ -141,7 +141,7 @@ namespace mitoSoft.Graphs.UnitTests
                 "}",
             };
 
-            var image = (dotText);
+            var image = (new ImageRenderer(GraphVizBinPath)).RenderImage(dotText);
 
             Assert.IsNotNull(image);
         }

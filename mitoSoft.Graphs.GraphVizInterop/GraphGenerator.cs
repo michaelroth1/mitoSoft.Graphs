@@ -7,14 +7,14 @@ namespace mitoSoft.Graphs.GraphVizInterop
 {
     public static class GraphGenerator
     {
-        public static Graph GetGraph(string dotText)
+        public static Graph FromDotText(string dotText)
         {
             var lines = dotText.Split(Environment.NewLine.ToCharArray()).ToList();
 
-            return GraphGenerator.GetGraph(lines);
+            return GraphGenerator.FromDotText(lines);
         }
 
-        public static Graph GetGraph(List<string> dotText)
+        public static Graph FromDotText(List<string> dotText)
         {
             dotText.RemoveAll(s => s == string.Empty);
 
