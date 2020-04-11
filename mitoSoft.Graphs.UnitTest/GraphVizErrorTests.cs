@@ -13,7 +13,7 @@ namespace mitoSoft.Graphs.UnitTests
         [ExpectedException(typeof(InvalidOperationException))]
         public void EqualEdges()
         {
-            var graph = new Graph()
+            var _ = new Graph()
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "Middle1", 1, true)
@@ -29,7 +29,7 @@ namespace mitoSoft.Graphs.UnitTests
         [ExpectedException(typeof(InvalidOperationException))]
         public void EqualNodes()
         {
-            var graph = new Graph()
+            var _ = new Graph()
                 .AddNode ("Start")
                 .AddNode ("Start")
                 .AddEdge("Start", "End", 2, true)
