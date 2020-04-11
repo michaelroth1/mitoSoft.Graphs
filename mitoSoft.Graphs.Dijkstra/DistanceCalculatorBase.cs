@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mitoSoft.Graphs.Exceptions;
+using System;
 
 namespace mitoSoft.Graphs.ShortestPathAlgorithms
 {

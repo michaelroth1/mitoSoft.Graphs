@@ -21,7 +21,6 @@ namespace mitoSoft.Graphs.UnitTests
                 .AddEdge("Middle2", "End", 1, true);
         }
 
-
         /// <summary>
         /// This test tries to add an identical edge twice
         /// </summary>

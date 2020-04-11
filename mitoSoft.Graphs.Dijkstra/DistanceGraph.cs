@@ -10,6 +10,11 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
         {
         }
 
+        public new DistanceNode GetNode(string nodeName)
+        {
+            return (DistanceNode)base.GetNode(nodeName);
+        }
+
         public bool TryGetNode(string nodeName, out DistanceNode node)
         {
             if (base.TryGetNode(nodeName, out GraphNode graphNode))
@@ -49,11 +54,6 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
         /// <returns>True when the node was actually added or false when an existing node is returned.</returns>
         public bool TryAddNode(ref DistanceNode node)
         {
-            if (node == null)
-            {
-                throw new ArgumentNullException(nameof(node));
-            }
-
             GraphNode baseNode = node;
 
             var added = base.TryAddNode(ref baseNode);
@@ -79,12 +79,10 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                 throw new ArgumentException($"{nameof(node)} is not a {nameof(DistanceNode)}.");
             }
 
-            var added = base.TryAddNode(ref node);
-
-            return added;
+            return this.TryAddNode(ref node);
         }
 
-        public override Graph AddNode(string nodeName)
+        public new DistanceGraph AddNode(string nodeName)
         {
             var node = new DistanceNode(nodeName);
 
@@ -93,7 +91,7 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
             return this;
         }
 
-        public override Graph AddNode(GraphNode node)
+        public new DistanceGraph AddNode(GraphNode node)
         {
             if (node == null)
             {
@@ -104,7 +102,17 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                 throw new ArgumentException($"{nameof(node)} is not a {nameof(DistanceNode)}.");
             }
 
-            return base.AddNode(node);
+            return (DistanceGraph)base.AddNode(node);
+        }
+
+        public new DistanceGraph AddEdge(string sourceNodeName, string targetNodeName, double distance, bool twoWay)
+        {
+            return (DistanceGraph)base.AddEdge(sourceNodeName, targetNodeName, distance, twoWay);
+        }
+
+        public new DistanceGraph AddEdge(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
+        {
+            return (DistanceGraph)base.AddEdge(sourceNode, targetNode, distance, twoWay);
         }
 
         public override bool TryAddEdge(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
@@ -127,6 +135,17 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
             }
 
             return base.TryAddEdge(sourceNode, targetNode, distance, twoWay);
+        }
+
+        /// <summary>
+        /// Shortest Graph Calculation via Deep First Search
+        /// </summary>
+        /// <returns></returns>
+        public DistanceGraph GetShortestGraph(string sourceNodeName, string targetNodeName)
+        {
+            var shortesGraph = (new DeepFirstAlgorithm(this)).GetShortestGraph(sourceNodeName, targetNodeName);
+
+            return shortesGraph;
         }
     }
 }

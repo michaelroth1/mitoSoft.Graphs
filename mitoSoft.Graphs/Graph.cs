@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mitoSoft.Graphs.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,6 +21,18 @@ namespace mitoSoft.Graphs
         public IEnumerable<GraphEdge> Edges => this.Nodes.SelectMany(n => n.Edges).Distinct();
 
         public bool TryGetNode(string nodeName, out GraphNode node) => this._nodes.TryGetValue(nodeName, out node);
+
+        public virtual GraphNode GetNode(string nodeName)
+        {
+            if (this.TryGetNode(nodeName, out var node))
+            {
+                return node;
+            }
+            else
+            {
+                throw new NodeNotInGraphException(nodeName);
+            }
+        }
 
         public virtual Graph AddNode(string nodeName)
         {
@@ -111,15 +124,8 @@ namespace mitoSoft.Graphs
             }
             else
             {
-                throw new InvalidOperationException($"Edge between {sourceNodeName} and {targetNodeName} not found.");
+                throw new EdgeNotInGraphException(sourceNodeName, targetNodeName);
             }
-        }
-
-        public virtual bool TryGetEdge(GraphNode sourceName, GraphNode targetNode, out GraphEdge edge)
-        {
-            edge = sourceName.Edges.Where(e => ReferenceEquals(e.TargetNode, targetNode)).SingleOrDefault();
-
-            return (edge != null);
         }
 
         public virtual GraphEdge GetEdge(GraphNode sourceNode, GraphNode targetNode)
@@ -130,10 +136,17 @@ namespace mitoSoft.Graphs
             }
             else
             {
-                throw new InvalidOperationException($"Edge between {sourceNode.Name} and {targetNode.Name} not found.");
+                throw new EdgeNotInGraphException(sourceNode, targetNode);
             }
         }
 
+        public virtual bool TryGetEdge(GraphNode sourceName, GraphNode targetNode, out GraphEdge edge)
+        {
+            edge = sourceName.Edges.Where(e => ReferenceEquals(e.TargetNode, targetNode)).SingleOrDefault();
+
+            return (edge != null);
+        }
+        
         public virtual Graph AddEdge(string sourceNodeName, string targetNodeName, double distance, bool twoWay)
         {
             if (!this.TryAddEdge(sourceNodeName, targetNodeName, distance, twoWay))

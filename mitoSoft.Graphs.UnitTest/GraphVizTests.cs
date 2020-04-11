@@ -47,10 +47,10 @@ namespace mitoSoft.Graphs.UnitTests
         {
             var graph = new DistanceGraph();
 
-            graph.AddNode("Start");
-            graph.AddNode("Middle1");
-            graph.AddNode("Middle2");
-            graph.AddNode("End");
+            graph.TryAddNode("Start", out _);
+            graph.TryAddNode("Middle1", out _);
+            graph.TryAddNode("Middle2", out _);
+            graph.TryAddNode("End", out _);
 
             graph.TryAddEdge("Start", "End", 2, true);
             graph.TryAddEdge("Start", "Middle1", 1, true);
