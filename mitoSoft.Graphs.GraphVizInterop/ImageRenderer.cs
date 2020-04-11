@@ -1,5 +1,6 @@
 ﻿using mitoSoft.Graphs.GraphVizInterop.Enums;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -18,62 +19,67 @@ namespace mitoSoft.Graphs.GraphVizInterop
         }
 
         /// <summary>
-        /// Der Workflow wird in ein *.PNG Bild übersetzt
-        /// LayoutEngine=dot
+        /// Generates a 'System.Drawing' image form the 'dotText' parameter
         /// </summary>
-        public Image RenderImage(string dotText)
+        public Image RenderImage(string dotText, LayoutEngine layoutEngine = LayoutEngine.dot, ImageFormat imageFormat = ImageFormat.png)
         {
             var lines = dotText.Split(Environment.NewLine.ToCharArray()).ToList();
 
-            return this.RenderImage(lines);
-        }
-
-        /// <summary>
-        /// Translates the dotText into a 'System.Drawing' image with the 'dot.exe' layoutEngine.
-        /// </summary>
-        public Image RenderImage(List<string> dotText)
-        {
-            return this.RenderImage(dotText, LayoutEngine.dot);
+            return this.RenderImage(lines, layoutEngine, imageFormat);
         }
 
         /// <summary>
         /// Generates a 'System.Drawing' image form the 'dotText' parameter
         /// </summary>
-        public Image RenderImage(string dotText, LayoutEngine layoutEngine)
+        public Image RenderImage(List<string> dotText, LayoutEngine layoutEngine = LayoutEngine.dot, ImageFormat imageFormat = ImageFormat.png)
         {
-            var lines = dotText.Split(Environment.NewLine.ToCharArray()).ToList();
+            var tempFileCollection = new TempFileCollection();
 
-            return this.RenderImage(lines, layoutEngine);
-        }
+            var dotFile = InitializeRendering(dotText, tempFileCollection);
 
-        /// <summary>
-        /// Generates a 'System.Drawing' image form the 'dotText' parameter
-        /// </summary>
-        public Image RenderImage(List<string> dotText, LayoutEngine layoutEngine)
-        {
-            dotText.RemoveAll(s => s == string.Empty);
-
-            var tempPath = Path.GetTempPath();
-
-            var dotFile = this.GetNextFileName(Path.Combine(tempPath, "Graphviz#.txt"));
-
-            var imageFile = this.GetNextFileName(Path.Combine(tempPath, "Graphviz#.png"));
-
-            this.TryToDeleteOldTmp(tempPath);
-
-            var tempFileCollection = new System.CodeDom.Compiler.TempFileCollection();
-            tempFileCollection.AddFile(dotFile, false);
+            var imageFile = this.GetNextFileName(Path.Combine(Path.GetTempPath(), "Graphviz#.png"));
             tempFileCollection.AddFile(imageFile, false);
 
-            File.WriteAllLines(dotFile, dotText);
-
-            this.RunGraphViz(dotFile, imageFile, layoutEngine, "Tpng");
+            this.RunGraphViz(dotFile, imageFile, layoutEngine, "T" + imageFormat.ToString());
 
             var image = Image.FromFile(imageFile);
 
             tempFileCollection.Delete();
 
             return image;
+        }
+
+        public void RenderImage(string dotText, string imageFile, LayoutEngine layoutEngine = LayoutEngine.dot, ImageFormat imageFormat = ImageFormat.png)
+        {
+            var lines = dotText.Split(Environment.NewLine.ToCharArray()).ToList();
+
+            this.RenderImage(lines, imageFile, layoutEngine, imageFormat);
+        }
+
+        public void RenderImage(List<string> dotText, string imageFile, LayoutEngine layoutEngine = LayoutEngine.dot, ImageFormat imageFormat = ImageFormat.png)
+        {
+            var tempFileCollection = new TempFileCollection();
+
+            var dotFile = InitializeRendering(dotText, tempFileCollection);
+
+            this.RunGraphViz(dotFile, imageFile, layoutEngine, "T" + imageFormat.ToString ());
+
+            tempFileCollection.Delete();
+        }
+
+        private string InitializeRendering(List<string> dotText, TempFileCollection tempFileCollection)
+        {
+            dotText.RemoveAll(s => s == string.Empty);
+
+            var tempPath = Path.GetTempPath();
+
+            this.TryToDeleteOldTmp(tempPath);
+
+            var dotFile = this.GetNextFileName(Path.Combine(tempPath, "Graphviz#.txt"));
+            tempFileCollection.AddFile(dotFile, false);
+            File.WriteAllLines(dotFile, dotText);
+
+            return dotFile;
         }
 
         private void RunGraphViz(string dotFile, string imageFile, LayoutEngine layoutEngine, string outputFomat)

@@ -1,5 +1,12 @@
 ﻿namespace mitoSoft.Graphs.GraphVizInterop.Enums
 {
+    public enum ImageFormat
+    {
+        png,
+        svg,
+        jpg,
+    }
+
     public enum EdgeStyle
     {
         solid,

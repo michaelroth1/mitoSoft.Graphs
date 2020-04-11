@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿using mitoSoft.Graphs.GraphVizInterop.Enums;
+using System;
+using System.Drawing;
+using System.IO;
 
 namespace mitoSoft.Graphs.GraphVizInterop
 {
@@ -11,6 +14,24 @@ namespace mitoSoft.Graphs.GraphVizInterop
             var image = (new ImageRenderer(graphVizBinPath)).RenderImage(dotText);
 
             return image;
+        }
+
+        public static Image ToSvg(this Graph graph, string graphVizBinPath)
+        {
+            var dotText = graph.ToDotText();
+
+            var image = (new ImageRenderer(graphVizBinPath)).RenderImage(dotText, LayoutEngine.dot, ImageFormat.svg);
+
+            return image;
+        }
+
+        public static void ToImageFile(this Graph graph, string graphVizBinPath, string fileName)
+        {
+            var dotText = graph.ToDotText();
+
+            var fileInfo = new FileInfo(fileName);
+
+            (new ImageRenderer(graphVizBinPath)).RenderImage(dotText, fileName, LayoutEngine.dot, (ImageFormat)Enum.Parse(typeof(ImageFormat), fileInfo.Extension.Replace(".", "")));
         }
 
         public static string ToDotText(this Graph graph)
