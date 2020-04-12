@@ -93,14 +93,27 @@ namespace mitoSoft.Graphs.GraphVizInterop
 
             var prop = new ProcessStartInfo
             {
-                //FileName = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "graphviz", "bin", layoutEngine.ToString() + ".exe"),
                 FileName = Path.Combine(_graphVizFolder, layoutEngine.ToString() + ".exe"),
                 Arguments = "-" + outputFomat + " \"" + dotFile + "\" -o \"" + imageFile + "\"",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
             };
 
-            Process.Start(prop).WaitForExit(120000);
+            Process process = Process.Start(prop);
+
+            string errorText = process.StandardError.ReadToEnd();
+            if (errorText != null && errorText.Contains("syntax error"))
+            {
+                throw new FormatException(errorText);
+            }
+            else if (errorText != null && errorText.Contains("Error:"))
+            {
+                throw new InvalidOperationException(errorText);
+            }
+
+            process.WaitForExit(120000);
         }
 
         /// <summary>
