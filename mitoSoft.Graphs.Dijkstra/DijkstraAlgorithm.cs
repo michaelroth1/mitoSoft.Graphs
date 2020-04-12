@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace mitoSoft.Graphs.ShortestPathAlgorithms
@@ -12,25 +13,48 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
         public DijkstraAlgorithm(Graph graph) : base(graph)
         {
         }
-
-        public Graph GetShortestGraph(string sourceNodeName, string targetNodeName, bool equallyWeighted = false)
+                
+        public override Graph GetShortestGraph(string sourceNodeName, string targetNodeName)
         {
             var sourceNode = _graph.GetNode(sourceNodeName);
             var targetNode = _graph.GetNode(targetNodeName);
 
-            return GetShortestGraph(sourceNode, targetNode, equallyWeighted);
+            return GetShortestGraph(sourceNode, targetNode);
         }
-
-        public Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode, bool equallyWeighted = false)
+        
+        public override Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode)
         {
             InitializeSearch(sourceNode);
 
-            CalculateDistancesByBreadthFirst(targetNode, equallyWeighted);
+            CalculateDistancesByBreadthFirst(targetNode);
 
             return BuildShortestPathGraph(sourceNode, targetNode);
         }
 
-        private void CalculateDistancesByBreadthFirst(GraphNode targetNode, bool equallyWeighted)
+        /// <summary>
+        /// Determines the distances of all nodes starting from the sourceNode, 
+        /// given by the 'sourceNodeName'.
+        /// </summary>
+        public override IDictionary<string, double> GetAllDistances(string sourceNodeName)
+        {
+            var sourceNode = _graph.GetNode(sourceNodeName);
+
+            return GetAllDistances(sourceNode);
+        }
+
+        /// <summary>
+        /// Determines the distances of all nodes starting from the 'sourceNode'.
+        /// </summary>
+        public override IDictionary<string, double> GetAllDistances(GraphNode sourceNode)
+        {
+            InitializeSearch(sourceNode);
+
+            CalculateDistancesByBreadthFirst(sourceNode);
+
+            return _distances;
+        }
+
+        private void CalculateDistancesByBreadthFirst(GraphNode targetNode)
         {
             var finished = false;
 
@@ -43,13 +67,7 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                 DistanceNode nextNode = queue.FirstOrDefault(n => !double.IsPositiveInfinity(n.Distance));
 
                 if (nextNode != null)
-                {
-                    //only possible by equally weighted graphs
-                    if (equallyWeighted == true && ReferenceEquals(nextNode, targetNode))
-                    {
-                        finished = true;
-                    }
-
+                {                    
                     UpdateDistance(nextNode);
 
                     queue.Remove(nextNode);

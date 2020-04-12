@@ -16,6 +16,14 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
             this._graph = graph ?? throw new ArgumentNullException(nameof(graph));
         }
 
+        public abstract Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode);
+
+        public abstract Graph GetShortestGraph(string sourceNodeName, string targetNodeName);
+
+        public abstract IDictionary<string, double> GetAllDistances(string sourceNodeName);
+
+        public abstract IDictionary<string, double> GetAllDistances(GraphNode sourceNode);
+
         protected void InitializeSearch(GraphNode sourceNode)
         {
             _distances = new Dictionary<string, double>();

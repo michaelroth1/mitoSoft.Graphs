@@ -6,60 +6,68 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
     [DebuggerDisplay(nameof(DeepFirstAlgorithm) + " ({ToString()})")]
     public class DeepFirstAlgorithm : DistanceCalculatorBase
     {
-        public DeepFirstAlgorithm(Graph graph) : base(graph)
+        private readonly double _maxDistance;
+
+        /// <remarks>
+        /// <paramref name="maxDistance"/> is set up to 20 by default.
+        /// </remarks>
+        public DeepFirstAlgorithm(Graph graph) : this(graph, 20d)
         {
+        }
+
+        public DeepFirstAlgorithm(Graph graph, double maxDistance) : base(graph)
+        {
+            _maxDistance = maxDistance;
         }
 
         /// <summary>
         /// Determines the shortest path between the sourceNode, given by the 'sourceNodeName',
         /// and the targetNode, given by the 'targetNodeName'.
         /// </summary>
-        /// <remarks>
-        /// maxDistance = 20
-        /// </remarks>
-        public Graph GetShortestGraph(string sourceNodeName, string targetNodeName)
-        {
-            return GetShortestGraph(sourceNodeName, targetNodeName, 20);
-        }
-
-        public Graph GetShortestGraph(string sourceNodeName, string targetNodeName, int maxDistance)
+        public override Graph GetShortestGraph(string sourceNodeName, string targetNodeName)
         {
             var sourceNode = _graph.GetNode(sourceNodeName);
             var targetNode = _graph.GetNode(targetNodeName);
 
-            return GetShortestGraph(sourceNode, targetNode, maxDistance);
+            return GetShortestGraph(sourceNode, targetNode);
         }
 
         /// <summary>
         /// Determines the shortest path between the 'sourceNode' and the 'targetNode'.
         /// </summary>
-        /// <remarks>
-        /// maxDistance = 20
-        /// </remarks>
-        public Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode)
-        {
-            return GetShortestGraph(sourceNode, targetNode, 20);
-        }
-
-        public Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode, int maxDistance = 20)
+        public override Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode)
         {
             InitializeSearch(sourceNode);
 
-            CalculateDistancesByDeepFirst(sourceNode, maxDistance);
+            CalculateDistancesByDeepFirst(sourceNode, _maxDistance);
 
             return BuildShortestPathGraph(sourceNode, targetNode);
         }
 
-        public IDictionary<string, double> GetAllDistances(GraphNode sourceNode, int maxDistance = 20)
+        /// <summary>
+        /// Determines the distances of all nodes starting from the sourceNode, 
+        /// given by the 'sourceNodeName'.
+        /// </summary>
+        public override IDictionary<string, double> GetAllDistances(string sourceNodeName)
+        {
+            var sourceNode = _graph.GetNode(sourceNodeName);
+
+            return GetAllDistances(sourceNode);
+        }
+
+        /// <summary>
+        /// Determines the distances of all nodes starting from the 'sourceNode'.
+        /// </summary>
+        public override IDictionary<string, double> GetAllDistances(GraphNode sourceNode)
         {
             InitializeSearch(sourceNode);
 
-            CalculateDistancesByDeepFirst(sourceNode, maxDistance);
+            CalculateDistancesByDeepFirst(sourceNode, _maxDistance);
 
             return _distances;
         }
 
-        private void CalculateDistancesByDeepFirst(GraphNode sourceNode, int maxDistance)
+        private void CalculateDistancesByDeepFirst(GraphNode sourceNode, double maxDistance)
         {
             foreach (var edge in sourceNode.Edges)
             {
