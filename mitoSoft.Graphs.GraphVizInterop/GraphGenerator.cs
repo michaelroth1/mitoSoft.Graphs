@@ -14,13 +14,15 @@ namespace mitoSoft.Graphs.GraphVizInterop
             return GraphGenerator.FromDotText(lines);
         }
 
-        public static Graph FromDotText(List<string> dotText)
+        public static Graph FromDotText(IEnumerable<string> dotText)
         {
-            dotText.RemoveAll(s => s == string.Empty);
+            var dotLines = dotText.ToList();
+
+            dotLines.ToList().RemoveAll(s => s == string.Empty);
 
             var graph = new Graph();
 
-            foreach (var line in dotText)
+            foreach (var line in dotLines)
             {
                 if (line.Contains("->"))
                 {

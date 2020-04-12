@@ -11,11 +11,11 @@ namespace mitoSoft.Graphs.GraphVizInterop
 {
     public class ImageRenderer
     {
-        private readonly string _graphVizBinPath;
+        private readonly string _graphVizFolder;
 
         public ImageRenderer(string graphVizBinPath)
         {
-            _graphVizBinPath = graphVizBinPath;
+            _graphVizFolder = graphVizBinPath;
         }
 
         /// <summary>
@@ -62,14 +62,16 @@ namespace mitoSoft.Graphs.GraphVizInterop
 
             var dotFile = InitializeRendering(dotText, tempFileCollection);
 
-            this.RunGraphViz(dotFile, imageFile, layoutEngine, "T" + imageFormat.ToString ());
+            this.RunGraphViz(dotFile, imageFile, layoutEngine, "T" + imageFormat.ToString());
 
             tempFileCollection.Delete();
         }
 
-        private string InitializeRendering(List<string> dotText, TempFileCollection tempFileCollection)
+        private string InitializeRendering(IEnumerable<string> dotText, TempFileCollection tempFileCollection)
         {
-            dotText.RemoveAll(s => s == string.Empty);
+            var dotLines = dotText.ToList();
+
+            dotLines.RemoveAll(s => s == string.Empty);
 
             var tempPath = Path.GetTempPath();
 
@@ -77,17 +79,22 @@ namespace mitoSoft.Graphs.GraphVizInterop
 
             var dotFile = this.GetNextFileName(Path.Combine(tempPath, "Graphviz#.txt"));
             tempFileCollection.AddFile(dotFile, false);
-            File.WriteAllLines(dotFile, dotText);
+            File.WriteAllLines(dotFile, dotLines);
 
             return dotFile;
         }
 
         private void RunGraphViz(string dotFile, string imageFile, LayoutEngine layoutEngine, string outputFomat)
         {
+            if (!Directory.Exists(_graphVizFolder))
+            {
+                throw new DirectoryNotFoundException("Please install GraphViz and asign the installation folder!");
+            }
+
             var prop = new ProcessStartInfo
             {
                 //FileName = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "graphviz", "bin", layoutEngine.ToString() + ".exe"),
-                FileName = Path.Combine(_graphVizBinPath, layoutEngine.ToString() + ".exe"),
+                FileName = Path.Combine(_graphVizFolder, layoutEngine.ToString() + ".exe"),
                 Arguments = "-" + outputFomat + " \"" + dotFile + "\" -o \"" + imageFile + "\"",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 UseShellExecute = false,

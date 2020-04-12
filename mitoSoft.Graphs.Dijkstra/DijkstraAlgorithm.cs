@@ -9,28 +9,28 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
     [DebuggerDisplay(nameof(DijkstraAlgorithm) + " ({ToString()})")]
     public class DijkstraAlgorithm : DistanceCalculatorBase
     {
-        public DijkstraAlgorithm(DistanceGraph graph) : base(graph)
+        public DijkstraAlgorithm(Graph graph) : base(graph)
         {
         }
 
-        public DistanceGraph GetShortestGraph(string sourceNodeName, string targetNodeName, bool equallyWeighted = false)
+        public Graph GetShortestGraph(string sourceNodeName, string targetNodeName, bool equallyWeighted = false)
         {
-            var sourceNode = Check(sourceNodeName);
-            var targetNode = Check(targetNodeName);
+            var sourceNode = _graph.GetNode(sourceNodeName);
+            var targetNode = _graph.GetNode(targetNodeName);
 
             return GetShortestGraph(sourceNode, targetNode, equallyWeighted);
         }
 
-        public DistanceGraph GetShortestGraph(DistanceNode sourceNode, DistanceNode targetNode, bool equallyWeighted = false)
+        public Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode, bool equallyWeighted = false)
         {
-            InitializeGraph(sourceNode);
+            InitializeSearch(sourceNode);
 
             CalculateDistancesByBreadthFirst(targetNode, equallyWeighted);
 
             return BuildShortestPathGraph(sourceNode, targetNode);
         }
 
-        private void CalculateDistancesByBreadthFirst(DistanceNode targetNode, bool equallyWeighted)
+        private void CalculateDistancesByBreadthFirst(GraphNode targetNode, bool equallyWeighted)
         {
             var finished = false;
 
@@ -38,9 +38,9 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
 
             while (!finished)
             {
-                queue.Sort((left, right) => left.DistanceFromStart.CompareTo(right.DistanceFromStart));
+                queue.Sort((left, right) => left.Distance.CompareTo(right.Distance));
 
-                DistanceNode nextNode = queue.FirstOrDefault(n => !double.IsPositiveInfinity(n.DistanceFromStart));
+                DistanceNode nextNode = queue.FirstOrDefault(n => !double.IsPositiveInfinity(n.Distance));
 
                 if (nextNode != null)
                 {
@@ -60,18 +60,18 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                 }
             }
         }
-        
-        private void UpdateDistance(DistanceNode sourceNode)
+
+        private void UpdateDistance(GraphNode sourceNode)
         {
-            foreach (var connection in sourceNode.Edges)
+            foreach (var edge in sourceNode.Edges)
             {
-                var node = (DistanceNode)connection.TargetNode;
+                var node = edge.TargetNode;
 
-                var distance = checked(sourceNode.DistanceFromStart + connection.Distance);
+                var distance = checked(_distances[sourceNode.Name] + edge.Weight);
 
-                if (distance < node.DistanceFromStart)
+                if (distance < _distances[node.Name])
                 {
-                    node.SetDistanceFromStart(distance);
+                    _distances[node.Name] = distance;
                 }
             }
         }

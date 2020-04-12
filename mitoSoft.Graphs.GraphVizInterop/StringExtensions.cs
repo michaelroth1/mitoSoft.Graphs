@@ -1,4 +1,6 @@
-﻿namespace mitoSoft.Graphs.GraphVizInterop.Extensions
+﻿using System.Text.RegularExpressions;
+
+namespace mitoSoft.Graphs.GraphVizInterop.Extensions
 {
     internal static class StringExtensions
     {
@@ -22,6 +24,17 @@
                     return text.Substring(p1, p2 - p1);
                 }
             }
+        }
+
+        public static string RemoveIllegalDotCharacters(this string text)
+        {
+            text = Regex.Replace(text, "[^a-zA-Z0-9]+", "_");
+
+            text = text.Replace("___", "__");
+            text = text.Replace("__", "_");
+            text = text.Trim('_').Trim();
+
+            return text;
         }
     }
 }

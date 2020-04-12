@@ -17,7 +17,7 @@ namespace mitoSoft.Graphs.UnitTests
         [TestMethod]
         public void GenerateDotTextFromDistanceGraph()
         {
-            var text = new DistanceGraph()
+            var text = new Graph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -45,7 +45,7 @@ namespace mitoSoft.Graphs.UnitTests
         [TestMethod]
         public void GenerateImage()
         {
-            var graph = new DistanceGraph();
+            var graph = new Graph();
 
             graph.TryAddNode("Start", out _);
             graph.TryAddNode("Middle1", out _);
@@ -57,7 +57,7 @@ namespace mitoSoft.Graphs.UnitTests
             graph.TryAddEdge("Middle1", "Middle2", 1, true);
             graph.TryAddEdge("Middle2", "End", 1, true);
 
-            var image = graph.ToPng(GraphVizBinPath);
+            var image = graph.ToImage(GraphVizBinPath);
 
             Assert.IsNotNull(image);
         }
@@ -74,16 +74,16 @@ namespace mitoSoft.Graphs.UnitTests
                 .AddEdge("Middle1", "Middle2", 1, true)
                 .AddEdge("Middle2", "End", 1, true);
 
-            var text = graph.ToDotText();
+            var dotText = graph.ToDotText();
 
-            Assert.IsTrue(text.Contains("Start ["));
-            Assert.IsTrue(text.Contains("Middle1 ["));
-            Assert.IsTrue(text.Contains("Middle2 ["));
-            Assert.IsTrue(text.Contains("End ["));
-            Assert.IsTrue(text.Contains("Start -> End"));
-            Assert.IsTrue(text.Contains("Start -> Middle1"));
-            Assert.IsTrue(text.Contains("Middle1 -> Middle2"));
-            Assert.IsTrue(text.Contains("Middle2 -> End"));
+            Assert.IsTrue(dotText.Contains("Start ["));
+            Assert.IsTrue(dotText.Contains("Middle1 ["));
+            Assert.IsTrue(dotText.Contains("Middle2 ["));
+            Assert.IsTrue(dotText.Contains("End ["));
+            Assert.IsTrue(dotText.Contains("Start -> End"));
+            Assert.IsTrue(dotText.Contains("Start -> Middle1"));
+            Assert.IsTrue(dotText.Contains("Middle1 -> Middle2"));
+            Assert.IsTrue(dotText.Contains("Middle2 -> End"));
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace mitoSoft.Graphs.UnitTests
             Assert.IsTrue(text.Contains("Middle2 -> End"));
             Assert.IsTrue(text.Contains("Middle1 -> Middle2"));
 
-            var image = graph.ToPng(GraphVizBinPath);
+            var image = graph.ToImage(GraphVizBinPath);
 
             Assert.IsNotNull(image);
         }

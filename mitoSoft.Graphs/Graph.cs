@@ -9,19 +9,30 @@ namespace mitoSoft.Graphs
     [DebuggerDisplay(nameof(Graph) + " ({ToString()})")]
     public class Graph
     {
-        private readonly Dictionary<string, GraphNode> _nodes;
+        private readonly Dictionary<string, GraphNode> _nodes = new Dictionary<string, GraphNode>();
 
-        public Graph()
-        {
-            this._nodes = new Dictionary<string, GraphNode>();
-        }
-
+        /// <summary>
+        /// Returns all nodes of the graph
+        /// </summary>
         public IEnumerable<GraphNode> Nodes => this._nodes.Values;
 
+        /// <summary>
+        /// Returns all edges of the graph
+        /// </summary>
         public IEnumerable<GraphEdge> Edges => this.Nodes.SelectMany(n => n.Edges).Distinct();
 
+        /// <summary>
+        /// Tries to returns the node with the given name to the graph.
+        /// </summary>
+        /// <param name="node">Name of the node to be returned</param>
+        /// <returns>True when the node was found or false when the node does not exist.</returns>
         public bool TryGetNode(string nodeName, out GraphNode node) => this._nodes.TryGetValue(nodeName, out node);
 
+        /// <summary>
+        /// Returns the node with the given name to the graph.
+        /// </summary>
+        /// <param name="node">Name of the node to be returned</param>
+        /// <exception cref="NodeNotFoundException">If the node could not been found.</exception>
         public virtual GraphNode GetNode(string nodeName)
         {
             if (this.TryGetNode(nodeName, out var node))
@@ -30,10 +41,15 @@ namespace mitoSoft.Graphs
             }
             else
             {
-                throw new NodeNotInGraphException(nodeName);
+                throw new NodeNotFoundException(nodeName);
             }
         }
 
+        /// <summary>
+        /// Tries to add a node with the given name to the graph.
+        /// </summary>
+        /// <param name="node">Name of the node to be added</param>
+        /// <exception cref="NodeAlreadyExistingException">If a node with an identical key has already been added.</exception>
         public virtual Graph AddNode(string nodeName)
         {
             var node = new GraphNode(nodeName);
@@ -43,22 +59,27 @@ namespace mitoSoft.Graphs
             return this;
         }
 
+        /// <summary>
+        /// Tries to add the given node to the graph.
+        /// </summary>
+        /// <param name="node">Node to be added</param>
+        /// <exception cref="NodeAlreadyExistingException">If a node with an identical key has already been added.</exception>
         public virtual Graph AddNode(GraphNode node)
         {
             if (node == null)
             {
                 throw new ArgumentNullException(nameof(node));
             }
-            else if (!this.TryAddNode(ref node))
+            else if (!this.TryAddNode(node))
             {
-                throw new InvalidOperationException($"Node with identical name {node.Name} already in graph.");
+                throw new NodeAlreadyExistingException(node.Name);
             }
 
             return this;
         }
 
         /// <summary>
-        /// Tries to add the given node to the system. If the node already exists, nothing will be added.
+        /// Tries to add the given node to the graph. If the node already exists, nothing will be added.
         /// </summary>
         /// <param name="nodeName">Name of the node to be added</param>
         /// <returns>True when the node was actually added or false when a node with an identical name already exists.</returns>
@@ -66,39 +87,47 @@ namespace mitoSoft.Graphs
         {
             var newNode = new GraphNode(nodeName);
 
-            var existing = this.TryAddNode(ref newNode);
-
-            node = newNode;
-
-            return existing;
+            if (TryAddNode(newNode))
+            {
+                node = this._nodes[nodeName];
+                return true;
+            }
+            else
+            {
+                node = null;
+                return false;
+            }
         }
 
         /// <summary>
-        /// Tries to add the given node to the system. If the node already exists, the existing node will be returned.
+        /// Tries to add the given node to the graph.
         /// </summary>
-        /// <param name="node">The node to be added or upon return the existing node.</param>
+        /// <param name="node">The node to be added.</param>
         /// <returns>True when the node was actually added or false when an existing node is returned.</returns>
-        public virtual bool TryAddNode(ref GraphNode node)
+        public virtual bool TryAddNode(GraphNode node)
         {
             if (node == null)
             {
                 throw new ArgumentNullException(nameof(node));
             }
 
-            if (this._nodes.TryGetValue(node.Name, out var existing))
-            {
-                node = existing;
-
-                return false;
-            }
-            else
+            if (!this._nodes.ContainsKey(node.Name))
             {
                 this._nodes.Add(node.Name, node);
 
                 return true;
             }
+            else
+            {
+                return false;
+            }
         }
 
+        /// <summary>
+        /// Tries to return the edge that connects the sourceNode, given bv the 'sourceNodeName',
+        /// and the targetNode, given by the 'targetNodeName'.
+        /// </summary>
+        /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
         public virtual bool TryGetEdge(string sourceNodeName, string targetNodeName, out GraphEdge edge)
         {
             edge = null;
@@ -116,6 +145,21 @@ namespace mitoSoft.Graphs
             return TryGetEdge(startNode, endNode, out edge);
         }
 
+        /// <summary>
+        /// Tries to return the edge, that connects the 'sourceNode' and the 'targetNode'.
+        /// </summary>
+        /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
+        public virtual bool TryGetEdge(GraphNode sourceName, GraphNode targetNode, out GraphEdge edge)
+        {
+            edge = sourceName.Edges.Where(e => ReferenceEquals(e.TargetNode, targetNode)).SingleOrDefault();
+
+            return (edge != null);
+        }
+
+        /// <summary>
+        /// Return the edge that connects the sourceNode, given bv the 'sourceNodeName',
+        /// and the targetNode, given by the 'targetNodeName'.
+        /// </summary>
         public virtual GraphEdge GetEdge(string sourceNodeName, string targetNodeName)
         {
             if (this.TryGetEdge(sourceNodeName, targetNodeName, out var edge))
@@ -124,10 +168,13 @@ namespace mitoSoft.Graphs
             }
             else
             {
-                throw new EdgeNotInGraphException(sourceNodeName, targetNodeName);
+                throw new EdgeNotFoundException(sourceNodeName, targetNodeName);
             }
         }
 
+        /// <summary>
+        /// Return the edge that connects the 'sourceNode' and the 'targetNode'.
+        /// </summary>
         public virtual GraphEdge GetEdge(GraphNode sourceNode, GraphNode targetNode)
         {
             if (this.TryGetEdge(sourceNode, targetNode, out var edge))
@@ -136,28 +183,43 @@ namespace mitoSoft.Graphs
             }
             else
             {
-                throw new EdgeNotInGraphException(sourceNode, targetNode);
+                throw new EdgeNotFoundException(sourceNode.Name, targetNode.Name);
             }
         }
 
-        public virtual bool TryGetEdge(GraphNode sourceName, GraphNode targetNode, out GraphEdge edge)
+        /// <summary>
+        /// Add an edge that connects the 'sourceNode' and the 'targetNode'.
+        /// </summary>
+        public virtual Graph AddEdge(GraphNode sourceNode, GraphNode targetNode, double weight, bool twoWay)
         {
-            edge = sourceName.Edges.Where(e => ReferenceEquals(e.TargetNode, targetNode)).SingleOrDefault();
-
-            return (edge != null);
-        }
-        
-        public virtual Graph AddEdge(string sourceNodeName, string targetNodeName, double distance, bool twoWay)
-        {
-            if (!this.TryAddEdge(sourceNodeName, targetNodeName, distance, twoWay))
+            if (!this.TryAddEdge(sourceNode, targetNode, weight, twoWay))
             {
-                throw new InvalidOperationException($"Could not add edge between {sourceNodeName} and {targetNodeName}.");
+                throw new EdgeAlreadyExistingException(sourceNode.Name, targetNode.Name);
             }
 
             return this;
         }
 
-        public virtual bool TryAddEdge(string sourceNodeName, string targetNodeName, double distance, bool twoWay)
+        /// <summary>
+        /// Add an edge that connects the sourceNode, given bv the 'sourceNodeName',
+        /// and the targetNode, given by the 'targetNodeName'.
+        /// </summary>
+        public virtual Graph AddEdge(string sourceNodeName, string targetNodeName, double weight, bool twoWay)
+        {
+            if (!this.TryAddEdge(sourceNodeName, targetNodeName, weight, twoWay))
+            {
+                throw new EdgeAlreadyExistingException(sourceNodeName, targetNodeName);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Tries to add an edge that connects the sourceNode, given bv the 'sourceNodeName',
+        /// and the targetNode, given by the 'targetNodeName'.
+        /// </summary>
+        /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
+        public virtual bool TryAddEdge(string sourceNodeName, string targetNodeName, double weight, bool twoWay)
         {
             if (!this.TryGetNode(sourceNodeName, out var sourceNode))
             {
@@ -169,20 +231,14 @@ namespace mitoSoft.Graphs
                 targetNode = new GraphNode(targetNodeName);
             }
 
-            return TryAddEdge(sourceNode, targetNode, distance, twoWay);
+            return TryAddEdge(sourceNode, targetNode, weight, twoWay);
         }
 
-        public virtual Graph AddEdge(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
-        {
-            if (!this.TryAddEdge(sourceNode, targetNode, distance, twoWay))
-            {
-                throw new InvalidOperationException($"Could not add edge between {sourceNode.Name} and {targetNode.Name}.");
-            }
-
-            return this;
-        }
-
-        public virtual bool TryAddEdge(GraphNode sourceNode, GraphNode targetNode, double distance, bool twoWay)
+        /// <summary>
+        /// Tries to add an edge that connects the 'sourceNode' and the 'targetNode'.
+        /// </summary>
+        /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
+        public virtual bool TryAddEdge(GraphNode sourceNode, GraphNode targetNode, double weight, bool twoWay)
         {
             if (sourceNode == null)
             {
@@ -197,18 +253,13 @@ namespace mitoSoft.Graphs
                 return false;
             }
 
-            this.TryAddNode(ref sourceNode);
+            this.TryAddNode(sourceNode);
 
-            this.TryAddNode(ref targetNode);
+            this.TryAddNode(targetNode);
 
-            sourceNode.AddConnection(targetNode, distance, twoWay);
+            sourceNode.AddEdge(targetNode, weight, twoWay);
 
             return true;
-        }
-
-        public virtual void ClearAll()
-        {
-            this._nodes.Clear();
         }
 
         public override string ToString() => $"Nodes: {this._nodes.Count}";

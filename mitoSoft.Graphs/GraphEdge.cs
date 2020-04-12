@@ -12,17 +12,17 @@ namespace mitoSoft.Graphs
 
             this.TargetNode = targetNode ?? throw new ArgumentNullException(nameof(targetNode));
 
-            this.Distance = distance;
+            this.Weight = distance;
         }
 
         public GraphNode SourceNode { get; }
 
         public GraphNode TargetNode { get; }
 
-        public double Distance { get; }
+        public double Weight { get; }
 
         public string Name => $"{this.SourceNode.Name} -> {this.TargetNode.Name}";
 
-        public override string ToString() => $"{this.SourceNode.Name} -> {this.TargetNode.Name} (Distance: {this.Distance})";
+        public override string ToString() => $"{this.SourceNode.Name} -> {this.TargetNode.Name} (Weight: {this.Weight})";
     }
 }

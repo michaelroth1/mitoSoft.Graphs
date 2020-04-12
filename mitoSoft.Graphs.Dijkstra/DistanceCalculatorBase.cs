@@ -1,89 +1,115 @@
-﻿using mitoSoft.Graphs.Exceptions;
+﻿using mitoSoft.Graphs.ShortestPathAlgorithms.Exceptions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace mitoSoft.Graphs.ShortestPathAlgorithms
 {
     public abstract class DistanceCalculatorBase
     {
-        protected DistanceGraph _graph;
+        protected Graph _graph;
 
-        public DistanceCalculatorBase(DistanceGraph graph)
+        protected Dictionary<string, double> _distances;
+
+        public DistanceCalculatorBase(Graph graph)
         {
             this._graph = graph ?? throw new ArgumentNullException(nameof(graph));
         }
 
-        protected void InitializeGraph(DistanceNode sourceNode)
+        protected void InitializeSearch(GraphNode sourceNode)
         {
-            foreach (DistanceNode node in this._graph.Nodes)
+            _distances = new Dictionary<string, double>();
+
+            foreach (GraphNode node in this._graph.Nodes)
             {
-                node.ResetDistanceFromStart();
+                _distances.Add(node.Name, double.PositiveInfinity);
             }
 
-            sourceNode.SetDistanceFromStart(0);
+            _distances.Remove(sourceNode.Name);
+            _distances.Add(sourceNode.Name, 0);
         }
 
-        protected DistanceGraph BuildShortestPathGraph(DistanceNode sourceNode, DistanceNode targetNode)
+        protected Graph BuildShortestPathGraph(GraphNode sourceNode, GraphNode targetNode)
         {
-            var graph = new DistanceGraph();
+            if (_distances[targetNode.Name] == double.PositiveInfinity)
+            {
+                throw new PathNotFoundException(sourceNode.Name, targetNode.Name);
+            }
 
-            graph.TryAddNode(targetNode.Name, out var node);
-            ((DistanceNode)node).SetDistanceFromStart(targetNode.DistanceFromStart);
+            var graph = new Graph();
+
+            //Set start Node
+            var node = new DistanceNode(targetNode.Name);
+            var distance = _distances[targetNode.Name];
+            node.Description = node.Name + Environment.NewLine + "Distance: " + distance;
+            node.Distance = distance;
+
+            graph.AddNode(node);
 
             GetShortestGraph(sourceNode, targetNode, graph);
 
             return graph;
         }
 
-        protected DistanceNode Check(string sourceNodeName)
-        {
-            if (string.IsNullOrEmpty(sourceNodeName))
-            {
-                throw new ArgumentNullException(nameof(sourceNodeName));
-            }
-
-            if (!this._graph.TryGetNode(sourceNodeName, out var node))
-            {
-                throw new NodeNotInGraphException(sourceNodeName);
-            }
-
-            return node;
-        }
-
-        protected DistanceNode Check(DistanceNode node)
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException(nameof(node));
-            }
-
-            if (!this._graph.TryGetNode(node.Name, out var existingNode))
-            {
-                throw new NodeNotInGraphException(node);
-            }
-
-            return existingNode;
-        }
-
-        private void GetShortestGraph(DistanceNode sourceNode, DistanceNode targetNode, DistanceGraph graph)
+        private void GetShortestGraph(GraphNode sourceNode, GraphNode targetNode, Graph graph)
         {
             if (sourceNode.Name == targetNode.Name)
             {
                 return;
             }
 
-            var predecessorNodes = targetNode.GetShortestPathPredecessors();
+            var predecessorNodes = this.GetShortestPathPredecessors(targetNode);
 
             foreach (var predecessor in predecessorNodes)
             {
-                graph.TryAddNode(predecessor.Name, out var node);
-                ((DistanceNode)node).SetDistanceFromStart(predecessor.DistanceFromStart);
+                var node = new DistanceNode(predecessor.Name);
 
+                if (!graph.TryAddNode(node))
+                {
+                    node = (DistanceNode)graph.GetNode(node.Name);
+                }
+
+                var distance = _distances[predecessor.Name];
+                node.Description = node.Name + Environment.NewLine + "Distance: " + distance;
+                node.Distance = distance;
                 _graph.TryGetEdge(predecessor, targetNode, out var edge);
 
-                graph.TryAddEdge(predecessor.Name, targetNode.Name, edge.Distance, false);
+                graph.TryAddEdge(predecessor.Name, targetNode.Name, edge.Weight, false);
 
                 GetShortestGraph(sourceNode, predecessor, graph);
             }
+        }
+
+        /// <summary>
+        /// The shortest path predecessors are all nodes which have the smallest sum of predecessorNode.DistanceFromStart + connectionToThisNode.Distance.
+        /// </summary>
+        public IEnumerable<GraphNode> GetShortestPathPredecessors(GraphNode node)
+        {
+            var predecessors = node.Predecessors.ToList();
+
+            if (predecessors.Count > 0)
+            {
+                var min = predecessors.Min(p => GetStartDistanceToMe(p, node));
+
+                var result = predecessors.Where(p => GetStartDistanceToMe(p, node) == min);
+
+                return result;
+            }
+            else
+            {
+                return Enumerable.Empty<DistanceNode>();
+            }
+        }
+
+        private double GetStartDistanceToMe(GraphNode predecessor, GraphNode successor)
+        {
+            var predecessorDistanceFromStart = _distances[predecessor.Name];
+
+            var predecessorDistanceToMe = _graph.GetEdge(predecessor, successor).Weight;
+
+            var startDistanceToMe = predecessorDistanceFromStart + predecessorDistanceToMe;
+
+            return startDistanceToMe;
         }
     }
 }

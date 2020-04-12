@@ -1,70 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace mitoSoft.Graphs.ShortestPathAlgorithms
 {
-    [DebuggerDisplay(nameof(DistanceGraph) + " ({ToString()})")]
+    [DebuggerDisplay(nameof(Graph) + " ({ToString()})")]
     public class DistanceNode : GraphNode
     {
+        private double _distance;
+
         public DistanceNode(string name) : base(name)
         {
-            ResetDistanceFromStart();
         }
 
-        public double DistanceFromStart { get; private set; }
-
-        public void SetDistanceFromStart(double distance)
+        public DistanceNode(string name, string description) : base(name, description)
         {
-            if (distance < 0)
+        }
+
+        public double Distance
+        {
+            get
             {
-                throw new ArgumentException("Distance must be 0 or positive.");
+                return _distance;
             }
-
-            this.DistanceFromStart = distance;
-        }
-
-        public void ResetDistanceFromStart()
-        {
-            this.DistanceFromStart = double.PositiveInfinity;
-        }
-
-        /// <summary>
-        /// The shortest path predecessors are all nodes which have the smallest sum of predecessorNode.DistanceFromStart + connectionToThisNode.Distance.
-        /// </summary>
-        public IEnumerable<DistanceNode> GetShortestPathPredecessors()
-        {
-            var predecessors = Predecessors.Cast<DistanceNode>().ToList();
-
-            if (predecessors.Count > 0)
+            set
             {
-                var min = predecessors.Min(GetStartDistanceToMe);
+                if (value < 0)
+                {
+                    throw new ArgumentException("Distance must be 0 or positive.");
+                }
 
-                var result = predecessors.Where(p => GetStartDistanceToMe(p) == min);
-
-                return result;
-            }
-            else
-            {
-                return Enumerable.Empty<DistanceNode>();
+                _distance = value;
             }
         }
-
-        private double GetStartDistanceToMe(DistanceNode predecessor)
-        {
-            var predecessorDistanceFromStart = predecessor.DistanceFromStart;
-
-            var predecessorDistanceToMe = predecessor.Edges.First(c => ReferenceEquals(c.TargetNode, this)).Distance;
-
-            var startDistanceToMe = predecessorDistanceFromStart + predecessorDistanceToMe;
-
-            return startDistanceToMe;
-        }
-
-#pragma warning disable IDE0071 // Simplify interpolation
-        public override string ToString() => $"{base.ToString()} (Distance from start: {this.DistanceFromStart})";
-#pragma warning restore IDE0071 // Simplify interpolation
-
+        public override string ToString() => $"{base.ToString()} (Distance from start: {this.Distance})";
     }
 }

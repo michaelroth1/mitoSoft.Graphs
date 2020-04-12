@@ -17,7 +17,14 @@ namespace mitoSoft.Graphs
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
+        public GraphNode(string name, string description) : this(name)
+        {
+            this.Description = description;
+        }
+
         public string Name { get; }
+
+        public string Description { get; set; }
 
         public IEnumerable<GraphEdge> Edges => this._edges;
 
@@ -25,20 +32,18 @@ namespace mitoSoft.Graphs
 
         public IEnumerable<GraphNode> Successors => this._edges.Where(c => ReferenceEquals(c.SourceNode, this)).Select(c => c.TargetNode);
 
-        public override string ToString() => $"{this.Name} (Connections: {this._edges.Count})";
-
-        internal void AddConnection(GraphNode targetNode, double distance, bool twoWay)
+        internal void AddEdge(GraphNode targetNode, double weight, bool twoWay)
         {
             if (targetNode == null)
             {
                 throw new ArgumentNullException(nameof(targetNode));
             }
-            else if (distance <= 0)
+            else if (weight <= 0)
             {
-                throw new ArgumentException("Distance must be positive.");
+                throw new ArgumentException("Weight must be positive.");
             }
 
-            var edge = new GraphEdge(this, targetNode, distance);
+            var edge = new GraphEdge(this, targetNode, weight);
 
             this._edges.Add(edge);
 
@@ -46,20 +51,15 @@ namespace mitoSoft.Graphs
 
             if (twoWay)
             {
-                targetNode.AddConnection(this, distance, false);
+                targetNode.AddEdge(this, weight, false);
             }
         }
 
         internal void AddConnection(GraphEdge edge)
         {
-            if (!_edges.Contains(edge))
-            {
-                _edges.Add(edge);
-            }
-            else
-            {
-                throw new InvalidOperationException("Edge is already in collection.");
-            }
+            _edges.Add(edge);
         }
+
+        public override string ToString() => $"{this.Name} (Edges: {this._edges.Count})";
     }
 }
