@@ -74,4 +74,4 @@ public void CalculateShortestDistance()
 }
 ```
 
-for more examples see the 'mitoSoft.Graphs.UnitTests' project.
+for more examples see the [mitoSoft.Graphs.UnitTests](../tree/master/mitoSoft.Graphs.UnitTest) project.
