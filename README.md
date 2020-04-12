@@ -51,7 +51,7 @@ public void CalculateShortestDistance()
 ```
 
 
-## Example for greating a shortes path grap via GraphViz
+## Example for creating a shortes path grap via GraphViz
 
 ```c#
 
