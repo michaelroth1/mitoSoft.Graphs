@@ -26,7 +26,7 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
         {
             InitializeSearch(sourceNode);
 
-            CalculateDistancesByBreadthFirst(targetNode);
+            CalculateDistancesByBreadthFirst();
 
             return BuildShortestPathGraph(sourceNode, targetNode);
         }
@@ -49,12 +49,12 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
         {
             InitializeSearch(sourceNode);
 
-            CalculateDistancesByBreadthFirst(sourceNode);
+            CalculateDistancesByBreadthFirst();
 
             return _distances;
         }
 
-        private void CalculateDistancesByBreadthFirst(GraphNode targetNode)
+        private void CalculateDistancesByBreadthFirst()
         {
             var finished = false;
 

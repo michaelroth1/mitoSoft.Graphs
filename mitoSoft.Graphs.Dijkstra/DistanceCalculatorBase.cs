@@ -91,7 +91,7 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
         /// <summary>
         /// The shortest path predecessors are all nodes which have the smallest sum of predecessorNode.DistanceFromStart + connectionToThisNode.Distance.
         /// </summary>
-        public IEnumerable<GraphNode> GetShortestPathPredecessors(GraphNode node)
+        private IEnumerable<GraphNode> GetShortestPathPredecessors(GraphNode node)
         {
             var predecessors = node.Predecessors.ToList();
 

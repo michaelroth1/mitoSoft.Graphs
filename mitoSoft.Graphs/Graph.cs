@@ -11,6 +11,8 @@ namespace mitoSoft.Graphs
     {
         private readonly Dictionary<string, GraphNode> _nodes = new Dictionary<string, GraphNode>();
 
+        public object Tag { get; set; }
+
         /// <summary>
         /// Returns all nodes of the graph
         /// </summary>

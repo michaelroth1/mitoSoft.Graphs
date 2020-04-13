@@ -46,9 +46,9 @@
         public static bool TryGetDistanceNode(this Graph graph, string nodeName, out DistanceNode distanceNode)
         {
             var result = graph.TryGetNode(nodeName, out var existingNode);
-            if (result == true && existingNode.GetType() == typeof(DistanceNode))
+            if (result == true && existingNode is DistanceNode node)
             {
-                distanceNode = (DistanceNode)existingNode;
+                distanceNode = node;
 
                 return true;
             }

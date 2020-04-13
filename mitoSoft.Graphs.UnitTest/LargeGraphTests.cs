@@ -2,6 +2,7 @@
 using mitoSoft.Graphs.GraphVizInterop;
 using mitoSoft.Graphs.ShortestPathAlgorithms;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace mitoSoft.Graphs.UnitTests
@@ -123,7 +124,23 @@ namespace mitoSoft.Graphs.UnitTests
             var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "TestGraphs", "Graph.png");
 
             var source = _graph.GetNode("Actor:Toshirô Mifune(1920)");
-            var target = _graph.GetNode("Actor:Tom Holland(1996)");
+            var target = _graph.GetNode("Actor:Libuse Safránková(1953)");
+
+            //var allDistances = (new DeepFirstAlgorithm(_graph)).GetAllDistances("Actor:Toshirô Mifune(1920)");
+
+            //double max = 0d;
+            //string key = "";
+            //foreach (var dis in allDistances)
+            //{
+            //    if (dis.Value < double.PositiveInfinity)
+            //    {
+            //        if (dis.Value > max)
+            //        {
+            //            key = dis.Key;
+            //            max = dis.Value;
+            //        }
+            //    }
+            //}
 
             var shortestGraph = _graph.ToShortestGraph(source, target);
 
