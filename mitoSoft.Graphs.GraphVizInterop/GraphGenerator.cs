@@ -24,7 +24,20 @@ namespace mitoSoft.Graphs.GraphVizInterop
 
             foreach (var line in dotLines)
             {
-                if (line.Contains("->"))
+                if (line.Contains("<->"))
+                {
+                    string left = line.Substring(0, line.IndexOf("<->")).Trim();
+                    string right = line.Between("<->", "[").Trim();
+                    string label = line.Between("label=", ",").Trim().Trim(']').Trim('\"');
+                    if (!double.TryParse(label, out var distance))
+                    {
+                        distance = 1d;
+                    }
+                    graph.TryAddNode(left, out _);
+                    graph.TryAddNode(right, out _);
+                    graph.AddEdge(left, right, distance, true);
+                }
+                else if (line.Contains("->"))
                 {
                     string left = line.Substring(0, line.IndexOf("->")).Trim();
                     string right = line.Between("->", "[").Trim();
@@ -35,7 +48,7 @@ namespace mitoSoft.Graphs.GraphVizInterop
                     }
                     graph.TryAddNode(left, out _);
                     graph.TryAddNode(right, out _);
-                    graph.TryAddEdge(left, right, distance, false);
+                    graph.AddEdge(left, right, distance, false);
                 }
             }
 

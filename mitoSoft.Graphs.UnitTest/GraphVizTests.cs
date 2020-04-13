@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using mitoSoft.Graphs.Exceptions;
 using mitoSoft.Graphs.GraphVizInterop;
 using mitoSoft.Graphs.ShortestPathAlgorithms;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace mitoSoft.Graphs.UnitTests
         /// <summary>
         /// This test generates a dot-text out of a mitoSoft shortest-path graph.
         /// </summary>
+        [TestCategory("GrapVizInterop")]
         [TestMethod]
         public void GenerateDotTextFromDistanceGraph()
         {
@@ -42,6 +44,7 @@ namespace mitoSoft.Graphs.UnitTests
         /// This test tries to generate a 'System.Drawing' image out of an 
         /// mitoSoft shortest-path graph.
         /// </summary>
+        [TestCategory("GrapVizInterop")]
         [TestMethod]
         public void GenerateImage()
         {
@@ -65,6 +68,7 @@ namespace mitoSoft.Graphs.UnitTests
         /// <summary>
         /// This test tries to generates a dot-text out of a mitoSoft standard graph.
         /// </summary>
+        [TestCategory("GrapVizInterop")]
         [TestMethod]
         public void GenerateDotTextFromGraph()
         {
@@ -90,6 +94,58 @@ namespace mitoSoft.Graphs.UnitTests
         /// Use the dot-text to Generate a mitsSoft graph, translate it back
         /// into a dot-text and finally genearte an image out of it. 
         /// </summary>
+        [TestCategory("GrapVizInterop")]
+        [TestMethod]
+        public void GenerateGraphWithBidirectionalEdge()
+        {
+            var dotText = new List<string>()
+            {
+                "digraph D {",
+                "Start <->    Middle1",
+                "Start     -> End [label=\"2\"]",
+                "Middle2->End [label=\"Test\"]",
+                "Middle1 -> Middle2 [label=\"2\"]",
+                "}",
+            };
+
+            var graph = GraphGenerator.FromDotText(dotText);
+
+            Assert.AreEqual(4, graph.Nodes.Count());
+            Assert.AreEqual(5, graph.Edges.Count());
+
+            var text = graph.ToDotText();
+
+            Assert.IsTrue(text.Contains("Start -> Middle1"));
+            Assert.IsTrue(text.Contains("Middle1 -> Start"));
+            Assert.IsTrue(text.Contains("Start -> End"));
+            Assert.IsTrue(text.Contains("Middle2 -> End"));
+            Assert.IsTrue(text.Contains("Middle1 -> Middle2"));
+        }
+
+        [TestCategory("GrapVizInterop")]
+        [ExpectedException(typeof(EdgeAlreadyExistingException))]
+        [TestMethod]
+        public void GenerateGraphWithDoubleEdges()
+        {
+            var dotText = new List<string>()
+            {
+                "digraph D {",
+                "Start <->    Middle1",
+                "Start ->    Middle1",
+                "Start     -> End [label=\"2\"]",
+                "Middle2->End [label=\"Test\"]",
+                "Middle1 -> Middle2 [label=\"2\"]",
+                "}",
+            };
+
+            var _ = GraphGenerator.FromDotText(dotText);
+        }
+
+        /// <summary>
+        /// Use the dot-text to Generate a mitsSoft graph, translate it back
+        /// into a dot-text and finally genearte an image out of it. 
+        /// </summary>
+        [TestCategory("GrapVizInterop")]
         [TestMethod]
         public void GenerateGraph()
         {
@@ -122,11 +178,11 @@ namespace mitoSoft.Graphs.UnitTests
             Assert.IsNotNull(image);
         }
 
-
         /// <summary>
         /// Test to test the included 'dot' layout engine by
         /// using it directly.
         /// </summary>
+        [TestCategory("GrapVizInterop")]
         [TestMethod]
         public void DirectImageGeneration()
         {
