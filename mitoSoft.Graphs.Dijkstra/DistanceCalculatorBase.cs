@@ -47,7 +47,10 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
             var graph = new Graph();
 
             //Set start Node
-            var node = new DistanceNode(targetNode.Name);
+            var node = new DistanceNode(targetNode.Name)
+            {
+                Tag = targetNode.Tag
+            };
             var distance = _distances[targetNode.Name];
             node.Description = node.Name + Environment.NewLine + "Distance: " + distance;
             node.Distance = distance;
@@ -70,7 +73,10 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
 
             foreach (var predecessor in predecessorNodes)
             {
-                var node = new DistanceNode(predecessor.Name);
+                var node = new DistanceNode(predecessor.Name)
+                {
+                    Tag = targetNode.Tag,
+                };
 
                 if (!graph.TryAddNode(node))
                 {
