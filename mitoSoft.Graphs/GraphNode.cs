@@ -30,11 +30,17 @@ namespace mitoSoft.Graphs
 
         public IEnumerable<GraphEdge> Edges => this._edges;
 
-        public IEnumerable<GraphNode> Predecessors => this._edges.Where(c => ReferenceEquals(c.TargetNode, this)).Select(c => c.SourceNode);
+        public IEnumerable<GraphNode> Predecessors => this._edges.Where(e => ReferenceEquals(e.TargetNode, this))
+                                                                 .Select(e => e.SourceNode)
+                                                                 .Concat(this.Edges.Where(e => e is BidirectionalEdge && ReferenceEquals(e.SourceNode, this))
+                                                                                   .Select(e => e.TargetNode));
 
-        public IEnumerable<GraphNode> Successors => this._edges.Where(c => ReferenceEquals(c.SourceNode, this)).Select(c => c.TargetNode);
+        public IEnumerable<GraphNode> Successors => this._edges.Where(e => ReferenceEquals(e.SourceNode, this))
+                                                               .Select(e => e.TargetNode)
+                                                               .Concat(this.Edges.Where(e => e is BidirectionalEdge && ReferenceEquals(e.TargetNode, this))
+                                                                                 .Select(e => e.TargetNode));
 
-        internal void AddEdge(GraphNode targetNode, double weight, bool twoWay)
+        internal void AddEdge(GraphNode targetNode, double weight, bool bidirection)
         {
             if (targetNode == null)
             {
@@ -45,19 +51,22 @@ namespace mitoSoft.Graphs
                 throw new ArgumentException("Weight must be positive.");
             }
 
-            var edge = new GraphEdge(this, targetNode, weight);
+            GraphEdge edge;
+            if (bidirection)
+            {
+                edge = new BidirectionalEdge(this, targetNode, weight);
+            }
+            else
+            {
+                edge = new GraphEdge(this, targetNode, weight);
+            }
 
             this._edges.Add(edge);
 
-            targetNode.AddConnection(edge);
-
-            if (twoWay)
-            {
-                targetNode.AddEdge(this, weight, false);
-            }
+            targetNode.AddEdge(edge);
         }
 
-        internal void AddConnection(GraphEdge edge)
+        internal void AddEdge(GraphEdge edge)
         {
             _edges.Add(edge);
         }

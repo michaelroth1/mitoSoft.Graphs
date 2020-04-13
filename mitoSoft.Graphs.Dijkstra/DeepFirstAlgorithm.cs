@@ -71,7 +71,7 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
         {
             foreach (var edge in sourceNode.Edges)
             {
-                var targetNode = edge.TargetNode;
+                GraphNode targetNode = this.GetTargetNode(edge, sourceNode);
 
                 var distance = checked(_distances[sourceNode.Name] + edge.Weight);
 
@@ -86,6 +86,20 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                     CalculateDistancesByDeepFirst(targetNode, maxDistance);
                 }
             }
+        }
+
+        private GraphNode GetTargetNode(GraphEdge edge, GraphNode sourceNode)
+        {
+            GraphNode targetNode;
+            if (edge is BidirectionalEdge && edge.SourceNode != sourceNode)
+            {
+                targetNode = edge.SourceNode;
+            }
+            else
+            {
+                targetNode = edge.TargetNode;
+            }
+            return targetNode;
         }
 
         public override string ToString() => $"{this._graph}";

@@ -39,6 +39,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BidirectionalEdge.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="GraphNode.cs" />
     <Compile Include="GraphEdge.cs" />

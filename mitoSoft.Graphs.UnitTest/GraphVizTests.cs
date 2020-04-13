@@ -2,8 +2,11 @@
 using mitoSoft.Graphs.Exceptions;
 using mitoSoft.Graphs.GraphVizInterop;
 using mitoSoft.Graphs.ShortestPathAlgorithms;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace mitoSoft.Graphs.UnitTests
 {
@@ -66,6 +69,27 @@ namespace mitoSoft.Graphs.UnitTests
         }
 
         /// <summary>
+        /// This test tries to generate an image file out of an 
+        /// mitoSoft shortest-path graph.
+        /// </summary>
+        [TestCategory("GrapVizInterop")]
+        [TestMethod]
+        public void GenerateImageFile()
+        {
+            var graph = new Graph();
+
+            graph.TryAddEdge("Start", "End", 2, true);
+            graph.TryAddEdge("Start", "Middle1", 1, true);
+            graph.TryAddEdge("Middle1", "Middle2", 1, true);
+            graph.TryAddEdge("Middle2", "End", 1, true);
+
+            var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "GraphImages", "Graph1.png");
+            graph.ToImageFile(GraphVizPath, imageFile);
+
+            Assert.IsTrue(File.Exists(imageFile));
+        }
+
+        /// <summary>
         /// This test tries to generates a dot-text out of a mitoSoft standard graph.
         /// </summary>
         [TestCategory("GrapVizInterop")]
@@ -111,12 +135,11 @@ namespace mitoSoft.Graphs.UnitTests
             var graph = GraphGenerator.FromDotText(dotText);
 
             Assert.AreEqual(4, graph.Nodes.Count());
-            Assert.AreEqual(5, graph.Edges.Count());
+            Assert.AreEqual(4, graph.Edges.Count());
 
             var text = graph.ToDotText();
 
-            Assert.IsTrue(text.Contains("Start -> Middle1"));
-            Assert.IsTrue(text.Contains("Middle1 -> Start"));
+            Assert.IsTrue(text.Contains("Start -> Middle1 [color=black,arrowhead=normal,fontcolor=black,style=solid,label=\"\",decorate=false,dir=\"both\"]"));
             Assert.IsTrue(text.Contains("Start -> End"));
             Assert.IsTrue(text.Contains("Middle2 -> End"));
             Assert.IsTrue(text.Contains("Middle1 -> Middle2"));
@@ -200,6 +223,32 @@ namespace mitoSoft.Graphs.UnitTests
             var image = (new ImageRenderer(GraphVizPath)).RenderImage(dotText);
 
             Assert.IsNotNull(image);
+        }
+
+        /// <summary>
+        /// Test to test the included 'dot' layout engine by
+        /// using it directly.
+        /// </summary>
+        [TestCategory("GrapVizInterop")]
+        [TestMethod]
+        [ExpectedException(typeof(FormatException))]
+        public void SyntaxError()
+        {
+            var dotText = new List<string>()
+            {
+                "digraph D {",
+                "  Start --    Middle1", //here is a systax error in teh dot-text
+                "  Middle1 ->    Start",
+                "  Start     -> End [label=\"2\"]",
+                "  Middle2->End [label=\"Test\"]",
+                "  Middle1 -> Middle2 [label=\"2\"]",
+                "}",
+            };
+
+            var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "TestGraphs", "Graph2.png");
+            (new ImageRenderer(GraphVizPath)).RenderImage(dotText, imageFile);
+
+            Assert.IsTrue(File.Exists(imageFile));
         }
     }
 }

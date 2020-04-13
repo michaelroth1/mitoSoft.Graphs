@@ -47,11 +47,10 @@ namespace mitoSoft.Graphs.GraphVizInterop
 
         public void SetEdge(string fromState, string toState, string label, Color color, EdgeStyle style, Arrowheads arrow, string otherParameters)
         {
-            if (otherParameters.IndexOf(",") > 0)
+            if (otherParameters.Length > 1 && otherParameters.Trim().Substring(0, 1) != ",")
             {
                 otherParameters = "," + otherParameters;
             }
-
             this.SetEdgeText(fromState, toState, label, color, style, arrow, otherParameters);
         }
 
@@ -62,7 +61,7 @@ namespace mitoSoft.Graphs.GraphVizInterop
 
         public void SetNode(string name, string label, Color color, Color fillcolor, Shapes shape, string otherParameters)
         {
-            if (otherParameters.IndexOf(",") > 0)
+            if (otherParameters.Length > 1 && otherParameters.Trim().Substring(0, 1) != ",")
             {
                 otherParameters = "," + otherParameters;
             }

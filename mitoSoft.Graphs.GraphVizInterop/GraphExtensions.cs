@@ -2,7 +2,6 @@
 using mitoSoft.Graphs.GraphVizInterop.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 
@@ -60,7 +59,14 @@ namespace mitoSoft.Graphs.GraphVizInterop
                 var sourceId = nodesWithoutIllegalDotCharacters[edge.SourceNode];
                 var targetId = nodesWithoutIllegalDotCharacters[edge.TargetNode];
 
-                dotTextGenerator.SetEdge(sourceId, targetId, edge.Description, Enums.Color.black, Enums.EdgeStyle.solid, Enums.Arrowheads.normal);
+                if (edge is BidirectionalEdge)
+                {
+                    dotTextGenerator.SetEdge(sourceId, targetId, edge.Description, Enums.Color.black, Enums.EdgeStyle.solid, Enums.Arrowheads.normal, "dir=\"both\"");
+                }
+                else
+                {
+                    dotTextGenerator.SetEdge(sourceId, targetId, edge.Description, Enums.Color.black, Enums.EdgeStyle.solid, Enums.Arrowheads.normal);
+                }
             }
 
             var result = dotTextGenerator.GetText();

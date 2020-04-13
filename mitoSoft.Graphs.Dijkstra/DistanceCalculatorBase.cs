@@ -58,13 +58,13 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
 
             GetShortestGraph(sourceNode, targetNode, graph);
 
-            //asinge Distances
+            //set node distances
             foreach (var node in graph.Nodes)
             {
                 node.Description = node.Name + Environment.NewLine + "Distance:" + _distances[node.Name].ToString();
             }
 
-            //asign edge description
+            //set edge description
             foreach (var edge in graph.Edges)
             {
                 edge.Description = edge.Weight.ToString();

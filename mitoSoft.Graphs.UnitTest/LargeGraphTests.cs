@@ -163,7 +163,7 @@ namespace mitoSoft.Graphs.UnitTests
         [TestMethod]
         public void ConvertToImageFile()
         {
-            var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "TestGraphs", "Graph.png");
+            var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "GraphImages", "Graph.png");
 
             var source = _graph.GetNode("Actor:Toshirô Mifune(1920)");
             var target = _graph.GetNode("Actor:Libuse Safránková(1953)");

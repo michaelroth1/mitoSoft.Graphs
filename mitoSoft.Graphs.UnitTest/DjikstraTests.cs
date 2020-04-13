@@ -20,7 +20,7 @@ namespace mitoSoft.Graphs.UnitTests
             graph.AddNode("Middle2");
             graph.AddNode("End");
 
-            graph.TryAddEdge("Start", "End", 5, true);
+            graph.TryAddEdge("End", "Start", 5, true); //switches the target and source of the edge in this test
             graph.TryAddEdge("Start", "Middle1", 1, true);
             graph.TryAddEdge("Middle1", "Middle2", 1, true);
             graph.TryAddEdge("Middle2", "End", 1, true);
