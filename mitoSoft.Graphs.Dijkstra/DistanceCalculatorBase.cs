@@ -75,7 +75,7 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
             {
                 var node = new DistanceNode(predecessor.Name)
                 {
-                    Tag = targetNode.Tag,
+                    Tag = predecessor.Tag,
                 };
 
                 if (!graph.TryAddNode(node))
