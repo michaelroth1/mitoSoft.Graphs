@@ -52,7 +52,6 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                 Tag = targetNode.Tag
             };
             var distance = _distances[targetNode.Name];
-            node.Description = node.Name + Environment.NewLine + "Distance: " + distance;
             node.Distance = distance;
 
             graph.AddNode(node);
@@ -84,7 +83,6 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                 }
 
                 var distance = _distances[predecessor.Name];
-                node.Description = node.Name + Environment.NewLine + "Distance: " + distance;
                 node.Distance = distance;
                 _graph.TryGetEdge(predecessor, targetNode, out var edge);
 

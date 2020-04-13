@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using mitoSoft.Graphs.GraphVizInterop;
 using mitoSoft.Graphs.ShortestPathAlgorithms;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -166,24 +167,13 @@ namespace mitoSoft.Graphs.UnitTests
 
             var source = _graph.GetNode("Actor:Toshirô Mifune(1920)");
             var target = _graph.GetNode("Actor:Libuse Safránková(1953)");
-
-            //var allDistances = (new DeepFirstAlgorithm(_graph)).GetAllDistances("Actor:Toshirô Mifune(1920)");
-
-            //double max = 0d;
-            //string key = "";
-            //foreach (var dis in allDistances)
-            //{
-            //    if (dis.Value < double.PositiveInfinity)
-            //    {
-            //        if (dis.Value > max)
-            //        {
-            //            key = dis.Key;
-            //            max = dis.Value;
-            //        }
-            //    }
-            //}
-
+                        
             var shortestGraph = _graph.ToShortestGraph(source, target);
+
+            foreach (DistanceNode node in shortestGraph.Nodes)
+            {
+                node.Description = node.Name + Environment.NewLine + "Distance:" + node.Distance;
+            }
 
             shortestGraph.ToImageFile(GraphVizTests.GraphVizPath, imageFile);
 
