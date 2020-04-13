@@ -167,12 +167,17 @@ namespace mitoSoft.Graphs.UnitTests
 
             var source = _graph.GetNode("Actor:Toshirô Mifune(1920)");
             var target = _graph.GetNode("Actor:Libuse Safránková(1953)");
-                        
+
             var shortestGraph = _graph.ToShortestGraph(source, target);
 
             foreach (DistanceNode node in shortestGraph.Nodes)
             {
-                node.Description = node.Name + Environment.NewLine + "Distance:" + node.Distance;
+                node.Description = node.Name;
+            }
+
+            foreach (GraphEdge edge in shortestGraph.Edges)
+            {
+                edge.Description = string.Empty;
             }
 
             shortestGraph.ToImageFile(GraphVizTests.GraphVizPath, imageFile);

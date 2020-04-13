@@ -59,7 +59,8 @@ namespace mitoSoft.Graphs.GraphVizInterop
             {
                 var sourceId = nodesWithoutIllegalDotCharacters[edge.SourceNode];
                 var targetId = nodesWithoutIllegalDotCharacters[edge.TargetNode];
-                dotTextGenerator.SetEdge(sourceId, targetId, edge.Weight.ToString(), Enums.Color.black, Enums.EdgeStyle.solid, Enums.Arrowheads.normal);
+
+                dotTextGenerator.SetEdge(sourceId, targetId, edge.Description, Enums.Color.black, Enums.EdgeStyle.solid, Enums.Arrowheads.normal);
             }
 
             var result = dotTextGenerator.GetText();

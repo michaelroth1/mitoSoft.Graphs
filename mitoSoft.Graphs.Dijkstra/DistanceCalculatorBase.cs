@@ -47,16 +47,28 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
             var graph = new Graph();
 
             //Set start Node
-            var node = new DistanceNode(targetNode.Name)
+            var distanceNode = new DistanceNode(targetNode.Name)
             {
                 Tag = targetNode.Tag
             };
             var distance = _distances[targetNode.Name];
-            node.Distance = distance;
+            distanceNode.Distance = distance;
 
-            graph.AddNode(node);
+            graph.AddNode(distanceNode);
 
             GetShortestGraph(sourceNode, targetNode, graph);
+
+            //asinge Distances
+            foreach (var node in graph.Nodes)
+            {
+                node.Description = node.Name + Environment.NewLine + "Distance:" + _distances[node.Name].ToString();
+            }
+
+            //asign edge description
+            foreach (var edge in graph.Edges)
+            {
+                edge.Description = edge.Weight.ToString();
+            }
 
             return graph;
         }

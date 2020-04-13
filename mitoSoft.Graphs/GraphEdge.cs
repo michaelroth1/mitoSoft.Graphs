@@ -13,6 +13,8 @@ namespace mitoSoft.Graphs
             this.TargetNode = targetNode ?? throw new ArgumentNullException(nameof(targetNode));
 
             this.Weight = distance;
+
+            this.Description = string.Empty;
         }
 
         public GraphNode SourceNode { get; }
@@ -20,6 +22,8 @@ namespace mitoSoft.Graphs
         public GraphNode TargetNode { get; }
 
         public double Weight { get; }
+
+        public string Description { get; set; }
 
         public string Name => $"{this.SourceNode.Name} -> {this.TargetNode.Name}";
 
