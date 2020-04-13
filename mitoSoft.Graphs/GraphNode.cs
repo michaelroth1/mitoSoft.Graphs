@@ -9,7 +9,9 @@ namespace mitoSoft.Graphs
     public class GraphNode
     {
         private readonly IList<GraphEdge> _edges;
-
+        
+        public object Tag { get; set; }
+        
         public GraphNode(string name)
         {
             this._edges = new List<GraphEdge>();
