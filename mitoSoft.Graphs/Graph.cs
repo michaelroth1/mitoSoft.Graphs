@@ -13,6 +13,7 @@ namespace mitoSoft.Graphs
 
         public object Tag { get; set; }
 
+
         /// <summary>
         /// Returns all nodes of the graph
         /// </summary>
