@@ -57,8 +57,9 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DjikstraTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShortestPathTests.cs" />
+    <Compile Include="DeepFirstTests.cs" />
     <Compile Include="GraphVizTests.cs" />
     <Compile Include="GraphVizErrorTests.cs" />
     <Compile Include="LargeGraphTests.cs" />

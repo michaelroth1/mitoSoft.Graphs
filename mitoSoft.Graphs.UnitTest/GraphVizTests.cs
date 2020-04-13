@@ -9,7 +9,7 @@ namespace mitoSoft.Graphs.UnitTests
     [TestClass]
     public class GraphVizTests
     {
-        private const string GraphVizBinPath = @"C:\Temp\Graphviz\bin";
+        internal const string GraphVizPath = @"C:\Temp\Graphviz\bin";
 
         /// <summary>
         /// This test generates a dot-text out of a mitoSoft shortest-path graph.
@@ -57,7 +57,7 @@ namespace mitoSoft.Graphs.UnitTests
             graph.TryAddEdge("Middle1", "Middle2", 1, true);
             graph.TryAddEdge("Middle2", "End", 1, true);
 
-            var image = graph.ToImage(GraphVizBinPath);
+            var image = graph.ToImage(GraphVizPath);
 
             Assert.IsNotNull(image);
         }
@@ -117,7 +117,7 @@ namespace mitoSoft.Graphs.UnitTests
             Assert.IsTrue(text.Contains("Middle2 -> End"));
             Assert.IsTrue(text.Contains("Middle1 -> Middle2"));
 
-            var image = graph.ToImage(GraphVizBinPath);
+            var image = graph.ToImage(GraphVizPath);
 
             Assert.IsNotNull(image);
         }
@@ -141,7 +141,7 @@ namespace mitoSoft.Graphs.UnitTests
                 "}",
             };
 
-            var image = (new ImageRenderer(GraphVizBinPath)).RenderImage(dotText);
+            var image = (new ImageRenderer(GraphVizPath)).RenderImage(dotText);
 
             Assert.IsNotNull(image);
         }

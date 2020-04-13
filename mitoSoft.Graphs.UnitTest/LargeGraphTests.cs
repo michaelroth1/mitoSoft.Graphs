@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace mitoSoft.Graphs.UnitTests
 {
-    public partial class ShortestPathAlgorithmsTests
+    public partial class DeepFirstTests
     {
         private static Graph _graph;
 
@@ -118,9 +118,50 @@ namespace mitoSoft.Graphs.UnitTests
 
         [TestCategory("LargeGraph")]
         [TestMethod]
-        public void Degree4ToImageFile()
+        public void Degree7()
         {
-            var graphVizFolder = @"C:\Temp\Graphviz\bin";
+            var shortestGraph = _graph.ToShortestGraph("Actor:Toshirô Mifune(1920)", "Actor:Libuse Safránková(1953)");
+
+            Assert.AreEqual(14, ((DistanceNode)shortestGraph.GetNode("Actor:Libuse Safránková(1953)")).Distance);
+        }
+
+        [TestCategory("LargeGraph")]
+        [TestMethod]
+        public void MultipleShortestPathCalcByName()
+        {
+            var source = _graph.GetNode("Actor:Toshirô Mifune(1920)");
+            var target = _graph.GetNode("Actor:Tom Holland(1996)");
+
+            var shortestGraph1 = _graph.ToShortestGraph(source.Name, target.Name);
+
+            var shortestGraph2 = shortestGraph1.ToShortestGraph(source.Name, target.Name);
+
+            Assert.AreEqual(shortestGraph1.Nodes.Count(), shortestGraph2.Nodes.Count());
+            Assert.AreEqual(shortestGraph1.Edges.Count(), shortestGraph2.Edges.Count());
+        }
+
+        [TestCategory("LargeGraph")]
+        [TestMethod]
+        public void MultipleShortestPathCalcByNode()
+        {
+            var source1 = _graph.GetNode("Actor:Toshirô Mifune(1920)");
+            var target1 = _graph.GetNode("Actor:Tom Holland(1996)");
+
+            var shortestGraph1 = _graph.ToShortestGraph(source1.Name, target1.Name);
+
+            var source2 = shortestGraph1.GetNode("Actor:Toshirô Mifune(1920)");
+            var target2 = shortestGraph1.GetNode("Actor:Tom Holland(1996)");
+
+            var shortestGraph2 = shortestGraph1.ToShortestGraph(source2.Name, target2.Name);
+
+            Assert.AreEqual(shortestGraph1.Nodes.Count(), shortestGraph2.Nodes.Count());
+            Assert.AreEqual(shortestGraph1.Edges.Count(), shortestGraph2.Edges.Count());
+        }
+
+        [TestCategory("LargeGraph")]
+        [TestMethod]
+        public void ConvertToImageFile()
+        {
             var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "TestGraphs", "Graph.png");
 
             var source = _graph.GetNode("Actor:Toshirô Mifune(1920)");
@@ -144,7 +185,7 @@ namespace mitoSoft.Graphs.UnitTests
 
             var shortestGraph = _graph.ToShortestGraph(source, target);
 
-            shortestGraph.ToImageFile(graphVizFolder, imageFile);
+            shortestGraph.ToImageFile(GraphVizTests.GraphVizPath, imageFile);
 
             Assert.IsTrue(File.Exists(imageFile));
         }

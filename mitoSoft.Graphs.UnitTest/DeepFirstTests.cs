@@ -7,7 +7,7 @@ using mitoSoft.Graphs.ShortestPathAlgorithms.Exceptions;
 namespace mitoSoft.Graphs.UnitTests
 {
     [TestClass]
-    public partial class ShortestPathAlgorithmsTests
+    public partial class DeepFirstTests
     {
         [TestCategory("Basic")]
         [TestMethod]
@@ -25,20 +25,20 @@ namespace mitoSoft.Graphs.UnitTests
             graph.TryAddEdge("Middle1", "Middle2", 1, true);
             graph.TryAddEdge("Middle2", "End", 1, true);
 
-            var shortesGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
+            var shortestGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 
-            var endNode = shortesGraph.GetDistanceNode("End");
+            var endNode = shortestGraph.GetDistanceNode("End");
 
             Assert.AreEqual(3, endNode.Distance);
-            Assert.AreEqual(4, shortesGraph.Nodes.Count());
-            Assert.AreEqual(3, shortesGraph.Edges.Count());
+            Assert.AreEqual(4, shortestGraph.Nodes.Count());
+            Assert.AreEqual(3, shortestGraph.Edges.Count());
         }
 
         [TestCategory("Basic")]
         [TestMethod]
         public void DoublePathsEquallyWeighted()
         {
-            var shortesGraph = new Graph()
+            var shortestGraph = new Graph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -49,10 +49,10 @@ namespace mitoSoft.Graphs.UnitTests
                 .AddEdge("Middle2", "End", 1, false)
                 .ToShortestGraph("Start", "End");
 
-            var endNode = shortesGraph.GetDistanceNode("End");
+            var endNode = shortestGraph.GetDistanceNode("End");
             Assert.AreEqual(2, endNode.Distance);
 
-            var dotText = shortesGraph.ToDotText();
+            var dotText = shortestGraph.ToDotText();
 
             Assert.IsTrue(dotText.Contains("Start -> Middle1"));
             Assert.IsTrue(dotText.Contains("Start -> Middle2"));
@@ -64,7 +64,7 @@ namespace mitoSoft.Graphs.UnitTests
         [TestMethod]
         public void DoublePathsDifferentWeights()
         {
-            var shortesGraph = new Graph()
+            var shortestGraph = new Graph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -75,10 +75,10 @@ namespace mitoSoft.Graphs.UnitTests
                 .AddEdge("Middle2", "End", 2, false)
                 .ToShortestGraph("Start", "End");
 
-            var endNode = shortesGraph.GetDistanceNode("End");
+            var endNode = shortestGraph.GetDistanceNode("End");
             Assert.AreEqual(3, endNode.Distance);
 
-            var dotText = shortesGraph.ToDotText();
+            var dotText = shortestGraph.ToDotText();
 
             Assert.IsTrue(dotText.Contains("Start -> Middle1"));
             Assert.IsTrue(dotText.Contains("Start -> Middle2"));
@@ -90,7 +90,7 @@ namespace mitoSoft.Graphs.UnitTests
         [TestMethod]
         public void Circular()
         {
-            var shortesGraph = new Graph()
+            var shortestGraph = new Graph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -102,12 +102,12 @@ namespace mitoSoft.Graphs.UnitTests
                 .AddEdge("Middle2", "End", 2, false)
                 .ToShortestGraph("Start", "End");
 
-            var endNode = shortesGraph.GetDistanceNode("End");
+            var endNode = shortestGraph.GetDistanceNode("End");
             Assert.AreEqual(3, endNode.Distance);
 
-            var dotText = shortesGraph.ToDotText();
+            var dotText = shortestGraph.ToDotText();
 
-            Assert.AreEqual(4, shortesGraph.Edges.Count());
+            Assert.AreEqual(4, shortestGraph.Edges.Count());
             Assert.IsTrue(dotText.Contains("Start -> Middle1"));
             Assert.IsTrue(dotText.Contains("Start -> Middle2"));
             Assert.IsTrue(dotText.Contains("Middle1 -> End"));
@@ -130,13 +130,13 @@ namespace mitoSoft.Graphs.UnitTests
             graph.TryAddEdge("Middle1", "Middle2", 1, true);
             graph.TryAddEdge("Middle2", "End", 1, true);
 
-            var shortesGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
+            var shortestGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 
-            var endNode = shortesGraph.GetDistanceNode("End");
+            var endNode = shortestGraph.GetDistanceNode("End");
 
             Assert.AreEqual(2, ((DistanceNode)endNode).Distance);
-            Assert.AreEqual(2, shortesGraph.Nodes.Count());
-            Assert.AreEqual(1, shortesGraph.Edges.Count());
+            Assert.AreEqual(2, shortestGraph.Nodes.Count());
+            Assert.AreEqual(1, shortestGraph.Edges.Count());
         }
 
         [TestCategory("Basic")]
@@ -181,17 +181,17 @@ namespace mitoSoft.Graphs.UnitTests
         [TestMethod]
         public void SinglePath4()
         {
-            var shortesGraph = new Graph()
+            var shortestGraph = new Graph()
                 .AddEdge("Start", "Middle1", 1, false)
                 .AddEdge("Start", "Middle2", 1, false)
                 .AddEdge("Middle1", "End", 1, false)
                 .AddEdge("Middle2", "End", 2, false)
                 .ToShortestGraph("Start", "End");
 
-            var endNode = shortesGraph.GetDistanceNode("End");
+            var endNode = shortestGraph.GetDistanceNode("End");
             Assert.AreEqual(2, endNode.Distance);
 
-            var dotText = shortesGraph.ToDotText();
+            var dotText = shortestGraph.ToDotText();
 
             Assert.IsTrue(dotText.Contains("Start -> Middle1"));
             Assert.IsFalse(dotText.Contains("Start -> Middle2"));

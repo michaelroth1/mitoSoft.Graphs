@@ -13,7 +13,7 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
         public DijkstraAlgorithm(Graph graph) : base(graph)
         {
         }
-                
+
         public override Graph GetShortestGraph(string sourceNodeName, string targetNodeName)
         {
             var sourceNode = _graph.GetNode(sourceNodeName);
@@ -21,7 +21,7 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
 
             return GetShortestGraph(sourceNode, targetNode);
         }
-        
+
         public override Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode)
         {
             InitializeSearch(sourceNode);
@@ -58,16 +58,16 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
         {
             var finished = false;
 
-            var queue = this._graph.Nodes.Cast<DistanceNode>().ToList();
+            var queue = this._graph.Nodes.ToList();
 
             while (!finished)
             {
-                queue.Sort((left, right) => left.Distance.CompareTo(right.Distance));
+                queue.Sort(CompareNodes);
 
-                DistanceNode nextNode = queue.FirstOrDefault(n => !double.IsPositiveInfinity(n.Distance));
+                var nextNode = queue.FirstOrDefault(n => !double.IsPositiveInfinity(_distances[n.Name]));
 
                 if (nextNode != null)
-                {                    
+                {
                     UpdateDistance(nextNode);
 
                     queue.Remove(nextNode);
@@ -77,6 +77,14 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                     finished = true;
                 }
             }
+        }
+
+        private int CompareNodes(GraphNode left, GraphNode right)
+        {
+            var leftDistance = _distances[left.Name];
+            var rightDistance = _distances[right.Name];
+
+            return leftDistance.CompareTo(rightDistance);
         }
 
         private void UpdateDistance(GraphNode sourceNode)
