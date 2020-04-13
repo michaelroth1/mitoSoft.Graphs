@@ -170,15 +170,7 @@ namespace mitoSoft.Graphs.UnitTests
 
             var shortestGraph = _graph.ToShortestGraph(source, target);
 
-            foreach (DistanceNode node in shortestGraph.Nodes)
-            {
-                node.Description = node.Name;
-            }
-
-            foreach (GraphEdge edge in shortestGraph.Edges)
-            {
-                edge.Description = string.Empty;
-            }
+            shortestGraph.Edges.ToList().ForEach(n => n.Description = string.Empty);
 
             shortestGraph.ToImageFile(GraphVizTests.GraphVizPath, imageFile);
 
