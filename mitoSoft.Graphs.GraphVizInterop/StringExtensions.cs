@@ -26,13 +26,20 @@ namespace mitoSoft.Graphs.GraphVizInterop.Extensions
             }
         }
 
-        public static string RemoveIllegalDotCharacters(this string text)
+        public static string EscapeDotName(this string text)
         {
             text = Regex.Replace(text, "[^a-zA-Z0-9]+", "_");
 
             text = text.Replace("___", "__");
             text = text.Replace("__", "_");
             text = text.Trim('_').Trim();
+
+            return text;
+        }
+
+        public static string EscapeDotLabel(this string text)
+        {
+            text = Regex.Replace(text, "\"", "'");
 
             return text;
         }

@@ -51,6 +51,7 @@ namespace mitoSoft.Graphs.GraphVizInterop
             {
                 otherParameters = "," + otherParameters;
             }
+
             this.SetEdgeText(fromState, toState, label, color, style, arrow, otherParameters);
         }
 

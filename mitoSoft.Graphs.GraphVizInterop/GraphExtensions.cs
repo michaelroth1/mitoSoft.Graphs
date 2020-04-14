@@ -30,34 +30,34 @@ namespace mitoSoft.Graphs.GraphVizInterop
         public static string ToDotText(this Graph graph)
         {
             var dotTextGenerator = new DotTextGenerator();
-            var nodesWithoutIllegalDotCharacters = new Dictionary<GraphNode, string>();
+            var nodesNames = new Dictionary<GraphNode, string>();
 
             //Performance improvment of 1.5sec in case of 250000 graph elements
             foreach (var node in graph.Nodes)
             {
-                var nodeId = node.Name.RemoveIllegalDotCharacters();
+                var nodeId = node.Name.EscapeDotName();
 
-                nodesWithoutIllegalDotCharacters.Add(node, nodeId);
+                nodesNames.Add(node, nodeId);
             }
 
             foreach (var node in graph.Nodes)
             {
-                var nodeId = nodesWithoutIllegalDotCharacters[node];
+                var nodeId = nodesNames[node];
 
                 if (string.IsNullOrWhiteSpace(node.Description))
                 {
-                    dotTextGenerator.SetNode(nodeId, node.Name, Enums.Color.black, Enums.Color.aliceblue, Enums.Shapes.oval);
+                    dotTextGenerator.SetNode(nodeId, node.Name.EscapeDotLabel(), Enums.Color.black, Enums.Color.aliceblue, Enums.Shapes.oval);
                 }
                 else
                 {
-                    dotTextGenerator.SetNode(nodeId, node.Description, Enums.Color.black, Enums.Color.aliceblue, Enums.Shapes.oval);
+                    dotTextGenerator.SetNode(nodeId, node.Description.EscapeDotLabel(), Enums.Color.black, Enums.Color.aliceblue, Enums.Shapes.oval);
                 }
             }
 
             foreach (var edge in graph.Edges)
             {
-                var sourceId = nodesWithoutIllegalDotCharacters[edge.SourceNode];
-                var targetId = nodesWithoutIllegalDotCharacters[edge.TargetNode];
+                var sourceId = nodesNames[edge.SourceNode];
+                var targetId = nodesNames[edge.TargetNode];
 
                 if (edge is BidirectionalEdge)
                 {

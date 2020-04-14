@@ -250,5 +250,66 @@ namespace mitoSoft.Graphs.UnitTests
 
             Assert.IsTrue(File.Exists(imageFile));
         }
+
+        /// <summary>
+        /// This test tries build a graph with an label,
+        /// that includes a illegal character '"'
+        /// </summary>
+        [TestCategory("GrapVizInterop")]
+        [TestMethod]
+        public void IllegalLabelCharacter()
+        {
+            var graph = new Graph()
+                .AddNode("Start")
+                .AddEdge("Start", "End", 2, true)
+                .AddEdge("Start", "Middle1", 1, true)
+                .AddEdge("Middle1", "Middle2", 1, true)
+                .AddEdge("Middle2", "End", 1, true);
+
+            graph.Nodes.ToList().ForEach(n => n.Description = $"\"{n.Name}\"");
+
+            var dotText = graph.ToDotText();
+
+            Assert.IsTrue(dotText.Contains("label=\"'Start'\""));
+            Assert.IsTrue(dotText.Contains("label=\"'Middle1'\""));
+            Assert.IsTrue(dotText.Contains("label=\"'Middle2'\""));
+            Assert.IsTrue(dotText.Contains("label=\"'End'\""));
+        }
+
+        /// <summary>
+        /// This test tries build a graph with illegal
+        /// dot characters included in its node names
+        /// </summary>
+        [TestCategory("GrapVizInterop")]
+        [TestMethod]
+        public void IllegalNameCharacter()
+        {
+            var graph = new Graph()
+                .AddNode("Start(19)")
+                .AddNode("Middle1%$§")
+                .AddNode("Middle12/3")
+                .AddNode("End-123\"4\"")
+                .AddEdge("Start(19)", "Middle1", 1, false)
+                .AddEdge("Middle1%$§", "Middle12/3", 1, false)
+                .AddEdge("Middle12/3", "End-123\"4\"", 1, false);
+
+            var dotText = graph.ToDotText();
+
+            Assert.IsTrue(dotText.Contains("Start_19"));
+            Assert.IsTrue(dotText.Contains("Middle1"));
+            Assert.IsTrue(dotText.Contains("Middle12_3"));
+            Assert.IsTrue(dotText.Contains("End_123_4"));
+            Assert.IsTrue(dotText.Contains("label=\"Start(19)\""));
+            Assert.IsTrue(dotText.Contains("label=\"Middle1%$§\""));
+            Assert.IsTrue(dotText.Contains("label=\"Middle12/3\""));
+            Assert.IsTrue(dotText.Contains("label=\"End-123'4'\""));
+
+            var image = graph.ToImage(GraphVizPath);
+                      
+            Assert.IsNotNull(image);
+
+            var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "GraphImages", "Graph3.png");
+            image.Save(imageFile);
+        }
     }
 }
