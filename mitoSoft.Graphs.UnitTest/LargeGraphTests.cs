@@ -2,6 +2,7 @@
 using mitoSoft.Graphs.GraphVizInterop;
 using mitoSoft.Graphs.ShortestPathAlgorithms;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
