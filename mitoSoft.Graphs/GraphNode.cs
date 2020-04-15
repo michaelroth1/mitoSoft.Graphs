@@ -40,7 +40,7 @@ namespace mitoSoft.Graphs
                                                                .Concat(this.Edges.Where(e => e is BidirectionalEdge && ReferenceEquals(e.TargetNode, this))
                                                                                  .Select(e => e.TargetNode));
 
-        internal void AddEdge(GraphNode targetNode, double weight, bool bidirection)
+        internal GraphEdge AddEdge(GraphNode targetNode, double weight, bool bidirection)
         {
             if (targetNode == null)
             {
@@ -64,6 +64,8 @@ namespace mitoSoft.Graphs
             this._edges.Add(edge);
 
             targetNode.AddEdge(edge);
+
+            return edge;
         }
 
         internal void AddEdge(GraphEdge edge)

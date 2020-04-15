@@ -20,10 +20,10 @@ namespace mitoSoft.Graphs.UnitTests
             graph.AddNode("Middle2");
             graph.AddNode("End");
 
-            graph.TryAddEdge("End", "Start", 5, true); //switches the target and source of the edge in this test
-            graph.TryAddEdge("Start", "Middle1", 1, true);
-            graph.TryAddEdge("Middle1", "Middle2", 1, true);
-            graph.TryAddEdge("Middle2", "End", 1, true);
+            graph.TryAddEdge("End", "Start", 5, true, out _); //switches the target and source of the edge in this test
+            graph.TryAddEdge("Start", "Middle1", 1, true, out _);
+            graph.TryAddEdge("Middle1", "Middle2", 1, true, out _);
+            graph.TryAddEdge("Middle2", "End", 1, true, out _);
 
             var shortestGraph = (new DijkstraAlgorithm(graph)).GetShortestGraph("Start", "End");
 
@@ -128,10 +128,10 @@ namespace mitoSoft.Graphs.UnitTests
             graph.AddNode("Middle2");
             graph.AddNode("End");
 
-            graph.TryAddEdge("Start", "End", 2, true);
-            graph.TryAddEdge("Start", "Middle1", 1, true);
-            graph.TryAddEdge("Middle1", "Middle2", 1, true);
-            graph.TryAddEdge("Middle2", "End", 1, true);
+            graph.TryAddEdge("Start", "End", 2, true, out _);
+            graph.TryAddEdge("Start", "Middle1", 1, true, out _);
+            graph.TryAddEdge("Middle1", "Middle2", 1, true, out _);
+            graph.TryAddEdge("Middle2", "End", 1, true, out _);
 
             var shortestGraph = (new DeepFirstAlgorithm(graph)).GetShortestGraph("Start", "End");
 
@@ -149,9 +149,9 @@ namespace mitoSoft.Graphs.UnitTests
         {
             var graph = new Graph();
 
-            graph.TryAddEdge("Start", "Middle1", 1, false);
-            graph.TryAddEdge("Middle1", "Middle2", 1, false);
-            graph.TryAddEdge("Middle2", "End", 1, false);
+            graph.AddEdge("Start", "Middle1", 1, false);
+            graph.AddEdge("Middle1", "Middle2", 1, false);
+            graph.AddEdge("Middle2", "End", 1, false);
 
             var _ = (new DijkstraAlgorithm(graph)).GetShortestGraph("End", "Start");
         }

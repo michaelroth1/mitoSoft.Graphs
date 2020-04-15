@@ -4,15 +4,41 @@ namespace mitoSoft.Graphs.GraphVizInterop.Extensions
 {
     internal static class StringExtensions
     {
-        public static string Between(this string text, string start, string end)
+        public static string Between(this string text, int startIndex, params char[] end)
         {
-            if (text.IndexOf(start) == -1)
+            if (startIndex == -1)
             {
                 return string.Empty;
             }
             else
             {
-                int p1 = text.IndexOf(start) + start.Length;
+                return text.Substring(startIndex).Split(end)[0];
+            }
+        }
+
+        public static string Between(this string text, string start, params char[] end)
+        {
+            int startIndex = text.IndexOf(start);
+            if (startIndex == -1)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return Between(text, startIndex + start.Length, end);
+            }
+        }
+
+        public static string Between(this string text, string start, string end)
+        {
+            int startIndex = text.IndexOf(start);
+            if (startIndex == -1)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                int p1 = startIndex + start.Length;
                 int p2 = text.IndexOf(end, p1);
 
                 if (end == "" || p2 == -1)

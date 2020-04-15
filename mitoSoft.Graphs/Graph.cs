@@ -192,7 +192,7 @@ namespace mitoSoft.Graphs
         /// </summary>
         public virtual Graph AddEdge(GraphNode sourceNode, GraphNode targetNode, double weight, bool bidirection)
         {
-            if (!this.TryAddEdge(sourceNode, targetNode, weight, bidirection))
+            if (!this.TryAddEdge(sourceNode, targetNode, weight, bidirection, out _))
             {
                 throw new EdgeAlreadyExistingException(sourceNode.Name, targetNode.Name);
             }
@@ -206,7 +206,7 @@ namespace mitoSoft.Graphs
         /// </summary>
         public virtual Graph AddEdge(string sourceNodeName, string targetNodeName, double weight, bool bidirection)
         {
-            if (!this.TryAddEdge(sourceNodeName, targetNodeName, weight, bidirection))
+            if (!this.TryAddEdge(sourceNodeName, targetNodeName, weight, bidirection, out _))
             {
                 throw new EdgeAlreadyExistingException(sourceNodeName, targetNodeName);
             }
@@ -219,7 +219,7 @@ namespace mitoSoft.Graphs
         /// and the targetNode, given by the 'targetNodeName'.
         /// </summary>
         /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
-        public virtual bool TryAddEdge(string sourceNodeName, string targetNodeName, double weight, bool bidirection)
+        public virtual bool TryAddEdge(string sourceNodeName, string targetNodeName, double weight, bool bidirection, out GraphEdge edge)
         {
             if (!this.TryGetNode(sourceNodeName, out var sourceNode))
             {
@@ -231,14 +231,14 @@ namespace mitoSoft.Graphs
                 targetNode = new GraphNode(targetNodeName);
             }
 
-            return TryAddEdge(sourceNode, targetNode, weight, bidirection);
+            return TryAddEdge(sourceNode, targetNode, weight, bidirection, out edge);
         }
 
         /// <summary>
         /// Tries to add an edge that connects the 'sourceNode' and the 'targetNode'.
         /// </summary>
         /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
-        public virtual bool TryAddEdge(GraphNode sourceNode, GraphNode targetNode, double weight, bool bidirection)
+        public virtual bool TryAddEdge(GraphNode sourceNode, GraphNode targetNode, double weight, bool bidirection, out GraphEdge edge)
         {
             if (sourceNode == null)
             {
@@ -250,6 +250,7 @@ namespace mitoSoft.Graphs
             }
             else if (this.TryGetEdge(sourceNode, targetNode, out _))
             {
+                edge = null;
                 return false;
             }
 
@@ -257,7 +258,7 @@ namespace mitoSoft.Graphs
 
             this.TryAddNode(targetNode);
 
-            sourceNode.AddEdge(targetNode, weight, bidirection);
+            edge = sourceNode.AddEdge(targetNode, weight, bidirection);
 
             return true;
         }

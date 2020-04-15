@@ -124,6 +124,8 @@ namespace mitoSoft.Graphs.UnitTests
         {
             var shortestGraph = _graph.ToShortestGraph("Actor:Toshirô Mifune(1920)", "Actor:Libuse Safránková(1953)");
 
+            Assert.AreEqual(142, shortestGraph.Nodes.Count());
+            Assert.AreEqual(232, shortestGraph.Edges.Count());
             Assert.AreEqual(14, ((DistanceNode)shortestGraph.GetNode("Actor:Libuse Safránková(1953)")).Distance);
         }
 

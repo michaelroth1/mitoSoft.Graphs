@@ -32,6 +32,8 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                 _distance = value;
             }
         }
+#pragma warning disable IDE0071 // Simplify interpolation
         public override string ToString() => $"{base.ToString()} (Distance from start: {this.Distance})";
+#pragma warning restore IDE0071 // Simplify interpolation
     }
 }

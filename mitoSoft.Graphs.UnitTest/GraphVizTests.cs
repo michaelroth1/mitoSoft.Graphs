@@ -58,10 +58,10 @@ namespace mitoSoft.Graphs.UnitTests
             graph.TryAddNode("Middle2", out _);
             graph.TryAddNode("End", out _);
 
-            graph.TryAddEdge("Start", "End", 2, true);
-            graph.TryAddEdge("Start", "Middle1", 1, true);
-            graph.TryAddEdge("Middle1", "Middle2", 1, true);
-            graph.TryAddEdge("Middle2", "End", 1, true);
+            graph.TryAddEdge("Start", "End", 2, true, out _);
+            graph.TryAddEdge("Start", "Middle1", 1, true, out _);
+            graph.TryAddEdge("Middle1", "Middle2", 1, true, out _);
+            graph.TryAddEdge("Middle2", "End", 1, true, out _);
 
             var image = graph.ToImage(GraphVizPath);
 
@@ -78,10 +78,10 @@ namespace mitoSoft.Graphs.UnitTests
         {
             var graph = new Graph();
 
-            graph.TryAddEdge("Start", "End", 2, true);
-            graph.TryAddEdge("Start", "Middle1", 1, true);
-            graph.TryAddEdge("Middle1", "Middle2", 1, true);
-            graph.TryAddEdge("Middle2", "End", 1, true);
+            graph.TryAddEdge("Start", "End", 2, true, out _);
+            graph.TryAddEdge("Start", "Middle1", 1, true, out _);
+            graph.TryAddEdge("Middle1", "Middle2", 1, true, out _);
+            graph.TryAddEdge("Middle2", "End", 1, true, out _);
 
             var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "GraphImages", "Graph1.png");
             graph.ToImageFile(GraphVizPath, imageFile);
@@ -162,6 +162,33 @@ namespace mitoSoft.Graphs.UnitTests
             };
 
             var _ = GraphGenerator.FromDotText(dotText);
+        }
+
+        [TestCategory("GrapVizInterop")]
+        [TestMethod]
+        public void GenerateGraphWithDifferentWeights()
+        {
+            var dotText = new List<string>()
+            {
+                "digraph D {",
+                "Start ->    Middle1 [weight=1]",
+                "Start ->    Middle2 [weight=2]",
+                "Middle2     -> End [weight=\"1\", label=\"2\"]",
+                "Middle1     -> End [label=\"2\", weight=1]",
+                "}",
+            };
+
+            var graph = GraphGenerator.FromDotText(dotText);
+
+            Assert.AreEqual(1d, graph .GetEdge("Start", "Middle1").Weight);
+            Assert.AreEqual(2d, graph.GetEdge("Start", "Middle2").Weight);
+            Assert.AreEqual(1d, graph.GetEdge("Middle1", "End").Weight);
+            Assert.AreEqual(1d, graph.GetEdge("Middle2", "End").Weight);
+
+            var shortestGraph = graph.ToShortestGraph("Start","End");
+
+            Assert.AreEqual(3, shortestGraph.Nodes.Count());
+            Assert.AreEqual(2, shortestGraph.Edges.Count());
         }
 
         /// <summary>
@@ -305,7 +332,7 @@ namespace mitoSoft.Graphs.UnitTests
             Assert.IsTrue(dotText.Contains("label=\"End-123'4'\""));
 
             var image = graph.ToImage(GraphVizPath);
-                      
+
             Assert.IsNotNull(image);
 
             var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "GraphImages", "Graph3.png");
