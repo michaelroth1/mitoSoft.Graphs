@@ -98,10 +98,10 @@ namespace mitoSoft.Graphs.ShortestPathAlgorithms
                 node.Distance = distance;
                 _graph.TryGetEdge(predecessor, targetNode, out var edge);
 
-                graph.TryAddEdge(predecessor.Name, targetNode.Name, edge.Weight, false, out _);
-
-                //the recursion could not be aborted, due to another distance of the pedecessor node
-                GetShortestGraph(sourceNode, predecessor, graph);
+                if (graph.TryAddEdge(predecessor.Name, targetNode.Name, edge.Weight, false, out _))
+                {
+                    GetShortestGraph(sourceNode, predecessor, graph);
+                }
             }
         }
 
