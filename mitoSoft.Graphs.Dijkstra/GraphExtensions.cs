@@ -1,7 +1,35 @@
-﻿namespace mitoSoft.Graphs.ShortestPathAlgorithms
+﻿using System.Collections.Generic;
+
+namespace mitoSoft.Graphs.ShortestPathAlgorithms
 {
     public static class GraphExtensions
     {
+        public static bool IsAcyclic(this Graph graph)
+        {
+            var isAcyclic = (new CycleChecker(graph)).IsAcyclic();
+
+            return isAcyclic;
+        }
+
+        public static bool IsDirected(this Graph _)
+        {
+            return true; // at the moment it is not posible to create a undirected graph
+        }
+
+        public static List<string> GetAllPaths(this Graph graph, GraphNode startNode)
+        {
+            var paths = (new PathAlgorithm(graph)).GetAllPaths(startNode);
+
+            return paths;
+        }
+
+        public static List<string> GetAllPaths(this Graph graph, string startNodeName)
+        {
+            var paths = (new PathAlgorithm(graph)).GetAllPaths(startNodeName);
+
+            return paths;
+        }
+
         /// <summary>
         /// Searches the shortest path to the Source node 
         /// via the DeepFirst-Search Algorithm

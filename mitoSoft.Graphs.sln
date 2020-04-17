@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mitoSoft.Graphs", "mitoSoft.Graphs\mitoSoft.Graphs.csproj", "{B91D512C-8E60-4E8E-A6A2-626311E58840}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mitoSoft.Graphs.ShortestPathAlgorithms", "mitoSoft.Graphs.Dijkstra\mitoSoft.Graphs.ShortestPathAlgorithms.csproj", "{14363941-83C1-485E-9EF9-F20A29BA354D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mitoSoft.Graphs.Analysis", "mitoSoft.Graphs.Dijkstra\mitoSoft.Graphs.Analysis.csproj", "{14363941-83C1-485E-9EF9-F20A29BA354D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mitoSoft.Graphs.UnitTests", "mitoSoft.Graphs.UnitTest\mitoSoft.Graphs.UnitTests.csproj", "{9010D6BE-D7EC-4541-87FB-F1E043E94291}"
 EndProject

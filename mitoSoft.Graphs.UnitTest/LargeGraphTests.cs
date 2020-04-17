@@ -131,6 +131,17 @@ namespace mitoSoft.Graphs.UnitTests
 
         [TestCategory("LargeGraph")]
         [TestMethod]
+        public void Degree8()
+        {
+            var shortestGraph = _graph.ToShortestGraph("Actor:Eric Elmosnino(1964)", "Actor:Libuse Safránková(1953)");
+
+            Assert.AreEqual(378, shortestGraph.Nodes.Count());
+            Assert.AreEqual(710, shortestGraph.Edges.Count());
+            Assert.AreEqual(16, ((DistanceNode)shortestGraph.GetNode("Actor:Libuse Safránková(1953)")).Distance);
+        }
+
+        [TestCategory("LargeGraph")]
+        [TestMethod]
         public void MultipleShortestPathCalcByName()
         {
             var source = _graph.GetNode("Actor:Toshirô Mifune(1920)");
@@ -168,7 +179,7 @@ namespace mitoSoft.Graphs.UnitTests
         {
             var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "GraphImages", "Graph.png");
 
-            var source = _graph.GetNode("Actor:Toshirô Mifune(1920)");
+            var source = _graph.GetNode("Actor:Eric Elmosnino(1964)");//("Actor:Toshirô Mifune(1920)");
             var target = _graph.GetNode("Actor:Libuse Safránková(1953)");
 
             var shortestGraph = _graph.ToShortestGraph(source, target);

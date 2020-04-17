@@ -39,11 +39,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CycleChecker.cs" />
     <Compile Include="DeepFirstAlgorithm.cs" />
     <Compile Include="DijkstraAlgorithm.cs" />
     <Compile Include="DistanceCalculatorBase.cs" />
     <Compile Include="DistanceNode.cs" />
     <Compile Include="GraphExtensions.cs" />
+    <Compile Include="PathAlgorithm.cs" />
     <Compile Include="PathNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

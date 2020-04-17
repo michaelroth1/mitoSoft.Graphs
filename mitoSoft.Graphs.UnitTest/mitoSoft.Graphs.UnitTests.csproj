@@ -63,14 +63,16 @@
     <Compile Include="GraphVizTests.cs" />
     <Compile Include="GraphVizErrorTests.cs" />
     <Compile Include="LargeGraphTests.cs" />
+    <Compile Include="CycleTests.cs" />
+    <Compile Include="PathListTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\mitoSoft.Graphs.Dijkstra\mitoSoft.Graphs.ShortestPathAlgorithms.csproj">
+    <ProjectReference Include="..\mitoSoft.Graphs.Dijkstra\mitoSoft.Graphs.Analysis.csproj">
       <Project>{14363941-83C1-485E-9EF9-F20A29BA354D}</Project>
-      <Name>mitoSoft.Graphs.ShortestPathAlgorithms</Name>
+      <Name>mitoSoft.Graphs.Analysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\mitoSoft.Graphs.GraphVizInterop\mitoSoft.Graphs.GraphVizInterop.csproj">
       <Project>{17AFC31C-093C-4043-BB62-6C0D16459F7E}</Project>
