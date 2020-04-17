@@ -1,5 +1,9 @@
 # mitoSoft.Graphs
-A .net graph library to build directed graphs and investigate their properties (e.g. shortest path) 
+A .net graph library to build directed graphs and investigate their properties, like:
+- investigates the shortest paths between two vertices
+- generate a completet path list outging from a node if the graph is a directed and acyclic 
+- is the graph acyclic 
+- produce the graph's incidence matrix
 
 
 ## Example for shortest path determination via Dijkstra's Shortest Path algorithm
