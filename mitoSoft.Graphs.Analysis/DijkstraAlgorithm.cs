@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace mitoSoft.Graphs.ShortestPathAlgorithms
+namespace mitoSoft.Graphs.Analysis
 {
     /// <summary>
     /// https://de.wikipedia.org/wiki/Dijkstra-Algorithmus

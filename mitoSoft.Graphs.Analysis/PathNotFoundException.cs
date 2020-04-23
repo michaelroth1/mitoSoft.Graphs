@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace mitoSoft.Graphs.ShortestPathAlgorithms.Exceptions
+namespace mitoSoft.Graphs.Analysis.Exceptions
 {
     [Serializable]
     public sealed class PathNotFoundException : Exception

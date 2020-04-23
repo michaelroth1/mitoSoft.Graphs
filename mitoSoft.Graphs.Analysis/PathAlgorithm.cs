@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace mitoSoft.Graphs.ShortestPathAlgorithms
+namespace mitoSoft.Graphs.Analysis
 {
     public class PathAlgorithm
     {

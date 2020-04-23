@@ -70,8 +70,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\mitoSoft.Graphs.Dijkstra\mitoSoft.Graphs.Analysis.csproj">
-      <Project>{14363941-83C1-485E-9EF9-F20A29BA354D}</Project>
+    <ProjectReference Include="..\mitoSoft.Graphs.Analysis\mitoSoft.Graphs.Analysis.csproj">
+      <Project>{14363941-83c1-485e-9ef9-f20a29ba354d}</Project>
       <Name>mitoSoft.Graphs.Analysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\mitoSoft.Graphs.GraphVizInterop\mitoSoft.Graphs.GraphVizInterop.csproj">

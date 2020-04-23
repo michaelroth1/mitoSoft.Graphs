@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using mitoSoft.Graphs.GraphVizInterop;
-using mitoSoft.Graphs.ShortestPathAlgorithms;
+using mitoSoft.Graphs.Analysis;
 using System.IO;
 
 namespace mitoSoft.Graphs.UnitTests

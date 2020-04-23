@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace mitoSoft.Graphs.ShortestPathAlgorithms
+namespace mitoSoft.Graphs.Analysis
 {
     public static class GraphExtensions
     {

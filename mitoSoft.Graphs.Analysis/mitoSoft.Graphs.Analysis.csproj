@@ -7,8 +7,8 @@
     <ProjectGuid>{14363941-83C1-485E-9EF9-F20A29BA354D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>mitoSoft.Graphs.ShortestPathAlgorithms</RootNamespace>
-    <AssemblyName>mitoSoft.Graphs.ShortestPathAlgorithms</AssemblyName>
+    <RootNamespace>mitoSoft.Graphs.Analysis</RootNamespace>
+    <AssemblyName>mitoSoft.Graphs.Analysis</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

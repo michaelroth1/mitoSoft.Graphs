@@ -1,9 +1,9 @@
-﻿using mitoSoft.Graphs.ShortestPathAlgorithms.Exceptions;
+﻿using mitoSoft.Graphs.Analysis.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace mitoSoft.Graphs.ShortestPathAlgorithms
+namespace mitoSoft.Graphs.Analysis
 {
     public abstract class DistanceCalculatorBase
     {

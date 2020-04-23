@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace mitoSoft.Graphs.ShortestPathAlgorithms
+namespace mitoSoft.Graphs.Analysis
 {
     [DebuggerDisplay(nameof(DeepFirstAlgorithm) + " ({ToString()})")]
     public class DeepFirstAlgorithm : DistanceCalculatorBase

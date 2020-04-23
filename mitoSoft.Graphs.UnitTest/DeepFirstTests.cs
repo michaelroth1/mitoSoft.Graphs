@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using mitoSoft.Graphs.GraphVizInterop;
-using mitoSoft.Graphs.ShortestPathAlgorithms;
-using mitoSoft.Graphs.ShortestPathAlgorithms.Exceptions;
+using mitoSoft.Graphs.Analysis;
+using mitoSoft.Graphs.Analysis.Exceptions;
 
 namespace mitoSoft.Graphs.UnitTests
 {

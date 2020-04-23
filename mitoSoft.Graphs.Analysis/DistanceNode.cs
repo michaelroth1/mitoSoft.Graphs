@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace mitoSoft.Graphs.ShortestPathAlgorithms
+namespace mitoSoft.Graphs.Analysis
 {
     [DebuggerDisplay(nameof(Graph) + " ({ToString()})")]
     public class DistanceNode : GraphNode
