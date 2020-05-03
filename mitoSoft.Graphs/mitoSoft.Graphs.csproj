@@ -2,6 +2,28 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.0.1</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>(c) mitoSoft</Copyright>
+    <Authors>mitoSoft</Authors>
+    <Company>mitoSoft</Company>
+    <PackageTags>Graph Math Analysis</PackageTags>
+    <NeutralLanguage>(None)</NeutralLanguage>
+    <PackageProjectUrl>https://github.com/michaelroth1/mitoSoft.Graphs</PackageProjectUrl>
+    <PackageIcon>Mitosoft Logo transparent.png</PackageIcon>
+    <Description>Lightweight library for graph handling analysis and graph drawing</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="Z:\100-mitosoft\Logo\Mitosoft Logo transparent.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

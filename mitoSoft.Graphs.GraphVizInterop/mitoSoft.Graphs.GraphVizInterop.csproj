@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Library for graph drawing with GraphViz</Description>
+    <Company>mitoSoft</Company>
+    <Authors>mitoSoft</Authors>
+    <Copyright>(c) mitoSoft</Copyright>
+    <PackageIcon>Mitosoft Logo transparent.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/michaelroth1/mitoSoft.Graphs</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>Graph Math Analysis</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +20,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\mitoSoft.Graphs\mitoSoft.Graphs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="Z:\100-mitosoft\Logo\Mitosoft Logo transparent.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -2,10 +2,29 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Lightweight library for graph analysis like shortest path calculation, cycle determination, ...</Description>
+    <Authors>mitoSoft</Authors>
+    <PackageIcon>Mitosoft Logo transparent.png</PackageIcon>
+    <Copyright>(c) mitoSoft</Copyright>
+    <PackageProjectUrl>https://github.com/michaelroth1/mitoSoft.Graphs</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>Graph Math Analysis</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\mitoSoft.Graphs\mitoSoft.Graphs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="Z:\100-mitosoft\Logo\Mitosoft Logo transparent.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
