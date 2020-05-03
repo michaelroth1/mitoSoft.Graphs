@@ -78,4 +78,4 @@ public void CalculateShortestDistance()
 }
 ```
 
-for more examples see the [mitoSoft.Graphs.UnitTests](../master/mitoSoft.Graphs.UnitTest) project.
+For more examples see the testclasses, e.g. [shortest path tests](mitoSoft.Graphs.Tests.NetCore/DeepFirstTests.cs) in testproject.
