@@ -38,4 +38,4 @@ jobs:
           # NuGet server uri hosting the symbols, defaults to https://api.nuget.org
           #NUGET_SYMBOL_SOURCE: # optional, default is https://api.nuget.org
           # Flag to toggle pushing symbols along with nuget package to the server, enabled by default
-          #INCLUDE_SYMBOLS: # optional, default is true
+          INCLUDE_SYMBOLS: false # optional, default is true
