@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -11,7 +11,6 @@
     <PackageTags>Graph Math Analysis</PackageTags>
     <NeutralLanguage>(None)</NeutralLanguage>
     <PackageProjectUrl>https://github.com/michaelroth1/mitoSoft.Graphs</PackageProjectUrl>
-    <PackageIcon>Mitosoft Logo transparent.png</PackageIcon>
     <Description>Lightweight library for graph handling analysis and graph drawing</Description>
   </PropertyGroup>
 

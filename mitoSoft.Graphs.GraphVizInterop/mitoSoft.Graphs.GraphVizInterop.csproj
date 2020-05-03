@@ -6,7 +6,6 @@
     <Company>mitoSoft</Company>
     <Authors>mitoSoft</Authors>
     <Copyright>(c) mitoSoft</Copyright>
-    <PackageIcon>Mitosoft Logo transparent.png</PackageIcon>
     <PackageProjectUrl>https://github.com/michaelroth1/mitoSoft.Graphs</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageTags>Graph Math Analysis</PackageTags>

@@ -4,7 +4,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Lightweight library for graph analysis like shortest path calculation, cycle determination, ...</Description>
     <Authors>mitoSoft</Authors>
-    <PackageIcon>Mitosoft Logo transparent.png</PackageIcon>
     <Copyright>(c) mitoSoft</Copyright>
     <PackageProjectUrl>https://github.com/michaelroth1/mitoSoft.Graphs</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
