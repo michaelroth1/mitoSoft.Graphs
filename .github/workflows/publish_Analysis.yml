@@ -1,4 +1,4 @@
-name: publish mitoSoft.Graphs.Analysis
+name: publish Graphs.Analysis
 on:
   push:
     branches:
@@ -23,7 +23,7 @@ jobs:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: mitoSoft.Graphs.Analysis/mitoSoft.Graphs.Analysis.csproj
           #NuGet package id, used for version detection & defaults to project name
-          PACKAGE_NAME: mitoSoft.Graphs.Analysis
+          #PACKAGE_NAME: mitoSoft.Graphs.Analysis
           # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
           #VERSION_FILE_PATH: # optional
           # Regex pattern to extract version info in a capturing group

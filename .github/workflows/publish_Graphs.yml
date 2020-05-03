@@ -1,4 +1,4 @@
-name: publish to nuget
+name: publish mitoSoft.Graphs
 on:
   push:
     branches:
@@ -23,7 +23,7 @@ jobs:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: mitoSoft.Graphs/mitoSoft.Graphs.csproj
           #NuGet package id, used for version detection & defaults to project name
-          PACKAGE_NAME: mitoSoft.Graphs
+          #PACKAGE_NAME: mitoSoft.Graphs
           # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
           #VERSION_FILE_PATH: # optional
           # Regex pattern to extract version info in a capturing group
