@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mitoSoft.Graphs.GraphVizInt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mitoSoft.Graphs.Tests.NetCore", "mitoSoft.Graphs.Tests.NetCore\mitoSoft.Graphs.Tests.NetCore.csproj", "{3C8BE979-0A42-4834-8B9E-D0C87502F087}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mitoSoft.Graphs.Tests.FullFramework", "mitoSoft.Graphs.Tests.FullFramework\mitoSoft.Graphs.Tests.FullFramework.csproj", "{26B86CAC-F587-4BF6-ADEC-E840B6546059}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3C8BE979-0A42-4834-8B9E-D0C87502F087}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C8BE979-0A42-4834-8B9E-D0C87502F087}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C8BE979-0A42-4834-8B9E-D0C87502F087}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26B86CAC-F587-4BF6-ADEC-E840B6546059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26B86CAC-F587-4BF6-ADEC-E840B6546059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26B86CAC-F587-4BF6-ADEC-E840B6546059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26B86CAC-F587-4BF6-ADEC-E840B6546059}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
