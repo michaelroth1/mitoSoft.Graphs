@@ -15,7 +15,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\mitoSoft.Graphs.Analysis\mitoSoft.Graphs.Analysis.csproj" />
+    <ProjectReference Include="..\mitoSoft.Graphs.GraphVizInterop\mitoSoft.Graphs.GraphVizInterop.csproj" />
     <ProjectReference Include="..\mitoSoft.Graphs\mitoSoft.Graphs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="GraphImages\tmp.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestGraphs\LargeGraph.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
