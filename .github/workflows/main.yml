@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+    steps:
       - name: Publish NuGet
         uses: rohith/publish-nuget@v2.4.0
         with:
