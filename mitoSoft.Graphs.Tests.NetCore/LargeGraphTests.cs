@@ -1,13 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using mitoSoft.Graphs.GraphVizInterop;
 using mitoSoft.Graphs.Analysis;
-using System;
-using System.Collections.Generic;
+using mitoSoft.Graphs.GraphVizInterop;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace mitoSoft.Graphs.UnitTests
+namespace mitoSoft.Graphs.Tests.NetCore
 {
     public partial class DeepFirstTests
     {

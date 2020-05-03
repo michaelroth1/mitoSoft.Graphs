@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using mitoSoft.Graphs.GraphVizInterop;
 using mitoSoft.Graphs.Analysis;
 
-namespace mitoSoft.Graphs.UnitTests
+namespace mitoSoft.Graphs.Tests.NetCore
 {
     [TestClass]
     public class PathListTests

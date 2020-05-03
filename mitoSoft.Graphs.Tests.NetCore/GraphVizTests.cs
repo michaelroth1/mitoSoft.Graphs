@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace mitoSoft.Graphs.UnitTests
+namespace mitoSoft.Graphs.Tests.NetCore
 {
     [TestClass]
     public class GraphVizTests

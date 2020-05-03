@@ -4,7 +4,7 @@ using mitoSoft.Graphs.GraphVizInterop;
 using mitoSoft.Graphs.Analysis;
 using mitoSoft.Graphs.Analysis.Exceptions;
 
-namespace mitoSoft.Graphs.UnitTests
+namespace mitoSoft.Graphs.Tests.NetCore
 {
     [TestClass]
     public partial class DijkstraTests

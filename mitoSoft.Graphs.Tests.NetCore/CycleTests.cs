@@ -3,7 +3,7 @@ using mitoSoft.Graphs.GraphVizInterop;
 using mitoSoft.Graphs.Analysis;
 using System.IO;
 
-namespace mitoSoft.Graphs.UnitTests
+namespace mitoSoft.Graphs.Tests.NetCore
 {
     [TestClass]
     public class CycleTests
