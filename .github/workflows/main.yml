@@ -1,35 +1,33 @@
-name: Atl Generic Repository - Deploy
+name: Build
 
 on:
   push:
-    branches:
-      - master
+    branches: master
+    tags: '**'
+  pull_request:
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-
-    - name: Setup .NET Core
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Setup .NET Core 2.1
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.100
-
+        dotnet-version: 2.1.607
+    - name: Setup .NET Core 3.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.101
+    - name: .NET Core SxS
+      run: |
+        rsync -a ${DOTNET_ROOT/3.0.101/2.1.607}/* $DOTNET_ROOT/
     - name: Build
       run: dotnet build --configuration Release
-      working-directory: ./mitSoft.Graphs
-
-    - name: Run unit tests
-      run: dotnet test --configuration Release
-      working-directory: ./mitSoft.Graphs
-
-    - name: Generate nuget package
-      run: dotnet pack --configuration Release -o nupkg
-      working-directory: ./mitSoft.Graphs
-
-    - name: Publish nuget package
-      run: find . -name *.nupkg -type f -print0 | xargs -0 -I pkg dotnet nuget push pkg -k $nuget_api_key -s "https://api.nuget.org/v3/index.json" --skip-duplicate
-      env:
-        nuget_api_key: ${{ secrets.NUGET_API_KEY }}
-      working-directory: ./mitSoft.Graphs/nupkg
+    - name: Test
+      run: dotnet test --no-build --configuration Release
