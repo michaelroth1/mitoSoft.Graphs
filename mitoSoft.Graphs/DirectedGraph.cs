@@ -22,6 +22,8 @@ namespace mitoSoft.Graphs
             return this;
         }
 
+        public new DirectedGraph AddNode(DirectedGraphNode node) => (DirectedGraph)base.AddNode(node);
+
         /// <summary>
         /// Tries to add a node with the given name to the graph.
         /// </summary>
@@ -64,6 +66,8 @@ namespace mitoSoft.Graphs
 
             return this;
         }
+
+        public new DirectedGraph AddEdge(DirectedEdge edge) => (DirectedGraph)base.AddEdge(edge);
 
         /// <summary>
         /// Tries to add an edge that connects the sourceNode, given bv the 'sourceNodeName',
