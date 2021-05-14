@@ -10,11 +10,11 @@ namespace mitoSoft.Graphs.Analysis
     [DebuggerDisplay(nameof(DijkstraAlgorithm) + " ({ToString()})")]
     public class DijkstraAlgorithm : DistanceCalculatorBase
     {
-        public DijkstraAlgorithm(Graph graph) : base(graph)
+        public DijkstraAlgorithm(DirectedGraph graph) : base(graph)
         {
         }
 
-        public override Graph GetShortestGraph(string sourceNodeName, string targetNodeName)
+        public override DirectedGraph GetShortestGraph(string sourceNodeName, string targetNodeName)
         {
             var sourceNode = _graph.GetNode(sourceNodeName);
             var targetNode = _graph.GetNode(targetNodeName);
@@ -22,7 +22,7 @@ namespace mitoSoft.Graphs.Analysis
             return GetShortestGraph(sourceNode, targetNode);
         }
 
-        public override Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode)
+        public override DirectedGraph GetShortestGraph(DirectedGraphNode sourceNode, DirectedGraphNode targetNode)
         {
             InitializeSearch(sourceNode);
 
@@ -45,7 +45,7 @@ namespace mitoSoft.Graphs.Analysis
         /// <summary>
         /// Determines the distances of all nodes starting from the 'sourceNode'.
         /// </summary>
-        public override IDictionary<string, double> GetAllDistances(GraphNode sourceNode)
+        public override IDictionary<string, double> GetAllDistances(DirectedGraphNode sourceNode)
         {
             InitializeSearch(sourceNode);
 
@@ -79,7 +79,7 @@ namespace mitoSoft.Graphs.Analysis
             }
         }
 
-        private int CompareNodes(GraphNode left, GraphNode right)
+        private int CompareNodes(DirectedGraphNode left, DirectedGraphNode right)
         {
             var leftDistance = _distances[left.Name];
             var rightDistance = _distances[right.Name];
@@ -87,11 +87,11 @@ namespace mitoSoft.Graphs.Analysis
             return leftDistance.CompareTo(rightDistance);
         }
 
-        private void UpdateDistance(GraphNode sourceNode)
+        private void UpdateDistance(DirectedGraphNode sourceNode)
         {
             foreach (var edge in sourceNode.Edges)
             {
-                var node = edge.TargetNode;
+                var node = edge.Target;
 
                 var distance = checked(_distances[sourceNode.Name] + edge.Weight);
 

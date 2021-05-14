@@ -7,28 +7,28 @@ namespace mitoSoft.Graphs.Analysis
 {
     public abstract class DistanceCalculatorBase
     {
-        protected Graph _graph;
+        protected DirectedGraph _graph;
 
         protected Dictionary<string, double> _distances;
 
-        public DistanceCalculatorBase(Graph graph)
+        public DistanceCalculatorBase(DirectedGraph graph)
         {
             this._graph = graph ?? throw new ArgumentNullException(nameof(graph));
         }
 
-        public abstract Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode);
+        public abstract DirectedGraph GetShortestGraph(DirectedGraphNode sourceNode, DirectedGraphNode targetNode);
 
-        public abstract Graph GetShortestGraph(string sourceNodeName, string targetNodeName);
+        public abstract DirectedGraph GetShortestGraph(string sourceNodeName, string targetNodeName);
 
         public abstract IDictionary<string, double> GetAllDistances(string sourceNodeName);
 
-        public abstract IDictionary<string, double> GetAllDistances(GraphNode sourceNode);
+        public abstract IDictionary<string, double> GetAllDistances(DirectedGraphNode sourceNode);
 
-        protected void InitializeSearch(GraphNode sourceNode)
+        protected void InitializeSearch(DirectedGraphNode sourceNode)
         {
             _distances = new Dictionary<string, double>();
 
-            foreach (GraphNode node in this._graph.Nodes)
+            foreach (DirectedGraphNode node in this._graph.Nodes)
             {
                 _distances.Add(node.Name, double.PositiveInfinity);
             }
@@ -37,14 +37,14 @@ namespace mitoSoft.Graphs.Analysis
             _distances.Add(sourceNode.Name, 0);
         }
 
-        protected Graph BuildShortestPathGraph(GraphNode sourceNode, GraphNode targetNode)
+        protected DirectedGraph BuildShortestPathGraph(DirectedGraphNode sourceNode, DirectedGraphNode targetNode)
         {
             if (_distances[targetNode.Name] == double.PositiveInfinity)
             {
                 throw new PathNotFoundException(sourceNode.Name, targetNode.Name);
             }
 
-            var graph = new Graph();
+            var graph = new DirectedGraph();
 
             //Set start Node
             var distanceNode = new DistanceNode(targetNode.Name)
@@ -73,7 +73,7 @@ namespace mitoSoft.Graphs.Analysis
             return graph;
         }
 
-        private void GetShortestGraph(GraphNode sourceNode, GraphNode targetNode, Graph graph)
+        private void GetShortestGraph(DirectedGraphNode sourceNode, DirectedGraphNode targetNode, DirectedGraph graph)
         {
             if (sourceNode.Name == targetNode.Name)
             {
@@ -108,7 +108,7 @@ namespace mitoSoft.Graphs.Analysis
         /// <summary>
         /// The shortest path predecessors are all nodes which have the smallest sum of predecessorNode.DistanceFromStart + connectionToThisNode.Distance.
         /// </summary>
-        private IEnumerable<GraphNode> GetShortestPathPredecessors(GraphNode node)
+        private IEnumerable<DirectedGraphNode> GetShortestPathPredecessors(DirectedGraphNode node)
         {
             var predecessors = node.Predecessors.ToList();
 
@@ -126,7 +126,7 @@ namespace mitoSoft.Graphs.Analysis
             }
         }
 
-        private double GetStartDistanceToMe(GraphNode predecessor, GraphNode successor)
+        private double GetStartDistanceToMe(DirectedGraphNode predecessor, DirectedGraphNode successor)
         {
             var predecessorDistanceFromStart = _distances[predecessor.Name];
 

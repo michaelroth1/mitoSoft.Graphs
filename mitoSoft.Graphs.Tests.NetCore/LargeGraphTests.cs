@@ -9,7 +9,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
 {
     public partial class DeepFirstTests
     {
-        private static Graph _graph;
+        private static DirectedGraph _graph;
 
         [ClassInitialize]
         public static void Initialize(TestContext _)

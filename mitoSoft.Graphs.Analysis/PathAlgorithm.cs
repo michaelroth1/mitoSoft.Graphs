@@ -8,9 +8,9 @@ namespace mitoSoft.Graphs.Analysis
 {
     public class PathAlgorithm
     {
-        private readonly Graph _graph;
+        private readonly DirectedGraph _graph;
 
-        public PathAlgorithm(Graph graph)
+        public PathAlgorithm(DirectedGraph graph)
         {
             _graph = graph;
         }
@@ -22,7 +22,7 @@ namespace mitoSoft.Graphs.Analysis
             return GetAllPaths(startNode);
         }
 
-        public List<string> GetAllPaths(GraphNode startNode)
+        public List<string> GetAllPaths(DirectedGraphNode startNode)
         {
             if (!_graph.IsDirected() || !_graph.IsAcyclic())
             {
@@ -36,7 +36,7 @@ namespace mitoSoft.Graphs.Analysis
             return paths;
         }
 
-        private void BuildPath(GraphNode node, string path, List<string> paths)
+        private void BuildPath(DirectedGraphNode node, string path, List<string> paths)
         {
             if (node.Successors.Count() == 0)
             {

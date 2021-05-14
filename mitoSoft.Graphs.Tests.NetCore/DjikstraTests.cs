@@ -13,7 +13,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void SinglePath1()
         {
-            var graph = new Graph();
+            var graph = new DirectedGraph();
 
             graph.AddNode("Start");
             graph.AddNode("Middle1");
@@ -38,7 +38,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void DoublePathsEquallyWeighted()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -65,7 +65,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void DoublePathsDifferentWeights()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -92,7 +92,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void Circular()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -121,7 +121,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void SinglePath2()
         {
-            var graph = new Graph();
+            var graph = new DirectedGraph();
 
             graph.AddNode("Start");
             graph.AddNode("Middle1");
@@ -147,7 +147,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [ExpectedException(typeof(PathNotFoundException))]
         public void ImpossiblePath()
         {
-            var graph = new Graph();
+            var graph = new DirectedGraph();
 
             graph.AddEdge("Start", "Middle1", 1, false);
             graph.AddEdge("Middle1", "Middle2", 1, false);
@@ -160,7 +160,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void SinglePath3()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -185,7 +185,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void SinglePath4()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddEdge("Start", "Middle1", 1, false)
                 .AddEdge("Start", "Middle2", 1, false)
                 .AddEdge("Middle1", "End", 1, false)

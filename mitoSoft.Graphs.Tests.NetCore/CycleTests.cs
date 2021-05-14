@@ -8,7 +8,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
     [TestClass]
     public class CycleTests
     {
-        private static Graph _graph;
+        private static DirectedGraph _graph;
 
         [ClassInitialize]
         public static void Initialize(TestContext _)
@@ -26,7 +26,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void SmallAcyclic()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddEdge("Start", "Middle1", 1, false)
                 .AddEdge("Middle1", "Middle2", 1, false)
                 .AddEdge("Middle2", "End", 1, false);
@@ -44,7 +44,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void DirectCycle()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddEdge("Start", "Middle1", 1, true)
                 .AddEdge("Middle1", "Middle2", 1, false)
                 .AddEdge("Middle2", "End", 1, false);
@@ -58,7 +58,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void Cyclic()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddEdge("Start", "Middle1", 1, false)
                 .AddEdge("Middle1", "Middle2", 1, false)
                 .AddEdge("Middle2", "End", 1, false)

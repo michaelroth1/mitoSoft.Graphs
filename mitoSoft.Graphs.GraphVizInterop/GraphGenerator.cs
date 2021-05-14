@@ -8,20 +8,20 @@ namespace mitoSoft.Graphs.GraphVizInterop
 {
     public static class GraphGenerator
     {
-        public static Graph FromDotText(string dotText)
+        public static DirectedGraph FromDotText(string dotText)
         {
             var lines = dotText.Split(Environment.NewLine.ToCharArray()).ToList();
 
             return GraphGenerator.FromDotText(lines);
         }
 
-        public static Graph FromDotText(IEnumerable<string> dotText)
+        public static DirectedGraph FromDotText(IEnumerable<string> dotText)
         {
             var dotLines = dotText.ToList();
 
             dotLines.ToList().RemoveAll(s => s == string.Empty);
 
-            var graph = new Graph();
+            var graph = new DirectedGraph();
 
             var nodeLines = new List<string>();
             var edgeLines = new List<string>();
@@ -65,7 +65,7 @@ namespace mitoSoft.Graphs.GraphVizInterop
             return graph;
         }
 
-        private static void AddEgde(string left, string right, string line, Graph graph, List<string> nodeLines)
+        private static void AddEgde(string left, string right, string line, DirectedGraph graph, List<string> nodeLines)
         {
             string label = line.Between("label=", ',', ']').Trim().Trim('\"');
             string weightText = line.Between("weight=", ',', ']').Trim().Trim('\"');
@@ -95,7 +95,7 @@ namespace mitoSoft.Graphs.GraphVizInterop
             }
         }
 
-        private static void AddNode(Graph graph, string text, List<string> lines)
+        private static void AddNode(DirectedGraph graph, string text, List<string> lines)
         {
             var line = lines.SingleOrDefault(l => l.Between(0, '[').Contains(text) == true);
             string label = string.Empty;
@@ -104,7 +104,7 @@ namespace mitoSoft.Graphs.GraphVizInterop
                 label = line.Between("label=", ',', ']').Trim().Trim('\"');
             }
 
-            var node = new GraphNode(text, label);
+            var node = new DirectedGraphNode(text, label);
             graph.TryAddNode(node);
         }
     }

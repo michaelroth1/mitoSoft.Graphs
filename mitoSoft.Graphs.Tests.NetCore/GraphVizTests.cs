@@ -22,7 +22,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void GenerateDotTextFromDistanceGraph()
         {
-            var text = new Graph()
+            var text = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -51,12 +51,12 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void GenerateImage()
         {
-            var graph = new Graph();
+            var graph = new DirectedGraph();
 
-            graph.TryAddNode("Start", out _);
-            graph.TryAddNode("Middle1", out _);
-            graph.TryAddNode("Middle2", out _);
-            graph.TryAddNode("End", out _);
+            graph.AddNode("Start");
+            graph.AddNode("Middle1");
+            graph.AddNode("Middle2");
+            graph.AddNode("End");
 
             graph.TryAddEdge("Start", "End", 2, true, out _);
             graph.TryAddEdge("Start", "Middle1", 1, true, out _);
@@ -76,7 +76,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void GenerateImageFile()
         {
-            var graph = new Graph();
+            var graph = new DirectedGraph();
 
             graph.TryAddEdge("Start", "End", 2, true, out _);
             graph.TryAddEdge("Start", "Middle1", 1, true, out _);
@@ -96,7 +96,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void GenerateDotTextFromGraph()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "Middle1", 1, true)
                 .AddEdge("Middle1", "Middle2", 1, true)
@@ -180,12 +180,12 @@ namespace mitoSoft.Graphs.Tests.NetCore
 
             var graph = GraphGenerator.FromDotText(dotText);
 
-            Assert.AreEqual(1d, graph .GetEdge("Start", "Middle1").Weight);
+            Assert.AreEqual(1d, graph.GetEdge("Start", "Middle1").Weight);
             Assert.AreEqual(2d, graph.GetEdge("Start", "Middle2").Weight);
             Assert.AreEqual(1d, graph.GetEdge("Middle1", "End").Weight);
             Assert.AreEqual(1d, graph.GetEdge("Middle2", "End").Weight);
 
-            var shortestGraph = graph.ToShortestGraph("Start","End");
+            var shortestGraph = graph.ToShortestGraph("Start", "End");
 
             Assert.AreEqual(3, shortestGraph.Nodes.Count());
             Assert.AreEqual(2, shortestGraph.Edges.Count());
@@ -286,7 +286,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void IllegalLabelCharacter()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start")
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "Middle1", 1, true)
@@ -311,7 +311,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void IllegalNameCharacter()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start(19)")
                 .AddNode("Middle1%$§")
                 .AddNode("Middle12/3")

@@ -4,9 +4,9 @@ namespace mitoSoft.Graphs.Analysis
 {
     public class CycleChecker
     {
-        private readonly Graph _graph;
+        private readonly DirectedGraph _graph;
 
-        public CycleChecker(Graph graph)
+        public CycleChecker(DirectedGraph graph)
         {
             _graph = graph;
         }
@@ -28,8 +28,8 @@ namespace mitoSoft.Graphs.Analysis
         /// </remarks>.  
         public bool IsCyclic()
         {
-            var visited = new Dictionary<GraphNode, bool>();
-            var recStack = new Dictionary<GraphNode, bool>();
+            var visited = new Dictionary<DirectedGraphNode, bool>();
+            var recStack = new Dictionary<DirectedGraphNode, bool>();
 
             foreach (var node in _graph.Nodes)
             {
@@ -48,7 +48,7 @@ namespace mitoSoft.Graphs.Analysis
             return false;
         }
 
-        private bool IsCyclicUtil(GraphNode node, Dictionary<GraphNode, bool> visited, Dictionary<GraphNode, bool> recStack)// i, bool[] visited, bool[] recStack)
+        private bool IsCyclicUtil(DirectedGraphNode node, Dictionary<DirectedGraphNode, bool> visited, Dictionary<DirectedGraphNode, bool> recStack)// i, bool[] visited, bool[] recStack)
         {
             // Mark the current node as visited and  
             // part of recursion stack  

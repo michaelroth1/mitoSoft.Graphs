@@ -14,7 +14,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [ExpectedException(typeof(EdgeAlreadyExistingException))]
         public void EqualEdges()
         {
-            var _ = new Graph()
+            var _ = new DirectedGraph()
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "Middle1", 1, true)
@@ -30,7 +30,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [ExpectedException(typeof(NodeAlreadyExistingException))]
         public void EqualNodes()
         {
-            var _ = new Graph()
+            var _ = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Start")
                 .AddEdge("Start", "End", 2, true)
@@ -47,7 +47,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [ExpectedException(typeof(NodeNotFoundException))]
         public void InvalidNodeSearchByGetFunction()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start")
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "Middle1", 1, true)
@@ -64,7 +64,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void InvalidNodeSearchByTryFunction()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start")
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "Middle1", 1, true)
@@ -85,7 +85,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [ExpectedException(typeof(EdgeNotFoundException))]
         public void InvalidEdgeSearchByGetFunction()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start")
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "Middle1", 1, true)
@@ -102,7 +102,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void InvalidEdgeSearchByTryFunction()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddNode("Start")
                 .AddEdge("Start", "End", 2, true)
                 .AddEdge("Start", "Middle1", 1, true)

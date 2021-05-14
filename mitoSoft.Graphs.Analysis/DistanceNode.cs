@@ -3,8 +3,8 @@ using System.Diagnostics;
 
 namespace mitoSoft.Graphs.Analysis
 {
-    [DebuggerDisplay(nameof(Graph) + " ({ToString()})")]
-    public class DistanceNode : GraphNode
+    [DebuggerDisplay(nameof(DirectedGraph) + " ({ToString()})")]
+    public class DistanceNode : DirectedGraphNode
     {
         private double _distance;
 

@@ -13,7 +13,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void SimpleList()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                 .AddEdge("Start", "Middle1", 1, false)
                 .AddEdge("Middle1", "Middle2", 1, false)
                 .AddEdge("Middle2", "End", 1, false);
@@ -27,7 +27,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         [TestMethod]
         public void Tree()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                .AddEdge("Start", "Middle1", 1, false)
                .AddEdge("Middle1", "End1", 1, false)
                .AddEdge("Start", "Middle2", 1, false)

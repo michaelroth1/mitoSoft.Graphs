@@ -11,11 +11,11 @@ namespace mitoSoft.Graphs.Analysis
         /// <remarks>
         /// <paramref name="maxDistance"/> is set up to 20 by default.
         /// </remarks>
-        public DeepFirstAlgorithm(Graph graph) : this(graph, 20d)
+        public DeepFirstAlgorithm(DirectedGraph graph) : this(graph, 20d)
         {
         }
 
-        public DeepFirstAlgorithm(Graph graph, double maxDistance) : base(graph)
+        public DeepFirstAlgorithm(DirectedGraph graph, double maxDistance) : base(graph)
         {
             _maxDistance = maxDistance;
         }
@@ -24,7 +24,7 @@ namespace mitoSoft.Graphs.Analysis
         /// Determines the shortest path between the sourceNode, given by the 'sourceNodeName',
         /// and the targetNode, given by the 'targetNodeName'.
         /// </summary>
-        public override Graph GetShortestGraph(string sourceNodeName, string targetNodeName)
+        public override DirectedGraph GetShortestGraph(string sourceNodeName, string targetNodeName)
         {
             var sourceNode = _graph.GetNode(sourceNodeName);
             var targetNode = _graph.GetNode(targetNodeName);
@@ -35,7 +35,7 @@ namespace mitoSoft.Graphs.Analysis
         /// <summary>
         /// Determines the shortest path between the 'sourceNode' and the 'targetNode'.
         /// </summary>
-        public override Graph GetShortestGraph(GraphNode sourceNode, GraphNode targetNode)
+        public override DirectedGraph GetShortestGraph(DirectedGraphNode sourceNode, DirectedGraphNode targetNode)
         {
             InitializeSearch(sourceNode);
 
@@ -58,7 +58,7 @@ namespace mitoSoft.Graphs.Analysis
         /// <summary>
         /// Determines the distances of all nodes starting from the 'sourceNode'.
         /// </summary>
-        public override IDictionary<string, double> GetAllDistances(GraphNode sourceNode)
+        public override IDictionary<string, double> GetAllDistances(DirectedGraphNode sourceNode)
         {
             InitializeSearch(sourceNode);
 
@@ -67,11 +67,11 @@ namespace mitoSoft.Graphs.Analysis
             return _distances;
         }
 
-        private void CalculateDistancesByDeepFirst(GraphNode sourceNode, double maxDistance)
+        private void CalculateDistancesByDeepFirst(DirectedGraphNode sourceNode, double maxDistance)
         {
             foreach (var edge in sourceNode.Edges)
             {
-                GraphNode targetNode = this.GetTargetNode(edge, sourceNode);
+                DirectedGraphNode targetNode = this.GetTargetNode(edge, sourceNode);
 
                 var distance = checked(_distances[sourceNode.Name] + edge.Weight);
 
@@ -88,16 +88,16 @@ namespace mitoSoft.Graphs.Analysis
             }
         }
 
-        private GraphNode GetTargetNode(GraphEdge edge, GraphNode sourceNode)
+        private DirectedGraphNode GetTargetNode(DirectedEdge edge, DirectedGraphNode sourceNode)
         {
-            GraphNode targetNode;
-            if (edge is BidirectionalEdge && edge.SourceNode != sourceNode)
+            DirectedGraphNode targetNode;
+            if (edge is BidirectedEdge && edge.Source != sourceNode)
             {
-                targetNode = edge.SourceNode;
+                targetNode = edge.Source;
             }
             else
             {
-                targetNode = edge.TargetNode;
+                targetNode = edge.Target;
             }
             return targetNode;
         }

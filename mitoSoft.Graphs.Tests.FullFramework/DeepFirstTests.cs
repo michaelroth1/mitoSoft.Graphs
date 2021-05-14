@@ -13,7 +13,7 @@ namespace mitoSoft.Graphs.Tests.FullFramework
         [TestMethod]
         public void SinglePath1()
         {
-            var graph = new Graph();
+            var graph = new DirectedGraph();
 
             graph.AddNode("Start");
             graph.AddNode("Middle1");
@@ -38,7 +38,7 @@ namespace mitoSoft.Graphs.Tests.FullFramework
         [TestMethod]
         public void DoublePathsEquallyWeighted()
         {
-            var shortestGraph = new Graph()
+            var shortestGraph = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -64,7 +64,7 @@ namespace mitoSoft.Graphs.Tests.FullFramework
         [TestMethod]
         public void DoublePathsDifferentWeights()
         {
-            var shortestGraph = new Graph()
+            var shortestGraph = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -90,7 +90,7 @@ namespace mitoSoft.Graphs.Tests.FullFramework
         [TestMethod]
         public void Circular()
         {
-            var shortestGraph = new Graph()
+            var shortestGraph = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -118,7 +118,7 @@ namespace mitoSoft.Graphs.Tests.FullFramework
         [TestMethod]
         public void SinglePath2()
         {
-            var graph = new Graph();
+            var graph = new DirectedGraph();
 
             graph.AddNode("Start");
             graph.AddNode("Middle1");
@@ -144,7 +144,7 @@ namespace mitoSoft.Graphs.Tests.FullFramework
         [ExpectedException(typeof(PathNotFoundException))]
         public void ImpossiblePath()
         {
-            var graph = new Graph()
+            var graph = new DirectedGraph()
                .AddEdge("Start", "Middle1", 1, false)
                .AddEdge("Middle1", "Middle2", 1, false)
                .AddEdge("Middle2", "End", 1, false);
@@ -156,7 +156,7 @@ namespace mitoSoft.Graphs.Tests.FullFramework
         [TestMethod]
         public void SinglePath3()
         {
-            var shortestGraph = new Graph()
+            var shortestGraph = new DirectedGraph()
                 .AddNode("Start")
                 .AddNode("Middle1")
                 .AddNode("Middle2")
@@ -180,7 +180,7 @@ namespace mitoSoft.Graphs.Tests.FullFramework
         [TestMethod]
         public void SinglePath4()
         {
-            var shortestGraph = new Graph()
+            var shortestGraph = new DirectedGraph()
                 .AddEdge("Start", "Middle1", 1, false)
                 .AddEdge("Start", "Middle2", 1, false)
                 .AddEdge("Middle1", "End", 1, false)

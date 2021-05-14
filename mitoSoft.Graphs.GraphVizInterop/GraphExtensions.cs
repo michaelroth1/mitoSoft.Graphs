@@ -9,7 +9,7 @@ namespace mitoSoft.Graphs.GraphVizInterop
 {
     public static class GraphExtensions
     {
-        public static Image ToImage(this Graph graph, string graphVizBinPath)
+        public static Image ToImage(this DirectedGraph graph, string graphVizBinPath)
         {
             var dotText = graph.ToDotText();
 
@@ -18,7 +18,7 @@ namespace mitoSoft.Graphs.GraphVizInterop
             return image;
         }
 
-        public static void ToImageFile(this Graph graph, string graphVizBinPath, string fileName)
+        public static void ToImageFile(this DirectedGraph graph, string graphVizBinPath, string fileName)
         {
             var dotText = graph.ToDotText();
 
@@ -27,10 +27,10 @@ namespace mitoSoft.Graphs.GraphVizInterop
             (new ImageRenderer(graphVizBinPath)).RenderImage(dotText, fileName, LayoutEngine.dot, (ImageFormat)Enum.Parse(typeof(ImageFormat), fileInfo.Extension.Replace(".", "")));
         }
 
-        public static string ToDotText(this Graph graph)
+        public static string ToDotText(this DirectedGraph graph)
         {
             var dotTextGenerator = new DotTextGenerator();
-            var nodesNames = new Dictionary<GraphNode, string>();
+            var nodesNames = new Dictionary<DirectedGraphNode, string>();
 
             //Performance improvment of 1.5sec in case of 250000 graph elements
             foreach (var node in graph.Nodes)
@@ -56,10 +56,10 @@ namespace mitoSoft.Graphs.GraphVizInterop
 
             foreach (var edge in graph.Edges)
             {
-                var sourceId = nodesNames[edge.SourceNode];
-                var targetId = nodesNames[edge.TargetNode];
+                var sourceId = nodesNames[edge.Source];
+                var targetId = nodesNames[edge.Target];
 
-                if (edge is BidirectionalEdge)
+                if (edge is BidirectedEdge)
                 {
                     dotTextGenerator.SetEdge(sourceId, targetId, edge.Description, Enums.Color.black, Enums.EdgeStyle.solid, Enums.Arrowheads.normal, "dir=\"both\"");
                 }
