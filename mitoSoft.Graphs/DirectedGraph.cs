@@ -11,7 +11,7 @@ namespace mitoSoft.Graphs
         /// <summary>
         /// Tries to add a node with the given name to the graph.
         /// </summary>
-        /// <param name="node">Name of the node to be added</param>
+        /// <param name="name">Name of the node to be added</param>
         /// <exception cref="NodeAlreadyExistingException">If a node with an identical key has already been added.</exception>
         public virtual DirectedGraph AddNode(string name)
         {
@@ -27,41 +27,41 @@ namespace mitoSoft.Graphs
         /// <summary>
         /// Tries to add a node with the given name to the graph.
         /// </summary>
-        /// <param name="node">Name of the node to be added</param>
-        public virtual bool TryAddNode(string nodeName, out DirectedGraphNode node)
+        /// <param name="name">Name of the node to be added</param>
+        public virtual bool TryAddNode(string name, out DirectedGraphNode node)
         {
-            if (!this.TryGetNode(nodeName, out node))
+            if (!this.TryGetNode(name, out node))
             {
-                this.AddNode(nodeName);
+                this.AddNode(name);
 
-                return this.TryGetNode(nodeName, out node);
+                return this.TryGetNode(name, out node);
             }
 
             return false;
         }
 
         /// <summary>
-        /// Add an edge that connects the 'sourceNode' and the 'targetNode'.
+        /// Add an edge that connects the 'source' node and the 'target' node.
         /// </summary>
-        public virtual DirectedGraph AddEdge(DirectedGraphNode sourceNode, DirectedGraphNode targetNode, double weight, bool bidirection)
+        public virtual DirectedGraph AddEdge(DirectedGraphNode source, DirectedGraphNode target, double weight, bool bidirection)
         {
-            if (!this.TryAddEdge(sourceNode, targetNode, weight, bidirection, out _))
+            if (!this.TryAddEdge(source, target, weight, bidirection, out _))
             {
-                throw new EdgeAlreadyExistingException(sourceNode.Name, targetNode.Name);
+                throw new EdgeAlreadyExistingException(source.Name, target.Name);
             }
 
             return this;
         }
 
         /// <summary>
-        /// Add an edge that connects the sourceNode, given bv the 'sourceNodeName',
-        /// and the targetNode, given by the 'targetNodeName'.
+        /// Add an edge that connects the source node, given bv the 'sourceName',
+        /// and the target node, given by the 'targetName'.
         /// </summary>
-        public virtual DirectedGraph AddEdge(string sourceNodeName, string targetNodeName, double weight, bool bidirection)
+        public virtual DirectedGraph AddEdge(string sourceName, string targetName, double weight, bool bidirection)
         {
-            if (!this.TryAddEdge(sourceNodeName, targetNodeName, weight, bidirection, out _))
+            if (!this.TryAddEdge(sourceName, targetName, weight, bidirection, out _))
             {
-                throw new EdgeAlreadyExistingException(sourceNodeName, targetNodeName);
+                throw new EdgeAlreadyExistingException(sourceName, targetName);
             }
 
             return this;
@@ -123,14 +123,14 @@ namespace mitoSoft.Graphs
         }
 
         /// <summary>
-        /// Tries to return the edge, that connects the 'sourceNode' and the 'targetNode'.
+        /// Tries to return the edge, that connects the 'source' node and the 'target' node.
         /// </summary>
         /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
-        public override bool TryGetEdge(DirectedGraphNode sourceNode, DirectedGraphNode targetNode, out DirectedEdge edge)
+        public override bool TryGetEdge(DirectedGraphNode source, DirectedGraphNode target, out DirectedEdge edge)
         {
-            edge = sourceNode.Edges.Cast<DirectedEdge>().SingleOrDefault(
-                e => e is DirectedEdge de && ReferenceEquals(de.Target, targetNode) 
-                  || e is BidirectedEdge be && ReferenceEquals(be.Source, targetNode));
+            edge = source.Edges.Cast<DirectedEdge>().SingleOrDefault(
+                e => e is DirectedEdge de && ReferenceEquals(de.Target, target) 
+                  || e is BidirectedEdge be && ReferenceEquals(be.Source, target));
 
             return (edge != null);
         }

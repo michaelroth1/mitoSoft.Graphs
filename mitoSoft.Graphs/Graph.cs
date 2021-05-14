@@ -52,12 +52,12 @@ namespace mitoSoft.Graphs
         /// <returns>True when the node was actually added or false when a node with an identical name already exists.</returns>
         public virtual bool TryAddNode(TNode node)
         {
-            if (!_nodes.ContainsKey(node.Name))
+            try
             {
-                this._nodes.Add(node.Name, node);
+                _ = this.AddNode(node);
                 return true;
             }
-            else
+            catch (NodeAlreadyExistingException)
             {
                 return false;
             }
@@ -66,26 +66,26 @@ namespace mitoSoft.Graphs
         /// <summary>
         /// Returns the node with the given name to the graph.
         /// </summary>
-        /// <param name="node">Name of the node to be returned</param>
+        /// <param name="name">Name of the node to be returned</param>
         /// <exception cref="NodeNotFoundException">If the node could not been found.</exception>
-        public virtual TNode GetNode(string nodeName)
+        public virtual TNode GetNode(string name)
         {
-            if (this.TryGetNode(nodeName, out var node))
+            if (this.TryGetNode(name, out var node))
             {
                 return node;
             }
             else
             {
-                throw new NodeNotFoundException(nodeName);
+                throw new NodeNotFoundException(name);
             }
         }
 
         /// <summary>
         /// Tries to returns the node with the given name to the graph.
         /// </summary>
-        /// <param name="node">Name of the node to be returned</param>
+        /// <param name="name">Name of the node to be returned</param>
         /// <returns>True when the node was found or false when the node does not exist.</returns>
-        public virtual bool TryGetNode(string nodeName, out TNode node) => this._nodes.TryGetValue(nodeName, out node);
+        public virtual bool TryGetNode(string name, out TNode node) => this._nodes.TryGetValue(name, out node);
 
         /// <summary>
         /// Tries to add the given edge to the graph.
@@ -125,33 +125,29 @@ namespace mitoSoft.Graphs
         }
 
         /// <summary>
-        /// Return the edge that connects the 'sourceNode' and the 'targetNode'.
+        /// Return the edge that connects the 'source' node and the 'target' node.
         /// </summary>
         public virtual TEdge GetEdge(string sourceName, string targetName)
         {
-            if (this.TryGetEdge(sourceName, targetName, out var edge))
-            {
-                return edge;
-            }
-            else
-            {
-                throw new EdgeNotFoundException(sourceName, targetName);
-            }
+            var source = GetNode(sourceName);
+            var target = GetNode(targetName);
+
+            return this.GetEdge(source, target);
         }
 
         /// <summary>
-        /// Tries to return the edge, that connects the 'sourceNode' and the 'targetNode'.
+        /// Tries to return the edge, that connects the 'source' node and the 'target' node.
         /// </summary>
         /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
-        public virtual bool TryGetEdge(TNode sourceNode, TNode targetNode, out TEdge edge)
+        public virtual bool TryGetEdge(TNode source, TNode target, out TEdge edge)
         {
-            edge = sourceNode.Edges.Cast<TEdge>().SingleOrDefault(e => ReferenceEquals(e.Target, targetNode));
+            edge = source.Edges.Cast<TEdge>().SingleOrDefault(e => ReferenceEquals(e.Target, target));
 
             return (edge != null);
         }
 
         /// <summary>
-        /// Tries to return the edge, that connects the 'sourceNode' and the 'targetNode'.
+        /// Tries to return the edge, that connects the 'source' node and the 'target' node.
         /// </summary>
         /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
         public virtual bool TryGetEdge(string sourceName, string targetName, out TEdge edge)

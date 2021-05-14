@@ -82,7 +82,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
         /// via the 'Graph.GetEdge' method which throws an exception.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(EdgeNotFoundException))]
+        [ExpectedException(typeof(NodeNotFoundException))]
         public void InvalidEdgeSearchByGetFunction()
         {
             var graph = new DirectedGraph()
@@ -93,6 +93,24 @@ namespace mitoSoft.Graphs.Tests.NetCore
                 .AddEdge("Middle2", "End", 1, true);
 
             var _ = graph.GetEdge("Start", "Hurz");
+        }
+
+        /// <summary>
+        /// This test tries to get a not included edge
+        /// via the 'Graph.GetEdge' method which throws an exception.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(EdgeNotFoundException))]
+        public void InvalidEdgeSearchByGetFunction2()
+        {
+            var graph = new DirectedGraph()
+                .AddNode("Start")
+                .AddEdge("Start", "End", 2, true)
+                .AddEdge("Start", "Middle1", 1, true)
+                .AddEdge("Middle1", "Middle2", 1, true)
+                .AddEdge("Middle2", "End", 1, true);
+
+            var _ = graph.GetEdge("Start", "Middle2");
         }
 
         /// <summary>
