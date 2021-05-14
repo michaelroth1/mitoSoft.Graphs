@@ -14,12 +14,12 @@ namespace mitoSoft.Graphs
         /// <summary>
         /// Returns all nodes of the graph
         /// </summary>
-        public IEnumerable<TNode> Nodes => this._nodes.Values;
+        public virtual IEnumerable<TNode> Nodes => this._nodes.Values;
 
         /// <summary>
         /// Returns all edges of the graph
         /// </summary>
-        public IEnumerable<TEdge> Edges => this.Nodes.Cast<TNode>().SelectMany(n => n.Edges.Cast<TEdge>()).Distinct();
+        public virtual IEnumerable<TEdge> Edges => this.Nodes.Cast<TNode>().SelectMany(n => n.Edges.Cast<TEdge>()).Distinct();
 
         /// <summary>
         /// Tries to add the given node to the graph.
@@ -68,7 +68,7 @@ namespace mitoSoft.Graphs
         /// </summary>
         /// <param name="node">Name of the node to be returned</param>
         /// <exception cref="NodeNotFoundException">If the node could not been found.</exception>
-        public TNode GetNode(string nodeName)
+        public virtual TNode GetNode(string nodeName)
         {
             if (this.TryGetNode(nodeName, out var node))
             {
@@ -85,7 +85,7 @@ namespace mitoSoft.Graphs
         /// </summary>
         /// <param name="node">Name of the node to be returned</param>
         /// <returns>True when the node was found or false when the node does not exist.</returns>
-        public bool TryGetNode(string nodeName, out TNode node) => this._nodes.TryGetValue(nodeName, out node);
+        public virtual bool TryGetNode(string nodeName, out TNode node) => this._nodes.TryGetValue(nodeName, out node);
 
         /// <summary>
         /// Tries to add the given edge to the graph.
@@ -108,8 +108,6 @@ namespace mitoSoft.Graphs
 
             return this;
         }
-
-
 
         /// <summary>
         /// Return the edge that connects the 'sourceNode' and the 'targetNode'.

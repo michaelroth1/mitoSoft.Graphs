@@ -6,11 +6,9 @@ using System.Linq;
 namespace mitoSoft.Graphs
 {
     [DebuggerDisplay(nameof(Node) + " ({ToString()})")]
-    public class Node
+    public abstract class Node
     {
-        private readonly IList<Edge> _edges;
-
-        public object Tag { get; set; }
+        protected readonly IList<Edge> _edges;
 
         public Node(string name)
         {
@@ -35,14 +33,14 @@ namespace mitoSoft.Graphs
 
         public string Description { get; set; }
 
-        public IEnumerable<Edge> Edges => this._edges;
+        public virtual IEnumerable<Edge> Edges => this._edges;
 
-        public IEnumerable<Node> Predecessors => this._edges.Where(e => ReferenceEquals(e.Target, this))
+        public virtual IEnumerable<Node> Predecessors => this._edges.Where(e => ReferenceEquals(e.Target, this))
                                                                  .Select(e => e.Source)
                                                                  .Concat(this.Edges.Where(e => e is BidirectedEdge && ReferenceEquals(e.Source, this))
                                                                                    .Select(e => e.Target));
 
-        public IEnumerable<Node> Successors => this._edges.Where(e => ReferenceEquals(e.Source, this))
+        public virtual IEnumerable<Node> Successors => this._edges.Where(e => ReferenceEquals(e.Source, this))
                                                                .Select(e => e.Target)
                                                                .Concat(this.Edges.Where(e => e is BidirectedEdge && ReferenceEquals(e.Target, this))
                                                                                  .Select(e => e.Target));

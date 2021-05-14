@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace mitoSoft.Graphs
 {
+    [DebuggerDisplay(nameof(Node) + " ({ToString()})")]
     public class DirectedEdge : Edge
     {
         public DirectedEdge(DirectedGraphNode sourceNode, DirectedGraphNode targetNode, double weight) : base(sourceNode, targetNode)

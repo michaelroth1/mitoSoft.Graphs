@@ -124,7 +124,9 @@ namespace mitoSoft.Graphs
         /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
         public override bool TryGetEdge(DirectedGraphNode sourceNode, DirectedGraphNode targetNode, out DirectedEdge edge)
         {
-            edge = sourceNode.Edges.Where(e => ReferenceEquals(e.Target, targetNode) || e is BidirectedEdge && ReferenceEquals(e.Source, targetNode)).SingleOrDefault();
+            edge = sourceNode.Edges.Cast<DirectedEdge>().SingleOrDefault(
+                e => e is DirectedEdge de && ReferenceEquals(de.Target, targetNode) 
+                  || e is BidirectedEdge be && ReferenceEquals(be.Source, targetNode));
 
             return (edge != null);
         }

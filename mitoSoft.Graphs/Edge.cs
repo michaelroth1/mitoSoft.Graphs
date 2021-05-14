@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace mitoSoft.Graphs
 {
     [DebuggerDisplay(nameof(Edge) + " ({ToString()})")]
-    public class Edge
+    public abstract class Edge
     {
         public Edge(Node source, Node target)
         {
@@ -15,9 +15,9 @@ namespace mitoSoft.Graphs
             this.Description = string.Empty;
         }
 
-        public Node Source { get; }
+        public virtual Node Source { get; }
 
-        public Node Target { get; }
+        public virtual Node Target { get; }
 
         public string Description { get; set; }
 
