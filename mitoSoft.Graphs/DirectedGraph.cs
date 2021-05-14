@@ -26,7 +26,7 @@ namespace mitoSoft.Graphs
         /// Tries to add a node with the given name to the graph.
         /// </summary>
         /// <param name="node">Name of the node to be added</param>
-        public bool TryAddNode(string nodeName, out DirectedGraphNode node)
+        public virtual bool TryAddNode(string nodeName, out DirectedGraphNode node)
         {
             if (!this.TryGetNode(nodeName, out node))
             {
