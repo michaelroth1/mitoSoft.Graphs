@@ -141,7 +141,8 @@ namespace mitoSoft.Graphs
         /// <returns>True when the edge was actually added or false when an existing edge already exists.</returns>
         public virtual bool TryGetEdge(TNode source, TNode target, out TEdge edge)
         {
-            edge = source.Edges.Cast<TEdge>().SingleOrDefault(e => ReferenceEquals(e.Target, target));
+            edge = source.Edges.Cast<TEdge>().SingleOrDefault(e => ReferenceEquals(e.Target, target)
+                                                                && ReferenceEquals(e.Source, source));
 
             return (edge != null);
         }

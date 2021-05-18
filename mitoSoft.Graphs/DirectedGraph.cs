@@ -129,8 +129,9 @@ namespace mitoSoft.Graphs
         public override bool TryGetEdge(DirectedGraphNode source, DirectedGraphNode target, out DirectedEdge edge)
         {
             edge = source.Edges.Cast<DirectedEdge>().SingleOrDefault(
-                e => e is DirectedEdge de && ReferenceEquals(de.Target, target) 
-                  || e is BidirectedEdge be && ReferenceEquals(be.Source, target));
+                e => e is DirectedEdge de && ReferenceEquals(de.Target, target) && ReferenceEquals(de.Source, source)
+                  || e is BidirectedEdge be && ( ReferenceEquals(be.Target, target) && ReferenceEquals(be.Source, source)
+                                              || ReferenceEquals(be.Source, target) && ReferenceEquals(be.Target, source)));
 
             return (edge != null);
         }
