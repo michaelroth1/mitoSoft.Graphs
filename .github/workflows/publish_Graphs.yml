@@ -5,7 +5,7 @@
 #  <RepositoryUrl>https://github.com/michaelroth1/homeNet.Components</RepositoryUrl>
 #</PropertyGroup>
 
-name: NuGet Generation for mitoSoft.Common.Webcam
+name: NuGet Generation for mitoSoft.Graphs
 
 on:
   push:
