@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace mitoSoft.Graphs
 {
+    [Serializable]
     [DebuggerDisplay(nameof(Edge) + " ({ToString()})")]
     public abstract class Edge
     {

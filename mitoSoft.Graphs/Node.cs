@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace mitoSoft.Graphs
 {
+    [Serializable]
     [DebuggerDisplay(nameof(Node) + " ({ToString()})")]
     public abstract class Node
     {

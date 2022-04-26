@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 namespace mitoSoft.Graphs
 {
+    [Serializable]
     [DebuggerDisplay(nameof(Node) + " ({ToString()})")]
     public class DirectedGraphNode : Node
     {

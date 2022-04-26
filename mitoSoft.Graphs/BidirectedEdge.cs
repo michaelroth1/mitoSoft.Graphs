@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace mitoSoft.Graphs
 {
+    [Serializable]
     [DebuggerDisplay(nameof(Node) + " ({ToString()})")]
     public class BidirectedEdge : DirectedEdge
     {

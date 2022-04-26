@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace mitoSoft.Graphs
 {
+    [Serializable]
     public abstract class Graph<TNode, TEdge>
         where TNode : Node
         where TEdge : Edge

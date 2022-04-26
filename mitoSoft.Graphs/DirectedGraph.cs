@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace mitoSoft.Graphs
 {
+    [Serializable]
     [DebuggerDisplay(nameof(DirectedGraph) + " ({ToString()})")]
     public class DirectedGraph : Graph<DirectedGraphNode, DirectedEdge>
     {
