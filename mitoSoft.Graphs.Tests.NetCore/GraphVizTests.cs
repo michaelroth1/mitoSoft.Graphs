@@ -69,6 +69,31 @@ namespace mitoSoft.Graphs.Tests.NetCore
         }
 
         /// <summary>
+        /// This test tries to generate a 'System.Drawing' image out of an 
+        /// mitoSoft shortest-path graph.
+        /// </summary>
+        [TestCategory("GrapVizInterop")]
+        [TestMethod]
+        public void GenerateImageWithoutPath()
+        {
+            var graph = new DirectedGraph();
+
+            graph.AddNode("Start");
+            graph.AddNode("Middle1");
+            graph.AddNode("Middle2");
+            graph.AddNode("End");
+
+            graph.TryAddEdge("Start", "End", 2, true, out _);
+            graph.TryAddEdge("Start", "Middle1", 1, true, out _);
+            graph.TryAddEdge("Middle1", "Middle2", 1, true, out _);
+            graph.TryAddEdge("Middle2", "End", 1, true, out _);
+
+            var image = graph.ToImage();
+
+            Assert.IsNotNull(image);
+        }
+
+        /// <summary>
         /// This test tries to generate an image file out of an 
         /// mitoSoft shortest-path graph.
         /// </summary>
@@ -84,7 +109,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
             graph.TryAddEdge("Middle2", "End", 1, true, out _);
 
             var imageFile = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "GraphImages", "Graph1.png");
-            graph.ToImageFile(GraphVizPath, imageFile);
+            graph.ToImageFile(imageFile, GraphVizPath);
 
             Assert.IsTrue(File.Exists(imageFile));
         }

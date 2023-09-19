@@ -184,7 +184,7 @@ namespace mitoSoft.Graphs.Tests.NetCore
 
             shortestGraph.Edges.ToList().ForEach(n => n.Description = string.Empty);
 
-            shortestGraph.ToImageFile(GraphVizTests.GraphVizPath, imageFile);
+            shortestGraph.ToImageFile(imageFile, GraphVizTests.GraphVizPath);
 
             Assert.IsTrue(File.Exists(imageFile));
         }
