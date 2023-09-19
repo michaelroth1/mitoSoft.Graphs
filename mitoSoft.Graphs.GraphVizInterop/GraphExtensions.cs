@@ -9,22 +9,20 @@ namespace mitoSoft.Graphs.GraphVizInterop
 {
     public static class GraphExtensions
     {
-        public static Image ToImage(this DirectedGraph graph) 
-            => graph.ToImage(@"%USERPROFILE%/.nuget/packages/graphviz/2.38.0.2");
+        public static Image ToImage(this DirectedGraph graph)
+            => graph.ToImage(Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\.nuget\packages\graphviznet\1.0.3\contentFiles\any\any\graphviz"));
 
         public static Image ToImage(this DirectedGraph graph, string graphVizBinPath)
         {
             var dotText = graph.ToDotText();
 
-            var path = new DirectoryInfo(graphVizBinPath).FullName;
-
-            var image = (new ImageRenderer(path)).RenderImage(dotText);
+            var image = (new ImageRenderer(graphVizBinPath)).RenderImage(dotText);
 
             return image;
         }
 
-        public static void ToImageFile(this DirectedGraph graph, string fileName) 
-            => graph.ToImageFile(fileName, @"%USERPROFILE%/.nuget/packages/graphviz/2.38.0.2");
+        public static void ToImageFile(this DirectedGraph graph, string fileName)
+            => graph.ToImageFile(fileName, Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\.nuget\packages\graphviznet\1.0.3\contentFiles\any\any\graphviz"));
 
         public static void ToImageFile(this DirectedGraph graph, string fileName, string graphVizBinPath)
         {
